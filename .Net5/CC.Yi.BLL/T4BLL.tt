@@ -1,0 +1,50 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.IO" #>
+<#@ output extension=".cs" #>
+<#
+    string solutionsPath = Host.ResolveAssemblyReference("$(SolutionDir)");//获取解决方案路径
+            string txt;
+            StreamReader sr = new StreamReader(solutionsPath+@"\T4Model\T4Model.txt");
+            txt=sr.ReadToEnd();
+            sr.Close();
+            string[] ModelData= txt.Split(',');
+ #>
+
+using CC.Yi.IBLL;
+using CC.Yi.IDAL;
+using CC.Yi.Model;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+
+namespace CC.Yi.BLL
+{
+<#    foreach(string k in ModelData){
+ #>
+    public partial class <#=k #>Bll : BaseBll<<#=k #>>, I<#=k #>Bll
+        {
+            public <#=k #>Bll(IBaseDal<<#=k #>> cd,DataContext _Db):base(cd,_Db)
+            {
+                CurrentDal = cd;
+                Db = _Db;
+            }
+
+            public async Task<bool> DelListByUpdateList(List<int> Ids)
+            {
+                var entitys = await CurrentDal.GetEntities(u => Ids.Contains(u.id)).ToListAsync();
+                foreach (var entity in entitys)
+                {
+                    entity.is_delete = (short)ViewModel.Enum.DelFlagEnum.Deleted;
+                }
+                return Db.SaveChanges() > 0;
+            }
+
+        }
+<#    } #>
+}

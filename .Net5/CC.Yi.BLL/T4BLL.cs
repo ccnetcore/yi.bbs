@@ -1,0 +1,184 @@
+﻿
+using CC.Yi.IBLL;
+using CC.Yi.IDAL;
+using CC.Yi.Model;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+
+namespace CC.Yi.BLL
+{
+    public partial class plateBll : BaseBll<plate>, IplateBll
+        {
+            public plateBll(IBaseDal<plate> cd,DataContext _Db):base(cd,_Db)
+            {
+                CurrentDal = cd;
+                Db = _Db;
+            }
+
+            public async Task<bool> DelListByUpdateList(List<int> Ids)
+            {
+                var entitys = await CurrentDal.GetEntities(u => Ids.Contains(u.id)).ToListAsync();
+                foreach (var entity in entitys)
+                {
+                    entity.is_delete = (short)ViewModel.Enum.DelFlagEnum.Deleted;
+                }
+                return Db.SaveChanges() > 0;
+            }
+
+        }
+    public partial class discussBll : BaseBll<discuss>, IdiscussBll
+        {
+            public discussBll(IBaseDal<discuss> cd,DataContext _Db):base(cd,_Db)
+            {
+                CurrentDal = cd;
+                Db = _Db;
+            }
+
+            public async Task<bool> DelListByUpdateList(List<int> Ids)
+            {
+                var entitys = await CurrentDal.GetEntities(u => Ids.Contains(u.id)).ToListAsync();
+                foreach (var entity in entitys)
+                {
+                    entity.is_delete = (short)ViewModel.Enum.DelFlagEnum.Deleted;
+                }
+                return Db.SaveChanges() > 0;
+            }
+
+        }
+    public partial class commentBll : BaseBll<comment>, IcommentBll
+        {
+            public commentBll(IBaseDal<comment> cd,DataContext _Db):base(cd,_Db)
+            {
+                CurrentDal = cd;
+                Db = _Db;
+            }
+
+            public async Task<bool> DelListByUpdateList(List<int> Ids)
+            {
+                var entitys = await CurrentDal.GetEntities(u => Ids.Contains(u.id)).ToListAsync();
+                foreach (var entity in entitys)
+                {
+                    entity.is_delete = (short)ViewModel.Enum.DelFlagEnum.Deleted;
+                }
+                return Db.SaveChanges() > 0;
+            }
+
+        }
+    public partial class userBll : BaseBll<user>, IuserBll
+        {
+            public userBll(IBaseDal<user> cd,DataContext _Db):base(cd,_Db)
+            {
+                CurrentDal = cd;
+                Db = _Db;
+            }
+
+            public async Task<bool> DelListByUpdateList(List<int> Ids)
+            {
+                var entitys = await CurrentDal.GetEntities(u => Ids.Contains(u.id)).ToListAsync();
+                foreach (var entity in entitys)
+                {
+                    entity.is_delete = (short)ViewModel.Enum.DelFlagEnum.Deleted;
+                }
+                return Db.SaveChanges() > 0;
+            }
+
+        }
+    public partial class roleBll : BaseBll<role>, IroleBll
+        {
+            public roleBll(IBaseDal<role> cd,DataContext _Db):base(cd,_Db)
+            {
+                CurrentDal = cd;
+                Db = _Db;
+            }
+
+            public async Task<bool> DelListByUpdateList(List<int> Ids)
+            {
+                var entitys = await CurrentDal.GetEntities(u => Ids.Contains(u.id)).ToListAsync();
+                foreach (var entity in entitys)
+                {
+                    entity.is_delete = (short)ViewModel.Enum.DelFlagEnum.Deleted;
+                }
+                return Db.SaveChanges() > 0;
+            }
+
+        }
+    public partial class actionBll : BaseBll<action>, IactionBll
+        {
+            public actionBll(IBaseDal<action> cd,DataContext _Db):base(cd,_Db)
+            {
+                CurrentDal = cd;
+                Db = _Db;
+            }
+
+            public async Task<bool> DelListByUpdateList(List<int> Ids)
+            {
+                var entitys = await CurrentDal.GetEntities(u => Ids.Contains(u.id)).ToListAsync();
+                foreach (var entity in entitys)
+                {
+                    entity.is_delete = (short)ViewModel.Enum.DelFlagEnum.Deleted;
+                }
+                return Db.SaveChanges() > 0;
+            }
+
+        }
+    public partial class levelBll : BaseBll<level>, IlevelBll
+        {
+            public levelBll(IBaseDal<level> cd,DataContext _Db):base(cd,_Db)
+            {
+                CurrentDal = cd;
+                Db = _Db;
+            }
+
+            public async Task<bool> DelListByUpdateList(List<int> Ids)
+            {
+                var entitys = await CurrentDal.GetEntities(u => Ids.Contains(u.id)).ToListAsync();
+                foreach (var entity in entitys)
+                {
+                    entity.is_delete = (short)ViewModel.Enum.DelFlagEnum.Deleted;
+                }
+                return Db.SaveChanges() > 0;
+            }
+
+        }
+    public partial class user_extraBll : BaseBll<user_extra>, Iuser_extraBll
+        {
+            public user_extraBll(IBaseDal<user_extra> cd,DataContext _Db):base(cd,_Db)
+            {
+                CurrentDal = cd;
+                Db = _Db;
+            }
+
+            public async Task<bool> DelListByUpdateList(List<int> Ids)
+            {
+                var entitys = await CurrentDal.GetEntities(u => Ids.Contains(u.id)).ToListAsync();
+                foreach (var entity in entitys)
+                {
+                    entity.is_delete = (short)ViewModel.Enum.DelFlagEnum.Deleted;
+                }
+                return Db.SaveChanges() > 0;
+            }
+
+        }
+    public partial class labelBll : BaseBll<label>, IlabelBll
+        {
+            public labelBll(IBaseDal<label> cd,DataContext _Db):base(cd,_Db)
+            {
+                CurrentDal = cd;
+                Db = _Db;
+            }
+
+            public async Task<bool> DelListByUpdateList(List<int> Ids)
+            {
+                var entitys = await CurrentDal.GetEntities(u => Ids.Contains(u.id)).ToListAsync();
+                foreach (var entity in entitys)
+                {
+                    entity.is_delete = (short)ViewModel.Enum.DelFlagEnum.Deleted;
+                }
+                return Db.SaveChanges() > 0;
+            }
+
+        }
+}
