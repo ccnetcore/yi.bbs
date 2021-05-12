@@ -153,13 +153,16 @@ namespace CC.Yi.API.Controllers
 
 
         [HttpPost]//添加主题
-        public async Task<Result> AddDiscuss(discuss data, int plateId,List<int> Ids)
+        public async Task<Result> AddDiscuss(addDiscussModel myModel )
         {
+            int plateId = myModel.plateId;
+            List<int> Ids = myModel.Ids;
+            discuss data = myModel.data;
             if (plateId == 0)
             {
                 return Result.Error();
             }
-            var plateData = await _plateBll.GetEntities(u => u.id == plateId).Include(u => u.discusses).ThenInclude(u => u.user).Include(u => u.discusses).ThenInclude(u=>u.labels).FirstOrDefaultAsync();
+            var plateData = await _plateBll.GetEntities(u => u.id == plateId).Include(u => u.discusses).ThenInclude(u => u.user).Include(u => u.discusses).ThenInclude(u => u.labels).FirstOrDefaultAsync();
             data.time = DateTime.Now;
             data.user = await _userBll.GetEntities(u => u.id == _user.id).FirstOrDefaultAsync();
 
