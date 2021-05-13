@@ -20,11 +20,15 @@ export default {
     },
 
 
-    addDiscuss(data, plateId) {
+    addDiscuss(data, plateId, Ids) {
         return myaxios({
-            url: `/Discuss/addDiscuss?plateId=${plateId}`,
+            url: `/Discuss/addDiscuss`,
             method: 'post',
-            data: data
+            data: {
+                data,
+                plateId,
+                Ids
+            }
         })
     },
     updateDiscuss(data) {

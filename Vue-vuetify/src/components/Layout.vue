@@ -15,11 +15,10 @@
         <app-header></app-header>
       </v-app-bar>
 
-      <v-main>
-        <app-main></app-main>
-        
-           <v-footer :absolute="true"
-            >
+      <v-main >
+        <app-main ></app-main>
+
+        <v-footer :absolute="true">
           <v-col class="text-center" cols="12">
             {{ new Date().getFullYear() }} — <strong>Jiftcc</strong>
           </v-col>

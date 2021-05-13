@@ -14,7 +14,17 @@
       <v-col cols="12" sm="11">
         <v-text-field label="标题" v-model="form.title"></v-text-field>
       </v-col>
-      <v-col cols="12">
+      <v-col cols="12" sm="6" md="4">
+        <v-combobox
+          v-model="selectLabel"
+          :items="itemLabel"
+          label="点击选择标签"
+          multiple
+          dense
+          chips
+        ></v-combobox>
+      </v-col>
+      <v-col cols="12" sm="6" md="8">
         <v-text-field label="简介" v-model="form.introduction"></v-text-field>
       </v-col>
     </v-row>
@@ -31,10 +41,14 @@
 </template>
 <script>
 import E from "wangeditor";
+import labelApi from "@/api/labelApi";
 import discussApi from "@/api/discussApi";
 export default {
   data() {
     return {
+      selectLabel: [], //这里存放的是名称列表
+      lableList: [], //这里存放的是id和名字
+      itemLabel: [],
       baseurl: "",
       form: {
         title: "",
@@ -50,13 +64,33 @@ export default {
   mounted() {
     //使用初始化
     this.baseurl = process.env.VUE_APP_BASE_API;
-    this.initializa();
+    this.initializa1();
   },
+  created() {
+    this.initializa2();
+  },
+
   methods: {
     send() {
+      var Ids = [];
+
+      //  selectLabel: [],//这里存放的是名称列表 ["小学生","大学生","中学生"]
+      // lableList:[],//这里存放的是id和名字[{1，"小学生"}，{2，"中学生"}，{3，"大学生"}]
+
+for(var i=0;i<this.selectLabel.length;i++)
+ {
+   for (var j=0;j<this.lableList.length;j++)
+   {
+     if (this.selectLabel[i] == this.lableList[j].name)
+     {
+       Ids.push(this.lableList[j].id)
+     }
+   }
+ }
+
       this.form.content = this.myeditor.txt.html();
       discussApi
-        .addDiscuss(this.form, this.$store.state.home.plateId)
+        .addDiscuss(this.form, this.$store.state.home.plateId,Ids)
         .then((resp) => {
           this.$store.dispatch("set_discussId", resp.data.id);
           //设置等级
@@ -64,7 +98,15 @@ export default {
           this.$router.push({ path: "/comment" });
         });
     },
-    initializa() {
+    initializa2() {
+      labelApi.getLabelByUserId().then((resp) => {
+        this.lableList = resp.data;
+        this.itemLabel = resp.data.map((obj) => {
+          return obj.name;
+        });
+      });
+    },
+    initializa1() {
       //初始化创建
       var my = this;
       const editor = new E(this.$refs.editorDiv);

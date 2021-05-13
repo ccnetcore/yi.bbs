@@ -9,7 +9,9 @@
     </v-breadcrumbs>
 
     <v-container>
-      <router-view></router-view>
+      <v-slide-y-transition>
+        <router-view></router-view>
+      </v-slide-y-transition>
     </v-container>
   </div>
 </template>
