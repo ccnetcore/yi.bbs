@@ -1,5 +1,6 @@
 <template>
   <div>
+   <!-- <iframe id="music" frameborder="no" border="0" marginwidth="0" marginheight="0" width=250 height=86 src="//music.163.com/outchain/player?type=2&id=1454730043&auto=0&height=66"></iframe> -->
     <v-app id="inspire">
       <v-navigation-drawer v-model="drawer" class="accent-4" app>
         <app-navbar></app-navbar>
@@ -18,7 +19,7 @@
       <v-main >
         <app-main ></app-main>
 
-        <v-footer :absolute="true">
+        <v-footer :absolute="true"  >
           <v-col class="text-center" cols="12">
             {{ new Date().getFullYear() }} — <strong>Jiftcc</strong>
           </v-col>
@@ -52,3 +53,14 @@ export default {
   },
 };
 </script>
+<style scoped>
+#music{
+  position: fixed;
+  top: auto;
+  left: auto;
+  bottom: 0;
+  right: 0;
+  z-index: 10000;
+}
+</style>
+

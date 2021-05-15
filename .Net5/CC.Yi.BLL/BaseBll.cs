@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace CC.Yi.BLL
 {
@@ -18,7 +19,13 @@ namespace CC.Yi.BLL
             CurrentDal = cd;
             Db = _Db;
         }
-   
+
+        public async Task<T> GetEntityById(int id)
+        {
+            return await CurrentDal.GetEntityById(id); 
+        }
+
+
         public IQueryable<T> GetAllEntities() 
         {
             return CurrentDal.GetAllEntities();

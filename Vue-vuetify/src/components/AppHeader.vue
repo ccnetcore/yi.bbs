@@ -100,7 +100,7 @@ export default {
     items: [
       { text: "个人资料", icon: "mdi-folder", router: "/userInfo" },
       { text: "我的主题", icon: "mdi-star", router: "/myDiscuss" },
-      { text: "电子邮件", icon: "mdi-account-multiple", router: "" },
+      { text: "我的收藏", icon: "mdi-account-multiple", router: "/collection" },
       { text: "我的评论", icon: "mdi-history", router: "" },
       { text: "其他", icon: "mdi-check-circle", router: "" },
     ],

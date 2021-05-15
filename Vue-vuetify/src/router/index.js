@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Layout from '@/components/Layout'
+import LayoutLogin from '@/components/LayoutLogin'
 
 import Index from '@/views/user/Index'
 import discuss from '@/views/user/discuss'
@@ -9,6 +10,7 @@ import addDiscuss from '@/views/user/addDiscuss'
 import my from '@/views/user/my'
 import userInfo from '@/views/user/userInfo'
 import myDiscuss from '@/views/user/myDiscuss'
+import collection from '@/views/user/collection'
 
 import AdmUser from '@/views/admin/AdmUser'
 import AdmRole from '@/views/admin/AdmRole'
@@ -26,14 +28,21 @@ import register from '@/views/register'
 Vue.use(VueRouter)
 
 const routes = [{
-        path: '/login',
-        name: 'login',
-        component: login
-    },
-    {
-        path: '/register',
-        name: 'register',
-        component: register
+        path: '/layoutLogin',
+        name: 'layoutLogin',
+        component: LayoutLogin,
+        redirect: "/login",
+        children: [{
+                path: "/login",
+                name: "login",
+                component: login
+            },
+            {
+                path: '/register',
+                name: 'register',
+                component: register
+            }
+        ]
     },
     {
         path: '/',
@@ -104,6 +113,11 @@ const routes = [{
                 path: '/myDiscuss',
                 name: 'myDiscuss',
                 component: myDiscuss
+            },
+            {
+                path: '/collection',
+                name: 'collection',
+                component: collection
             }
         ]
     }

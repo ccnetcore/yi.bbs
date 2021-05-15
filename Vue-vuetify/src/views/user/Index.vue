@@ -1,6 +1,6 @@
-<template>
-  <div>
-    <v-row>
+<template >
+  <div >
+    <v-row >
       <v-col cols="12" sm="6" md="8" >
         <v-carousel
           cycle

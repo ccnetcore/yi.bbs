@@ -2,20 +2,22 @@
   <div>
     <v-card class="mx-auto my-2" max-width="100%">
       <v-card-text>
-        
-        
         <p class="display-1 text--primary">{{ discussData.title }}</p>
-<v-divider class="my-2"></v-divider>
-                      <v-avatar size="60px">
-                        <img
-                        v-if="discussData.user!=undefined"
-                          alt="Avatar"
-                           :src="baseurl+'/File/ShowNoticeImg?filePath='+discussData.user.icon"
-                        />
-                      </v-avatar>
-        <p v-if="discussData.user!=undefined">作者：{{ discussData.user.username }}</p>
-        
-         <p>时间：{{ discussData.time }}</p>
+        <v-divider class="my-2"></v-divider>
+        <v-avatar size="60px">
+          <img
+            v-if="discussData.user != undefined"
+            alt="Avatar"
+            :src="
+              baseurl + '/File/ShowNoticeImg?filePath=' + discussData.user.icon
+            "
+          />
+        </v-avatar>
+        <p v-if="discussData.user != undefined">
+          作者：{{ discussData.user.username }}
+        </p>
+
+        <p>时间：{{ discussData.time }}</p>
         <v-divider class="my-4"></v-divider>
         <div class="text--primary" v-html="discussData.content"></div>
       </v-card-text>
@@ -31,7 +33,7 @@
           <v-icon dark> mdi-heart </v-icon>
         </v-btn>
         <v-btn class="mx-2" fab dark small color="primary">
-          <v-icon dark> mdi-heart </v-icon>
+          <v-icon dark @click="Collection(discussData.id)"> mdi-heart </v-icon>
         </v-btn>
       </v-card-actions>
 
@@ -62,56 +64,55 @@
           </v-icon></v-text-field
         >
 
-
-  
-
-
-
-      
         <v-list-item-group v-model="selectedItem" color="primary">
           <v-list-item v-for="(item, i) in commentList" :key="i">
             <v-list-item-icon>
-               <v-avatar size="36px">
-                        <img
-                          alt="Avatar"
-                           :src="baseurl+'/File/ShowNoticeImg?filePath='+item.user.icon"
-                        />
-                      </v-avatar>
+              <v-avatar size="36px">
+                <img
+                  alt="Avatar"
+                  :src="
+                    baseurl + '/File/ShowNoticeImg?filePath=' + item.user.icon
+                  "
+                />
+              </v-avatar>
             </v-list-item-icon>
             <v-list-item-content>
               <p class="light-blue--text">
                 {{ i + 1 }}楼:<br />
-                作者：{{item.user.username}}<v-divider class="mx-2" vertical></v-divider
-                >发表时间： {{ item.time }}
+                作者：{{ item.user.username
+                }}<v-divider class="mx-2" vertical></v-divider>发表时间：
+                {{ item.time }}
               </p>
-             
+
               <v-list-item-title v-text="item.content"></v-list-item-title>
-               <v-divider></v-divider>
+              <v-divider></v-divider>
             </v-list-item-content>
-       
           </v-list-item>
-          
         </v-list-item-group>
       </v-list>
-  <div class="text-center mt-4 mb-12">
-      <v-pagination v-model="pageIndex" :length="lenData" :total-visible="7"
-        prev-icon="mdi-menu-left"
-        next-icon="mdi-menu-right" circle></v-pagination>
-    </div>
+      <div class="text-center mt-4 mb-12">
+        <v-pagination
+          v-model="pageIndex"
+          :length="lenData"
+          :total-visible="7"
+          prev-icon="mdi-menu-left"
+          next-icon="mdi-menu-right"
+          circle
+        ></v-pagination>
+      </div>
     </v-card>
   </div>
 </template>
 <script>
 import discussApi from "@/api/discussApi";
 import commentApi from "@/api/commentApi";
+import collectionApi from "@/api/collectionApi";
 export default {
   data: () => ({
     pageIndex: 1,
-      pageSize:10,
-      total:100,
-    discussData: {
-
-    },
+    pageSize: 10,
+    total: 100,
+    discussData: {},
     commentList: [],
     reveal: false,
     selectedItem: "",
@@ -122,34 +123,50 @@ export default {
   created() {
     this.initializa();
   },
-    watch: {
+  watch: {
     pageIndex: {
       handler() {
         this.initializa();
       },
     },
   },
-   computed: {
+  computed: {
     lenData() {
       return Math.floor(this.total / this.pageSize) + 1;
-    }
-   },
-       mounted() {
+    },
+  },
+  mounted() {
     this.baseurl = process.env.VUE_APP_BASE_API;
   },
   methods: {
+    Collection(Id) {
+      collectionApi.addCollection(Id).then((resp) => {
+        if (resp.status) {
+          this.$dialog.message.success(resp.msg, {
+            position: "top-right",
+          });
+        } else {
+          this.$dialog.message.error(resp.msg, {
+            position: "top-right",
+          });
+        }
+      });
+    },
     initializa() {
       discussApi
         .getDiscussByDiscussId(this.$store.state.home.discussId)
         .then((resp) => {
-            this.discussData=resp.data;
+          this.discussData = resp.data;
         });
       commentApi
-        .getCommentsByDiscussId(this.$store.state.home.discussId,this.pageIndex)
+        .getCommentsByDiscussId(
+          this.$store.state.home.discussId,
+          this.pageIndex
+        )
         .then((resp) => {
-                   this.commentList = resp.data.pageData;
-          this.pageSize=resp.data.pageSize;
-          this.total=resp.data.total;
+          this.commentList = resp.data.pageData;
+          this.pageSize = resp.data.pageSize;
+          this.total = resp.data.total;
         });
     },
     sentComment() {
@@ -157,9 +174,9 @@ export default {
         .addComment(this.form, this.$store.state.home.discussId)
         .then((resp) => {
           //设置等级
-          this.$store.dispatch("setLevel",resp.data.level);
+          this.$store.dispatch("setLevel", resp.data.level);
 
-          this.form.content="";
+          this.form.content = "";
           this.initializa();
         });
     },

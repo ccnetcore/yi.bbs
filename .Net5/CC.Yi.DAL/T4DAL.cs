@@ -70,4 +70,11 @@ namespace CC.Yi.DAL
             Db = _Db;
         }
     }
+    public partial class collectionDal : BaseDal<collection>, IcollectionDal
+    {
+        public collectionDal(DataContext _Db):base(_Db)
+        {
+            Db = _Db;
+        }
+    }
 }

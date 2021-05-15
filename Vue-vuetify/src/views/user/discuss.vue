@@ -1,13 +1,12 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="2" class="pb-0">
+      <v-col class="pb-0">
         <v-card height="100%" class="mx-auto">
-          <v-navigation-drawer permanent>
+          <v-navigation-drawer right  app v-model="drawer">
             <v-list-item>
               <v-list-item-content>
                 <v-btn
-                  class="d-none d-md-flex"
                   color="cyan"
                   elevation="2"
                   @click="intoAdd"
@@ -41,12 +40,12 @@
         </v-card>
       </v-col>
 
-      <v-col cols="10" class="elevation-2 mt-3">
+      <v-col cols="12" class="elevation-2 mt-3">
         <v-row>
-          <v-col cols="2" md="6">
-            <div class="text-h5 title pt-6">主题</div>
+          <v-col cols="4" md="6">
+            <div class="text-h5 title pt-6"><v-icon class="mx-2"  @click="drawer = !drawer">mdi-menu</v-icon>    主题</div>
           </v-col>
-          <v-col cols="10" md="6">
+          <v-col cols="8" md="6">
             <v-text-field label="搜索">
               <v-icon slot="append" color="red">
                 mdi-plus
@@ -113,7 +112,7 @@
                     </v-btn>
 
                     <v-btn class="mx-2" fab dark small color="purple">
-                      <v-icon dark> mdi-android </v-icon>
+                      <v-icon dark @click="Collection(item.id)"> mdi-android </v-icon>
                     </v-btn>
                   </div>
                 </v-expansion-panel-content>
@@ -138,13 +137,15 @@
 </template>
 <script>
 import discussApi from "@/api/discussApi";
+import collectionApi from "@/api/collectionApi";
 export default {
   data() {
     return {
+      drawer:"true",
       items: [
         { title: "添加主题", icon: "mdi-toy-brick-plus" },
-        { title: "其他1", icon: "mdi-image" },
-        { title: "其他2", icon: "mdi-help-box" },
+        { title: "最新主题", icon: "mdi-image" },
+        { title: "最热主题", icon: "mdi-help-box" },
       ],
       baseurl: "",
       pageIndex: 1,
@@ -172,6 +173,19 @@ export default {
     },
   },
   methods: {
+        Collection(Id) {
+      collectionApi.addCollection(Id).then((resp) => {
+        if (resp.status) {
+          this.$dialog.message.success(resp.msg, {
+            position: "top-right",
+          });
+        } else {
+          this.$dialog.message.error(resp.msg, {
+            position: "top-right",
+          });
+        }
+      });
+    },
     initializa() {
       //初始化创建
       discussApi

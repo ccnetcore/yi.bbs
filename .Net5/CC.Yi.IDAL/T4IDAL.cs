@@ -32,4 +32,7 @@ namespace CC.Yi.IDAL
     public partial interface IlabelDal:IBaseDal<label>
     {
     }
+    public partial interface IcollectionDal:IBaseDal<collection>
+    {
+    }
 }

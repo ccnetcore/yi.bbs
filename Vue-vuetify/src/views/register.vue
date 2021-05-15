@@ -1,57 +1,94 @@
 <template>
-  <v-app >
-    <v-container >
-      <v-row style="margin-top: 200px"  >
+  <v-card
+    class="px-6 py-4 mx-auto elevation-4 rounded-md"
+    style="margin-top: 120px; height: 600px; width: 500px"
+  >
+    <div>
+      <h1 class="title my-2">Jift-CC</h1>
+      <v-subheader>注册加入我们</v-subheader>
+    </div>
 
-        <v-col cols="12" sm="6" md="4" offset-sm="3" offset-md="4">
-<h1 class="text-center">加入Jift-CC</h1>
-          <v-form ref="form" v-model="valid" lazy-validation>
-            <v-text-field
-              v-model="user_name"
-              :counter="20"
-              :rules="user_nameRules"
-              label="用户名"
-              required
-            ></v-text-field>
+    <v-form ref="form" v-model="valid" lazy-validation>
+      <v-text-field
+        v-model="user_name"
+        :rules="user_nameRules"
+        label="用户名"
+        outlined
+        clearable
+        required
+        :counter="20"
+      ></v-text-field>
 
-            <v-text-field
-              v-model="password"
-              :rules="passwordRules"
-              label="密码"
-              required
-              :type="'password'"
-            ></v-text-field>
+      <v-text-field
+        v-model="user_name"
+        :rules="user_nameRules"
+        label="邮箱"
+        outlined
+        clearable
+        required
+        :counter="20"
+      ></v-text-field>
 
-<v-row>
-              <v-col cols="6">
-                <v-checkbox
-                  v-model="checkbox"
-                  :rules="[(v) => !!v || '同意后才可进入']"
-                  label="你同意协议吗？"
-                  required
-                ></v-checkbox
-              ></v-col>
-              <v-col cols="6" class="text-right pt-8"><router-link to='login'>返回</router-link></v-col>
-            </v-row>
-            <v-btn
-              :disabled="!valid"
-           dark
-              class="mr-4 deep-purple"
-              @click="myRegister"
-              style="width: 100%"
-            >
-              注册
-            </v-btn>
-          </v-form>
-        </v-col>
+      <v-text-field
+        v-model="user_name"
+        :rules="user_nameRules"
+        label="验证码"
+        outlined
+        clearable
+        required
+        :counter="20"
+      ></v-text-field>
+
+      <v-text-field
+        v-model="password"
+        :rules="passwordRules"
+        label="密码"
+        outlined
+        clearable
+        required
+        type="password"
+      ></v-text-field>
+      <v-row>
+        <v-col cols="6">
+          <v-checkbox
+            v-model="checkbox"
+            :rules="[(v) => !!v || '同意后才可进入']"
+            label="你同意协议吗？"
+            required
+          ></v-checkbox
+        ></v-col>
+        <v-col cols="6" class="text-right pt-8"
+          ><router-link to="login">返回</router-link></v-col
+        >
       </v-row>
-    </v-container>
-  </v-app>
+    </v-form>
+
+    <v-btn
+      dark
+      class="my-2 light-blue"
+      @click="login"
+      large
+      style="width: 100%"
+    >
+      注册
+    </v-btn>
+    <!-- <p>或使用登录</p>
+    <v-btn dark class="my-2 cyan" @click="login" large style="width: 100%">
+      <v-icon class="mx-2"> mdi-message-text </v-icon>
+      QQ
+    </v-btn>
+
+    <v-btn dark class="cyan" @click="login" large style="width: 100%">
+      <v-icon class="mx-2"> mdi-message-text </v-icon>
+      微信
+    </v-btn> -->
+  </v-card>
 </template>
 <script>
-import accountApi from "@/api/accountApi"
 export default {
   data: () => ({
+    allDiv: document.documentElement.clientHeight + "px",
+    imgDiv: document.documentElement.clientHeight - 490 + "px",
     valid: true,
     user_name: "",
     user_nameRules: [
@@ -71,16 +108,24 @@ export default {
     select: null,
     checkbox: true,
   }),
-
+  mounted() {
+    // 注：window.onresize只能在项目内触发1次
+    window.onresize = function windowResize() {
+      // 通过捕获系统的onresize事件触发我们需要执行的事件
+      this.allDiv = document.documentElement.clientHeight + "px";
+    };
+  },
   methods: {
-    myRegister() {
+    login() {
       this.$refs.form.validate(
-        accountApi.register(this.user_name, this.password).then((resp) => {
-          if (resp.flag) {
-              alert(resp.message)
-            this.$router.push("/login");
-          }
-        })
+        this.$store
+          .dispatch("Login", {
+            username: this.user_name,
+            password: this.password,
+          })
+          .then((resp) => {
+            this.$router.push("/");
+          })
       );
     },
     reset() {

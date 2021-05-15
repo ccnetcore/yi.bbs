@@ -20,111 +20,11 @@
             </v-card>
           </v-dialog>
 
-  
-      <!-- 添加提示框 -->
-      <v-dialog v-model="dialog" max-width="500px">
-        <v-card>
-          <v-card-title>
-            <span class="headline">添加标签</span>
-          </v-card-title>
-
-          <v-card-text>
-            <v-container>
-              <!-- 【1】这里设置对应的编辑框名 -->
-              <v-row>
-                <v-col cols="12" sm="6" md="4">
-                  <v-text-field
-                    v-model="form.name"
-                    label="标签名"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="6" md="4">
-                  <v-text-field
-                    v-model="form.color"
-                    label="文字颜色"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="6" md="4">
-                  <v-text-field
-                    v-model="form.color_bg"
-                    label="背景颜色"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-            </v-container>
-          </v-card-text>
-
-
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="close"> 取消 </v-btn>
-            <v-btn color="blue darken-1" text @click="save"> 保存 </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-
-      <v-col  class="pb-0">
-        <v-card height="100%" class="mx-auto">
-          <v-navigation-drawer right  app v-model="drawer"
- >
-            <v-list-item>
-              <v-list-item-content>
-                <v-btn
-             
-                  color="cyan"
-                  elevation="2"
-                  @click="Add"
-                  large
-                  dark
-                >
-                  添加标签
-                </v-btn>
-              </v-list-item-content>
-            </v-list-item>
-
-            <v-divider></v-divider>
-
-            <v-list dense nav>
-              <v-list-item link @click="initializa()">
-                <v-list-item-content>
-                  <v-list-item-title class="text-center">
-                    <v-icon> mdi-star </v-icon>
-                  </v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-
-              <v-list-item
-                v-for="myitem in items"
-                :key="myitem.id"
-                link
-        
-              >
-        <v-list-item-content>
-                  <v-list-item-title class="text-center">
-                    <v-chip
-
-                    @click="selctDiscuss(myitem.id)"
-               
-                      :style="{
-                        backgroundColor: myitem.color_bg,
-                        color: myitem.color,
-                      }"
-                      >{{ myitem.name }}
-                      <v-icon @click="deleteItem(myitem.id)">mdi-close-circle</v-icon>
-                      </v-chip
-                    >
-                  </v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list>
-          </v-navigation-drawer>
-        </v-card>
-      </v-col>
 
       <v-col cols="12"  class="elevation-2 mt-3">
         <v-row>
           <v-col cols="4" md="6">
-            <div class="text-h5 title pt-6"><v-icon class="mx-2"  @click="drawer = !drawer">mdi-menu</v-icon>我的</div>
+            <div class="text-h5 title pt-6">收藏</div>
           </v-col>
           <v-col cols="8" md="6">
             <v-text-field label="搜索">
@@ -193,7 +93,7 @@
                     </v-btn>
 
                     <v-btn class="mx-2" fab dark small color="purple">
-                      <v-icon dark> mdi-android </v-icon>
+                      <v-icon dark @click="deleteItem(item.id)"> mdi-access-point-remove </v-icon>
                     </v-btn>
                   </div>
                 </v-expansion-panel-content>
@@ -217,26 +117,13 @@
   </v-container>
 </template>
 <script>
-import discussApi from "@/api/discussApi";
-import labelApi from "@/api/labelApi";
+import collectionApi from "@/api/collectionApi";
 export default {
   data() {
     return {
-      drawer:"true",
       dialogDelete: false,
       delId: 0,
       dialog: false,
-      form: {
-        color: "",
-        color_bg: "",
-        name: "",
-      },
-      defaultForm: {
-        color: "",
-        color_bg: "",
-        name: "",
-      },
-      items: [],
       plateId: "",
       baseurl: "",
       pageIndex: 1,
@@ -265,19 +152,8 @@ export default {
   },
   methods: {
     initializa() {
-      labelApi.getLabelByUserId().then((resp) => {
-        this.items = resp.data;
-      });
-
       //初始化创建
-      discussApi.getDiscussByUserId(this.pageIndex).then((resp) => {
-        this.discussList = resp.data.pageData;
-        this.total = resp.data.total;
-        this.pageSize = resp.data.pageSize;
-      });
-    },
-    selctDiscuss(id) {
-      labelApi.getDiscussByLabelId(this.pageIndex, id).then((resp) => {
+      collectionApi.getCollections(this.pageIndex).then((resp) => {
         this.discussList = resp.data.pageData;
         this.total = resp.data.total;
         this.pageSize = resp.data.pageSize;
@@ -290,21 +166,15 @@ export default {
     },
 
     deleteItemConfirm() {
-      labelApi.delLabelList([this.delId]).then(() => this.initializa());
+      collectionApi.delCollection(this.delId).then(() => this.initializa());
       this.closeDelete();
     },
     closeDelete() {
       this.dialogDelete = false;
     },
 
-    Add() {
-      this.dialog = true;
-    },
     close() {
       this.dialog = false;
-      this.$nextTick(() => {
-        this.form = Object.assign({}, this.defaultForm);
-      });
     },
     save() {
       labelApi.addLabelByUserId(this.form).then(() => this.initializa());
