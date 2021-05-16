@@ -54,9 +54,6 @@ namespace CC.Yi.API.Controllers
         }
         #endregion
 
-
-
-
         #region 上传视频 OnPostUploadVideo 只支持单视频上传
         [HttpPost]
         [Obsolete]

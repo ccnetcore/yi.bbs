@@ -2,6 +2,7 @@
 using CC.Yi.IBLL;
 using CC.Yi.Model;
 using CC.Yi.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -26,6 +27,7 @@ namespace CC.Yi.API.Controllers
             _userBll = userBll;
         }
 
+        [Authorize(Policy = "用户管理")]
         [HttpGet]//得到所有有效用户
         public async Task<Result> getAllUser()
         {
@@ -50,6 +52,7 @@ namespace CC.Yi.API.Controllers
             return Result.Success().SetData(mydata); 
         }
 
+        [Authorize(Policy = "用户管理")]
         [HttpPost]//添加用户
         public Result addUser(user _user)
         {
@@ -66,7 +69,7 @@ namespace CC.Yi.API.Controllers
             return Result.Success().SetData(data);
         }
 
-
+        [Authorize(Policy = "用户管理")]
         [HttpPost]//给用户设置角色
         public async Task<Result> setRole(setByIds mySetRole)
         {
@@ -74,7 +77,7 @@ namespace CC.Yi.API.Controllers
             return Result.Success();
         }
 
-
+        [Authorize(Policy = "用户管理")]
         [HttpPost]//给用户设置特殊权限
         public async Task<Result> setSpecialAction(setByIds mySetSpecialAction)
         {
@@ -82,6 +85,7 @@ namespace CC.Yi.API.Controllers
             return Result.Success();
         }
 
+        [Authorize(Policy = "用户管理")]
         [HttpPost]//多用户逻辑删除
         public async Task<Result> DelAllUser(List<int> Ids)
         {
@@ -89,6 +93,7 @@ namespace CC.Yi.API.Controllers
             return Result.Success(); 
         }
 
+        [Authorize(Policy = "用户管理")]
         [HttpGet]//根据userid删除用户(逻辑删除)
         public Result DelUser(int userId)
         {
@@ -97,6 +102,8 @@ namespace CC.Yi.API.Controllers
                 _userBll.Update(user);
             return Result.Success(); 
         }
+
+        [Authorize(Policy = "用户管理")]
         [HttpPost]//修改用户
         public async Task<Result> UpdateUser(user _user)
         {
@@ -107,6 +114,7 @@ namespace CC.Yi.API.Controllers
             return Result.Success(); 
         }
 
+        [Authorize(Policy = "修改信息")]
         [HttpPost]
         public async Task<Result> TryUpdateUser(userTry myUserTry)
         {
@@ -126,6 +134,7 @@ namespace CC.Yi.API.Controllers
 
         }
 
+        [Authorize(Policy = "用户管理")]
         [HttpGet]//通过Id得到该用户有哪些角色
         public async Task<Result> getRoleByuserId(int userId)
         {

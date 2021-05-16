@@ -29,7 +29,7 @@ namespace CC.Yi.API.Controllers
             _logger = logger;
         }
 
-
+        [Authorize(Policy = "收藏管理")]
         //得到用户的收藏
         [HttpGet]
         public async Task<Result> GetCollections(int pageIndex)
@@ -65,6 +65,7 @@ namespace CC.Yi.API.Controllers
             return Result.Success().SetData(new { pageData= dataFilter, pageSize, total });
         }
 
+        [Authorize(Policy = "收藏管理")]
         //添加收藏,要包含主题id
         [HttpGet]
         public async Task<Result> AddCollection(int discussId)
@@ -82,6 +83,7 @@ namespace CC.Yi.API.Controllers
             return Result.Success("收藏成功，可在 我的收藏 中查看");
         }
 
+        [Authorize(Policy = "收藏管理")]
         //删除收藏
         [HttpGet]
         public async Task<Result> delCollection(int discussId)

@@ -2,6 +2,7 @@
 using CC.Yi.IBLL;
 using CC.Yi.Model;
 using CC.Yi.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -25,6 +26,7 @@ namespace CC.Yi.API.Controllers
             _logger = logger;
             _roleBll = roleBll;
         }
+        [Authorize(Policy = "角色管理")]
         [HttpGet]//得到所有角色(有效角色)
         public Result getRoles()
         {
@@ -49,6 +51,7 @@ namespace CC.Yi.API.Controllers
             return Result.Success().SetData(mydata);  
         }
 
+        [Authorize(Policy = "角色管理")]
         [HttpPost]//设置角色拥有哪些权限
         public async Task<Result> setAction(setByIds mySetAction)
         {
@@ -56,6 +59,7 @@ namespace CC.Yi.API.Controllers
             return Result.Success().SetData(data);
         }
 
+        [Authorize(Policy = "角色管理")]
         [HttpPost]//添加角色
         public Result AddRole(role data)
         {
@@ -63,6 +67,7 @@ namespace CC.Yi.API.Controllers
             return Result.Success();
         }
 
+        [Authorize(Policy = "角色管理")]
         [HttpGet]//根据roleid删除角色(逻辑删除)
         public Result DelRole(int roleId)
         {
@@ -72,6 +77,7 @@ namespace CC.Yi.API.Controllers
             return Result.Success();
         }
 
+        [Authorize(Policy = "角色管理")]
         [HttpPost]//修改角色
         public async Task<Result> UpdateRole(role _role)
         {
@@ -80,6 +86,8 @@ namespace CC.Yi.API.Controllers
             _roleBll.Update(role);
             return Result.Success();
         }
+
+        [Authorize(Policy = "角色管理")]
         [HttpPost]//多角色逻辑删除
         public async Task<Result> DelAllRole(List<int> Ids)
         {

@@ -37,21 +37,16 @@ namespace CC.Yi.API.Extension
             {
                 var statusCode = context.Response.StatusCode;
                 var msg = "";
-                if (statusCode == 401)
+
+                switch (statusCode) 
                 {
-                    msg = "未授权";
-                }
-                else if (statusCode == 404)
-                {
-                    msg = "未找到服务";
-                }
-                else if (statusCode == 502)
-                {
-                    msg = "请求错误";
-                }
-                else if (statusCode != 200)
-                {
-                    msg = "未知错误";
+
+                    case 401: msg = "未授权";break;
+                    case 403: msg = "未授权"; break;
+                    case 404: msg = "未找到服务"; break;
+                    case 502: msg = "请求错误"; break;
+                    default: msg = "未知错误"; break;
+
                 }
                 if (!string.IsNullOrWhiteSpace(msg))
                 {

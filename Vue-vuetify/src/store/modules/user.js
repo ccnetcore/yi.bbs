@@ -44,18 +44,36 @@ const actions = { //动作
                 reject(error)
             })
         })
-
     },
-    GetUserInfo({ commit, state }) {
+    Register({ commit }, form) {
         return new Promise((resolv, reject) => {
-            // getUserInfo(state.token).then(response => {
-            //     commit('SET_USER', response.data)
-            // resolve(response)
-            // }).catch(error=>{
-            //     reject(error)
-            // })
+            accountApi.register(form.username.trim(), form.password.trim()).then(resp => {
+                resolv(resp)
+            }).catch(error => {
+                reject(error)
+            })
         })
     },
+    Logged({ commit }) {
+        return new Promise((resolv, reject) => {
+            accountApi.logged().then(resp => {
+                resolv(resp)
+            }).catch(error => {
+                reject(error)
+            })
+        })
+    },
+
+    // GetUserInfo({ commit, state }) {
+    //     return new Promise((resolv, reject) => {
+    //         // getUserInfo(state.token).then(response => {
+    //         //     commit('SET_USER', response.data)
+    //         // resolve(response)
+    //         // }).catch(error=>{
+    //         //     reject(error)
+    //         // })
+    //     })
+    // },
     Logout({ commit, state }) {
         return new Promise((resolv, reject) => {
             accountApi.logout().then(response => {

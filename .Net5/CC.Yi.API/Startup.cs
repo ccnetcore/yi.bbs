@@ -12,6 +12,7 @@ using CC.Yi.Model;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -45,9 +46,23 @@ namespace CC.Yi.API
             services.AddAuthorization(options =>
             {
                 //配置基于策略的验证
-                options.AddPolicy("myadmin", policy => policy.RequireRole("admin"));
+                options.AddPolicy("板块管理", policy => policy.RequireClaim("action", "板块管理"));
+                options.AddPolicy("主题管理", policy => policy.RequireClaim("action", "主题管理"));
+                options.AddPolicy("等级管理", policy => policy.RequireClaim("action", "等级管理"));
 
-                options.AddPolicy("lv", policy => policy.RequireClaim("lv", "1"));
+                options.AddPolicy("用户管理", policy => policy.RequireClaim("action", "用户管理"));
+                options.AddPolicy("角色管理", policy => policy.RequireClaim("action", "角色管理"));
+                options.AddPolicy("权限管理", policy => policy.RequireClaim("action", "权限管理"));
+
+
+
+
+                options.AddPolicy("标签管理", policy => policy.RequireClaim("action", "标签管理"));
+                options.AddPolicy("收藏管理", policy => policy.RequireClaim("action", "收藏管理"));
+                options.AddPolicy("发布主题", policy => policy.RequireClaim("action", "发布主题"));
+                options.AddPolicy("发布评论", policy => policy.RequireClaim("action", "发布评论"));
+                options.AddPolicy("修改信息", policy => policy.RequireClaim("action", "修改信息"));
+
             });
 
 
@@ -65,7 +80,13 @@ namespace CC.Yi.API
                            ValidIssuer = JwtConst.Domain,//Issuer，这两项和前面签发jwt的设置一致
                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtConst.SecurityKey))//拿到SecurityKey
                        };
+                   }).AddQQ(options =>
+                   {
+                       options.ClientId = Configuration["Authentication:QQ:ClientId"];
+                       options.ClientSecret = Configuration["Authentication:QQ:ClientSecret"];
                    });
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             Action<MvcOptions> filters = new Action<MvcOptions>(r =>
             {
                 //r.Filters.Add(typeof(DbContextFilter));

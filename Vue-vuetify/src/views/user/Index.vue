@@ -1,13 +1,12 @@
 <template >
-  <div >
-    <v-row >
-      <v-col cols="12" sm="6" md="8" >
+  <div>
+    <v-row>
+      <v-col cols="12" sm="6" md="8">
         <v-carousel
           cycle
           height="300"
           hide-delimiter-background
           show-arrows-on-hover
-         
         >
           <v-carousel-item v-for="(slide, i) in slides" :key="i">
             <v-sheet :color="colors[i]" height="100%">
@@ -50,10 +49,8 @@
       </v-col>
     </v-row>
 
-
-
     <v-row class="text-center">
-      <v-col v-for="(item,i) in plateList" :key="i" cols="12" sm="4" md="3">
+      <v-col v-for="(item, i) in plateList" :key="i" cols="12" sm="4" md="3">
         <v-hover v-slot="{ hover }">
           <v-card class="mx-auto" color="grey lighten-4" max-width="600">
             <v-img
@@ -66,7 +63,7 @@
                   class="d-flex transition-fast-in-fast-out cyan darken-2 v-card--reveal display-3 white--text"
                   style="height: 100%"
                 >
-                  {{item.name}}
+                  {{ item.name }}
                 </div>
               </v-expand-transition>
             </v-img>
@@ -84,7 +81,7 @@
                 <v-icon>mdi-chevron-right</v-icon>
               </v-btn>
               <div class="font-weight-light title mb-2 cyan--text">
-               {{item.name}}
+                {{ item.name }}
               </div>
               <div class="font-weight-light mb-2 grey--text">
                 Our Vintage kitchen utensils delight any chef.<br />
@@ -101,7 +98,6 @@
 </template>
 <script>
 import plateApi from "@/api/plateApi";
-
 export default {
   data() {
     return {
@@ -109,27 +105,24 @@ export default {
       labels: ["12am", "3am", "6am", "9am", "12pm", "3pm", "6pm"],
 
       value: [423, 446, 675, 510, 590, 610, 760],
-      colors: [
-        "cyan",
-        "light-blue",
-        "cyan",
-        "light-blue"
-      ],
+      colors: ["cyan", "primary", "cyan", "light-blue"],
       slides: ["First", "Second", "Third", "Fourth"],
     };
   },
-  created(){
+  created() {
     this.initializa();
   },
   methods: {
     initializa() {
+    
+
       plateApi.getPlates().then((resp) => {
         this.plateList = resp.data;
       });
     },
     intoDiscuss(plateId) {
-     this.$store.dispatch("set_plateId",plateId)
-      this.$router.push({ path: "/discuss"});
+      this.$store.dispatch("set_plateId", plateId);
+      this.$router.push({ path: "/discuss" });
     },
   },
 };

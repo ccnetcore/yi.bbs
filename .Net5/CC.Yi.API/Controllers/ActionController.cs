@@ -1,6 +1,7 @@
 ﻿using CC.Yi.Common;
 using CC.Yi.IBLL;
 using CC.Yi.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -23,6 +24,7 @@ namespace CC.Yi.API.Controllers
             _logger = logger;
             _actionBll = actionBll;
         }
+        [Authorize(Policy = "权限管理")]
         [HttpGet]//得到所有权限(有效权限)
         public async Task<Result> getActions()
         {
@@ -33,6 +35,7 @@ namespace CC.Yi.API.Controllers
             return Result.Success().SetData(mydata);
         }
 
+        [Authorize(Policy = "权限管理")]
         [HttpPost]//添加权限
         public Result AddAction(action data)
         {
@@ -40,6 +43,7 @@ namespace CC.Yi.API.Controllers
             return Result.Success();
         }
 
+        [Authorize(Policy = "权限管理")]
         [HttpGet]//根据actionid删除权限(逻辑删除)
         public Result DelAction(int actionId)
         {
@@ -48,6 +52,8 @@ namespace CC.Yi.API.Controllers
             _actionBll.Update(user);
             return Result.Success();
         }
+
+        [Authorize(Policy = "权限管理")]
         [HttpPost]//修改权限
         public async Task<Result> UpdateAction(action _action)
         {
@@ -58,6 +64,8 @@ namespace CC.Yi.API.Controllers
             var flag = _actionBll.Update(action);
             return Result.Success();
         }
+
+        [Authorize(Policy = "权限管理")]
         [HttpPost]//多权限逻辑删除
         public async Task<Result> DelAllAction(List<int> Ids)
         {

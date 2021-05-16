@@ -32,6 +32,7 @@ namespace CC.Yi.API.Controllers
             return Result.Success().SetData(data);
         }
 
+        [Authorize(Policy = "等级管理")]
         [HttpPost]
         public Result AddLevel(level myLevel)
         {
@@ -39,6 +40,7 @@ namespace CC.Yi.API.Controllers
             return Result.Success();
         }
 
+        [Authorize(Policy = "等级管理")]
         [HttpPost]
         public Result UpdateLevel(level myLevel)
         {
@@ -46,6 +48,7 @@ namespace CC.Yi.API.Controllers
             return Result.Success();
         }
 
+        [Authorize(Policy = "等级管理")]
         [HttpPost]
         public Result delLevelList(List<int> Ids)
         {

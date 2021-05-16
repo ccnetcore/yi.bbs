@@ -72,6 +72,7 @@ namespace CC.Yi.API.Controllers
             return Result.Success().SetData(new { pageData, pageSize, total });
         }
 
+        [Authorize(Policy = "发布评论")]
         //添加评论可以获取经验
         [HttpPost]
         public async Task<Result> AddComment(comment myComment, int discussId)

@@ -67,8 +67,6 @@
 <script>
 export default {
   data: () => ({
-    allDiv: document.documentElement.clientHeight + "px",
-    imgDiv: document.documentElement.clientHeight - 490 + "px",
     valid: true,
     user_name: "",
     user_nameRules: [
@@ -88,13 +86,6 @@ export default {
     select: null,
     checkbox: true,
   }),
-  mounted() {
-    // 注：window.onresize只能在项目内触发1次
-    window.onresize = function windowResize() {
-      // 通过捕获系统的onresize事件触发我们需要执行的事件
-      this.allDiv = document.documentElement.clientHeight + "px";
-    };
-  },
   methods: {
     login() {
       this.$refs.form.validate(

@@ -19,12 +19,14 @@ namespace CC.Yi.API.Controllers
 {
     [Route("[controller]/[action]")]
     [ApiController]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private IuserBll _userBll;
+        private IroleBll _roleBll;
         private ILogger<AccountController> _logger;
-        public AccountController(IuserBll iuserBll, ILogger<AccountController> logger)
+        public AccountController(IuserBll iuserBll, ILogger<AccountController> logger,IroleBll roleBll)
         {
+            _roleBll=roleBll;
             _userBll = iuserBll;
             _logger = logger;
         }
@@ -85,20 +87,7 @@ namespace CC.Yi.API.Controllers
 
             return Result.Success("成功退出！");
         }
-        //[HttpPost]//判断session是否过期
-        //public ActionResult Logged()
-        //{
-        //    var data = HttpContext.Session.GetString("loginId");
 
-        //    if (data == null)//表示登入已经过期
-        //    {
-        //        return Content(JsonHelper.JsonToString(null, flag: false, message: "登录已过期"));
-        //    }
-        //    else
-        //    {
-        //        return Content(JsonHelper.JsonToString(null));//session没有过期
-        //    }
-        //}
         [HttpPost]//注册
         public async Task<Result> Register(user myUser)
         {
@@ -108,24 +97,34 @@ namespace CC.Yi.API.Controllers
                 user_extra user_Extra = new user_extra();
                 myUser.user_extra = user_Extra;
                 var data = _userBll.Add(myUser);
-                //if (await _userBll.setRole(data.Id, new List<int> { 1 }))
-                //{
+               var roleData= await _roleBll.GetEntities(u => u.role_name == "游客").FirstOrDefaultAsync();
+                
+                await _userBll.setRole(data.id, new List<int> { roleData.id});
+    
                 _logger.LogInformation("注册成功!");
                 return Result.Success("注册成功！");
-                //}
-                //else
-                //{
-                //    _logger.LogInformation(_info_user.user_name + "游客角色添加失败!");
-                //    return Content(JsonHelper.JsonToString(null, flag: false, message: "游客角色添加失败!"));
-                //}
             }
             else
             {
                 _logger.LogInformation("注册失败!");
                 return  Result.Error("注册失败！当前用户已被注册！");
             }
-
-
         }
+
+        [HttpPost]//判断是否有有登录
+        public Result Logged()
+        {
+            if (_user==null)
+            {
+                return Result.Error("登录超时！请重新登录");
+            }
+            else
+            {
+                return Result.Success();
+            }
+        
+        }
+
+        
     }
 }

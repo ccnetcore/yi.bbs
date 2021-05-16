@@ -2,6 +2,7 @@
 using CC.Yi.IBLL;
 using CC.Yi.Model;
 using CC.Yi.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -34,6 +35,8 @@ namespace CC.Yi.API.Controllers
             _labelBll = labelBll;
             _user_extraBll = user_extraBll;
         }
+
+        [Authorize(Policy = "主题管理")]
         [HttpGet]//得到所有讨论主题(有效)
         public async Task<Result> getDiscuss()
         {
@@ -80,7 +83,7 @@ namespace CC.Yi.API.Controllers
                         select new
                         {
                             r.id,
-                            r.introduction,
+                            r.content,
                             r.time,
                             r.title,
                             r.type,
@@ -148,10 +151,10 @@ namespace CC.Yi.API.Controllers
             }
             var data = await _discussBll.GetEntities(u => u.id == discussId).Include(u => u.user).FirstOrDefaultAsync();
 
-            return Result.Success().SetData(new { data.id,data.introduction,data.time,data.title,user=new {data.user?.username,data.user?.icon } });
+            return Result.Success().SetData(new { data.id,data.introduction,data.content,data.time,data.title,user=new {data.user?.username,data.user?.icon } });
         }
 
-
+        [Authorize(Policy = "发布管理")]
         [HttpPost]//添加主题
         public async Task<Result> AddDiscuss(addDiscussModel myModel)
         {
@@ -177,6 +180,7 @@ namespace CC.Yi.API.Controllers
             return Result.Success().SetData(new { data.id, level });
         }
 
+        [Authorize(Policy = "主题管理")]
         [HttpPost]
         public async Task<Result> UpdateDiscuss(discuss myDiscuss)
         {
@@ -187,6 +191,7 @@ namespace CC.Yi.API.Controllers
             return Result.Success();
         }
 
+        [Authorize(Policy = "主题管理")]
         [HttpPost]//多逻辑删除
         public async Task<Result> DelDiscussList(List<int> Ids)
         {

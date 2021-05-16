@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CC.Yi.Model;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CC.Yi.API.Controllers
 {
@@ -29,6 +30,7 @@ namespace CC.Yi.API.Controllers
             _logger = logger;
         }
 
+        [Authorize(Policy = "标签管理")]
         [HttpGet]
         //得到用户具有哪些标签
         public async Task<Result> getLabelByUserId()
@@ -37,8 +39,8 @@ namespace CC.Yi.API.Controllers
             return Result.Success().SetData(data);
         }
 
-        
 
+        [Authorize(Policy = "标签管理")]
         [HttpGet]
         public async Task<Result> getDiscussByLabelId(int pageIndex, int labelId)
         {
@@ -65,7 +67,7 @@ namespace CC.Yi.API.Controllers
             return Result.Success().SetData(new { pageData, pageSize, total });
         }
 
-
+        [Authorize(Policy = "标签管理")]
         [HttpPost]
         //需要用户id和主题id，将这个标签归属与这个用户
         public async Task<Result> AddLabelByUserId(label myLabel)
@@ -75,6 +77,7 @@ namespace CC.Yi.API.Controllers
             return Result.Success();
         }
 
+        [Authorize(Policy = "标签管理")]
         [HttpPost]
         //通过LabelId删除标签
         public async Task<Result> delLabelList(List<int> Ids)

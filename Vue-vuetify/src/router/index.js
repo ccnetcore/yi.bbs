@@ -11,6 +11,7 @@ import my from '@/views/user/my'
 import userInfo from '@/views/user/userInfo'
 import myDiscuss from '@/views/user/myDiscuss'
 import collection from '@/views/user/collection'
+import theme from '@/views/user/theme'
 
 import AdmUser from '@/views/admin/AdmUser'
 import AdmRole from '@/views/admin/AdmRole'
@@ -118,6 +119,11 @@ const routes = [{
                 path: '/collection',
                 name: 'collection',
                 component: collection
+            },
+            {
+                path: '/theme',
+                name: 'theme',
+                component: theme
             }
         ]
     }

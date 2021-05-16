@@ -87,8 +87,6 @@
 <script>
 export default {
   data: () => ({
-    allDiv: document.documentElement.clientHeight + "px",
-    imgDiv: document.documentElement.clientHeight - 490 + "px",
     valid: true,
     user_name: "",
     user_nameRules: [
@@ -108,23 +106,27 @@ export default {
     select: null,
     checkbox: true,
   }),
-  mounted() {
-    // 注：window.onresize只能在项目内触发1次
-    window.onresize = function windowResize() {
-      // 通过捕获系统的onresize事件触发我们需要执行的事件
-      this.allDiv = document.documentElement.clientHeight + "px";
-    };
-  },
   methods: {
     login() {
       this.$refs.form.validate(
         this.$store
-          .dispatch("Login", {
+          .dispatch("Register", {
             username: this.user_name,
             password: this.password,
           })
           .then((resp) => {
-            this.$router.push("/");
+            if (resp.status) {
+              this.$dialog.notify.success(resp.msg, {
+                position: "top-right",
+                timeout: 5000,
+              });
+              this.$router.push("/login");
+            } else {
+              this.$dialog.notify.error(resp.msg, {
+                position: "top-right",
+                timeout: 5000,
+              });
+            }
           })
       );
     },

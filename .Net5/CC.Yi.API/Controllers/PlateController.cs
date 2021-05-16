@@ -32,6 +32,7 @@ namespace CC.Yi.API.Controllers
             return Result.Success().SetData(data);
         }
 
+        [Authorize(Policy = "板块管理")]
         [HttpPost]
         public Result AddPlate(plate myPlate)
         {
@@ -39,6 +40,7 @@ namespace CC.Yi.API.Controllers
             return Result.Success();
         }
 
+        [Authorize(Policy = "板块管理")]
         [HttpPost]
         public Result UpdatePlate(plate myPlate)
         {
@@ -46,6 +48,7 @@ namespace CC.Yi.API.Controllers
             return Result.Success();
         }
 
+        [Authorize(Policy = "板块管理")]
         [HttpPost]
         public Result delPlateList(List<int> Ids)
         {

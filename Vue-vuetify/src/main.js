@@ -5,7 +5,7 @@ import vuetify from './plugins/vuetify';
 import VuetifyDialog from 'vuetify-dialog'
 import 'vuetify-dialog/dist/vuetify-dialog.css'
 import store from './store/index'
-// import "./permission"
+import "./permission"
 
 Vue.config.productionTip = false
 Vue.use(VuetifyDialog, {
