@@ -3,21 +3,19 @@
 ## 基于.Net5与Vue下的BBS论坛毕业设计系统
 
 本论坛极度自由化！论坛各处需求，无需通过修改代码或者数据库，可直接进入系统可视化管理。
-成为一个为你私人定制的论坛！
+快把它成为为你私人定制的论坛吧！
 
 #### 适宜人群：
 
-１．私人搭建论坛
-
-２．私人搭建博客
-
-３．信息交流平台
-
-４．参考学习
-
-5．完成课程设计或者毕业设计（请注明已使用Yi框架）
+*搭建论坛
+*搭建博客
+*信息交流平台
+*参考学习
+*毕业设计（请注明已使用Yi框架）
 
 #### 更新目录：
+
+v1.0.4------2021/5/18(完善样式修改功能，修改主题，完善移动端响应式配置，完善表单规则配置)
 
 v1.0.3------2021/5/17(完善权限系统，初步搭建主题样式修改框架)
 
@@ -26,7 +24,6 @@ v1.0.2------2021/5/16（添加收藏功能，优化响应式布局界面）
 v1.0.1------2021/5/13（完善标签功能）
 
 v1.0.0------2021/5/12 (上传基础框架)
-
 
 我们将持续更新下去！
 
@@ -37,71 +34,17 @@ v1.0.0------2021/5/12 (上传基础框架)
 
 #### 功能模块：
 
-用户管理、权限管理、角色管理、主题管理、板块管理、版主管理、标签管理、等级管理、经验管理、信息管理、收藏管理
+用户管理、权限管理、角色管理、主题管理、板块管理、版主管理、标签管理、等级管理、经验管理、信息管理、收藏管理、样式管理
 
 持续更新
 
 #### 演示效果：
-登录：
 
-![登录](https://user-images.githubusercontent.com/68722157/118130434-edbd4980-b42f-11eb-884f-f5b6f3c9cdc3.png)
-
-![登录2](https://user-images.githubusercontent.com/68722157/118130461-f44bc100-b42f-11eb-809e-9e5bb1a28f45.png)
-
-主页：
-
-![主界面](https://user-images.githubusercontent.com/68722157/118130541-0e859f00-b430-11eb-9a7e-e772de028960.png)
-
-![主界面2](https://user-images.githubusercontent.com/68722157/118130546-0fb6cc00-b430-11eb-9037-0806c5ebdaf5.png)
-
-主题：
-
-![主题](https://user-images.githubusercontent.com/68722157/118130691-3f65d400-b430-11eb-8dd1-def151292b81.png)
-
-![主题2](https://user-images.githubusercontent.com/68722157/118130701-412f9780-b430-11eb-94e6-69aac07d0696.png)
-
-我的主题：
-
-![我的主题](https://user-images.githubusercontent.com/68722157/118131928-b354ac00-b431-11eb-8eff-b8605e02229a.png)
-
-![我的主题2](https://user-images.githubusercontent.com/68722157/118131937-b485d900-b431-11eb-9977-66d3e758ea2a.png)
-
-评论：
-
-![评论](https://user-images.githubusercontent.com/68722157/118130568-17767080-b430-11eb-961c-4bc3e94a47a6.png)
-
-![评论2](https://user-images.githubusercontent.com/68722157/118130571-18a79d80-b430-11eb-844b-7e05f5042e0f.png)
-
-添加主题：
-
-![添加主题](https://user-images.githubusercontent.com/68722157/118130605-21986f00-b430-11eb-9366-0dfe6f708aed.png)
-
-![添加主题2](https://user-images.githubusercontent.com/68722157/118130624-26f5b980-b430-11eb-8e21-0c207406a3b5.png)
-
-我的信息：
-
-![我的信息](https://user-images.githubusercontent.com/68722157/118130655-3248e500-b430-11eb-80d1-564644fbeb77.png)
-
-![我的信息2](https://user-images.githubusercontent.com/68722157/118130659-337a1200-b430-11eb-95fc-1c6e45b1aec3.png)
-
-权限管理：
-
-![权限管理](https://user-images.githubusercontent.com/68722157/118130742-4ee51d00-b430-11eb-83b4-8be49285a961.png)
-
-![权限管理2](https://user-images.githubusercontent.com/68722157/118130748-51477700-b430-11eb-8297-e5bf92472902.png)
-
-导航：
-
-![导航](https://user-images.githubusercontent.com/68722157/118130725-4856a580-b430-11eb-86ca-6e5743ab53ae.png)
-
-
-#### 其他：
-等待更新
-
+已上传演示站点：https://jiftcc.com
 
 ==========================================================================
 
-#### 本系统应用Yi意框架
+#### 本系统应用Yi意框架（也是本人搭建的一套快速开发框架）
 基于.NET5的前后端分离三层架构的高并发高解耦简易型框架--Yi意框架（意义是为了开发更简易）
 
 #### 软件架构
