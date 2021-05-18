@@ -40,6 +40,7 @@ namespace CC.Yi.API.Init
                            new role{ role_name="l-10"},
                            new role{ role_name="l-11"},
                            new role{ role_name="l-12"},
+                           new role{ role_name="普通用户"}
                                            }
                 };
                 Db.Set<user>().Update(initUser);

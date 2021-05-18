@@ -1,7 +1,7 @@
 <template>
   <v-card
     class="px-6 py-4 mx-auto elevation-4 rounded-md"
-    style="margin-top: 120px; height: 600px; width: 500px"
+    style="margin-top: 100px; height: 600px; width: 500px"
   >
     <div>
       <h1 class="title my-2">Jift-CC</h1>
@@ -38,7 +38,7 @@
           ></v-checkbox
         ></v-col>
         <v-col cols="6" class="text-right pt-8"
-          ><router-link to="register">没有账号？前往注册</router-link></v-col
+          ><router-link to="register">前往注册</router-link></v-col
         >
       </v-row>
     </v-form>
@@ -54,7 +54,7 @@
     </v-btn>
     <p class="my-2">或使用登录</p>
     <v-btn dark class="my-2 cyan" @click="login" large style="width: 100%">
-      <v-icon class="mx-2"> mdi-message-text </v-icon>
+      <v-icon class="mx-2"> mdi-qqchat </v-icon>
       QQ
     </v-btn>
 
@@ -88,7 +88,7 @@ export default {
   }),
   methods: {
     login() {
-      this.$refs.form.validate(
+      if (this.$refs.form.validate()) {
         this.$store
           .dispatch("Login", {
             username: this.user_name,
@@ -96,8 +96,15 @@ export default {
           })
           .then((resp) => {
             this.$router.push("/");
-          })
-      );
+          });
+      }
+      else
+      {
+           this.$dialog.notify.error("请合理输入数据", {
+            position: "top-right",
+            timeout: 5000,
+          });
+      }
     },
     reset() {
       this.$refs.form.reset();

@@ -88,7 +88,7 @@
               <v-list-item link @click="initializa()">
                 <v-list-item-content>
                   <v-list-item-title class="text-center">
-                    <v-icon> mdi-star </v-icon>
+                   <v-chip>    <v-icon> mdi-star </v-icon> 全部</v-chip>
                   </v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
@@ -111,6 +111,7 @@
                       }"
                       >{{ myitem.name }}
                       <v-icon @click="deleteItem(myitem.id)">mdi-close-circle</v-icon>
+   
                       </v-chip
                     >
                   </v-list-item-title>
@@ -178,22 +179,22 @@
                       fab
                       small
                       dark
-                      color="indigo"
+                      color="blue"
                       @click="intoComment(item.id, item.plate.id)"
                     >
-                      <v-icon dark> mdi-login </v-icon>
+                      <v-icon dark > mdi-login </v-icon>
                     </v-btn>
 
-                    <v-btn class="mx-2" fab dark small color="teal">
+                    <v-btn class="mx-2" fab dark small color="ayan">
                       <v-icon dark> mdi-format-list-bulleted-square </v-icon>
                     </v-btn>
 
-                    <v-btn class="mx-2" fab dark small color="cyan">
-                      <v-icon dark> mdi-pencil </v-icon>
+                    <v-btn class="mx-2" fab dark small color="ayan">
+                      <v-icon dark > mdi-pencil </v-icon>
                     </v-btn>
 
-                    <v-btn class="mx-2" fab dark small color="purple">
-                      <v-icon dark> mdi-android </v-icon>
+                    <v-btn class="mx-2" fab dark small color="ayan">
+                      <v-icon dark > mdi-android </v-icon>
                     </v-btn>
                   </div>
                 </v-expansion-panel-content>
@@ -212,6 +213,7 @@
         prev-icon="mdi-menu-left"
         next-icon="mdi-menu-right"
         circle
+        color="ayan"
       ></v-pagination>
     </div>
   </v-container>

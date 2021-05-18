@@ -97,7 +97,7 @@ namespace CC.Yi.API.Controllers
                 user_extra user_Extra = new user_extra();
                 myUser.user_extra = user_Extra;
                 var data = _userBll.Add(myUser);
-               var roleData= await _roleBll.GetEntities(u => u.role_name == "游客").FirstOrDefaultAsync();
+               var roleData= await _roleBll.GetEntities(u => u.role_name == "普通用户").FirstOrDefaultAsync();
                 
                 await _userBll.setRole(data.id, new List<int> { roleData.id});
     

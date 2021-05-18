@@ -24,16 +24,16 @@ myaxios.interceptors.response.use(function(response) {
         case 200:
             break;
         case 401:
-            alert("权限不足");
+            console.log("权限不足");
             break;
         case 403:
-            alert("权限不足");
+            console.log("权限不足");
             break;
         case 404:
-            alert("未找到");
+            console.log("未找到");
             break;
         default:
-            alert("未知原因");
+            console.log("未知原因");
     };
 
     return resp;

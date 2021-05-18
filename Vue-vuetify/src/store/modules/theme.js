@@ -9,6 +9,7 @@ const state = { //状态
         success: '#4CAF50',
         warning: '#FFC107',
         cyan: "#FAB2B1",
+        blue: "#2196F3"
     },
     dark: {}
 }

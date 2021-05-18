@@ -28,7 +28,7 @@ namespace CC.Yi.API.Controllers
             }
 
             string webRootPath = environment.WebRootPath;
-            string filePath = Path.Combine(webRootPath + "\\upload\\images");
+            string filePath = Path.Combine(webRootPath + "/upload/images");
             if (!Directory.Exists(filePath))
             {
                 Directory.CreateDirectory(filePath);
@@ -41,7 +41,7 @@ namespace CC.Yi.API.Controllers
                     var ext = Path.GetExtension(formFile.FileName);
 
                     var fileName = Guid.NewGuid().ToString() + ext;
-                    var path = Path.Combine(webRootPath + "\\upload\\images", fileName);
+                    var path = Path.Combine(webRootPath + "/upload/images", fileName);
                     using (var stream = new FileStream(path, FileMode.CreateNew))
                     {
                         await formFile.CopyToAsync(stream);
@@ -67,7 +67,7 @@ namespace CC.Yi.API.Controllers
             }
 
             string webRootPath = environment.WebRootPath;
-            string filePath = Path.Combine(webRootPath + "\\upload\\videos");
+            string filePath = Path.Combine(webRootPath + "/upload/videos");
             if (!Directory.Exists(filePath))
             {
                 Directory.CreateDirectory(filePath);
@@ -79,7 +79,7 @@ namespace CC.Yi.API.Controllers
                 {
                     var ext = Path.GetExtension(formFile.FileName);
                     var fileName = Guid.NewGuid().ToString() + ext;
-                    var path = Path.Combine(webRootPath + "\\upload\\videos", fileName);
+                    var path = Path.Combine(webRootPath + "/upload/videos", fileName);
                     using (var stream = new FileStream(path, FileMode.CreateNew))
                     {
                         await formFile.CopyToAsync(stream);
@@ -101,7 +101,7 @@ namespace CC.Yi.API.Controllers
             try
             {
                 var contentTypeStr = "image/jpeg";
-                string webRootPath = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot\\upload\\images\\{filePath}");
+                string webRootPath = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot/upload/images/{filePath}");
                 using (var sw = new FileStream(webRootPath, FileMode.Open))
                 {
                     var bytes = new byte[sw.Length];
@@ -130,7 +130,7 @@ namespace CC.Yi.API.Controllers
         //    }
 
         //    string webRootPath = environment.WebRootPath;
-        //    string filePath = Path.Combine(webRootPath + "\\upload\\videos");
+        //    string filePath = Path.Combine(webRootPath + "/upload/videos");
         //    if (!Directory.Exists(filePath))
         //    {
         //        Directory.CreateDirectory(filePath);
@@ -142,7 +142,7 @@ namespace CC.Yi.API.Controllers
         //        {
         //            var ext = Path.GetExtension(formFile.FileName);
         //            var fileName = Guid.NewGuid().ToString() + ext;
-        //            var path = Path.Combine(webRootPath + "\\upload\\videos", fileName);
+        //            var path = Path.Combine(webRootPath + "/upload/videos", fileName);
         //            using (var stream = new FileStream(path, FileMode.CreateNew))
         //            {
         //                await formFile.CopyToAsync(stream);

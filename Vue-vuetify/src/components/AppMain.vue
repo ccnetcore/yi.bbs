@@ -1,8 +1,8 @@
 <template>
   <div>
-    <v-breadcrumbs :items="items" class="grey lighten-5">
+    <v-breadcrumbs :items="items" class="grey lighten-5" >
       <template v-slot:item="{ item }">
-        <v-breadcrumbs-item :to="item.to" :disabled="false">
+        <v-breadcrumbs-item :to="item.to"  :disabled="false">
           {{ item.text }}
         </v-breadcrumbs-item>
       </template>

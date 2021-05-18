@@ -154,7 +154,7 @@ namespace CC.Yi.API.Controllers
             return Result.Success().SetData(new { data.id,data.introduction,data.content,data.time,data.title,user=new {data.user?.username,data.user?.icon } });
         }
 
-        [Authorize(Policy = "发布管理")]
+        [Authorize(Policy = "发布主题")]
         [HttpPost]//添加主题
         public async Task<Result> AddDiscuss(addDiscussModel myModel)
         {

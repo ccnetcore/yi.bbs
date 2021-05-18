@@ -2,9 +2,9 @@
   <div>
    <!-- <iframe id="music" frameborder="no" border="0" marginwidth="0" marginheight="0" width=250 height=86 src="//music.163.com/outchain/player?type=2&id=1454730043&auto=0&height=66"></iframe> -->
     <v-app id="inspire">
-      <v-navigation-drawer v-model="drawer" class="accent-4" app>
+      <v-navigation-drawer v-model="drawer"   app>
         <app-navbar></app-navbar>
-        <template v-slot:append>
+        <template v-slot:append >
           <div class="pa-2">
             <v-btn block @click="off()"> 退出 </v-btn>
           </div>
@@ -19,11 +19,11 @@
       <v-main >
         <app-main ></app-main>
 
-        <v-footer :absolute="true"  >
+        <!-- <v-footer :absolute="true"  >
           <v-col class="text-center" cols="12">
             {{ new Date().getFullYear() }} — <strong>Jiftcc</strong>
           </v-col>
-        </v-footer>
+        </v-footer> -->
       </v-main>
     </v-app>
   </div>
@@ -32,7 +32,6 @@
 import AppHeader from "./AppHeader.vue";
 import AppNavbar from "./AppNavbar.vue";
 import AppMain from "./AppMain.vue";
-import accountApi from "@/api/accountApi";
 export default {
   data() {
     return {

@@ -5,8 +5,8 @@ export default {
             url: '/Account/login',
             method: 'post',
             data: {
-                username: username,
-                password: password
+                username,
+                password
             }
         })
     },
@@ -22,11 +22,11 @@ export default {
             method: 'post',
         })
     },
-    register(user_name, password) {
+    register(username, password) {
         return myaxios({
             url: '/Account/register',
             method: 'post',
-            data: { user_name: user_name, password: password }
+            data: { username, password }
         })
     }
 

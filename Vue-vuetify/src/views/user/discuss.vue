@@ -97,22 +97,22 @@
                       fab
                       small
                       dark
-                      color="indigo"
+                      color="blue"
                       @click="intoComment(item.id)"
                     >
                       <v-icon dark> mdi-login </v-icon>
                     </v-btn>
 
-                    <v-btn class="mx-2" fab dark small color="teal">
-                      <v-icon dark> mdi-format-list-bulleted-square </v-icon>
+                    <v-btn class="mx-2" fab dark small color="cyan">
+                      <v-icon dark> mdi-close </v-icon>
                     </v-btn>
 
                     <v-btn class="mx-2" fab dark small color="cyan">
-                      <v-icon dark> mdi-pencil </v-icon>
+                      <v-icon dark> mdi-close </v-icon>
                     </v-btn>
 
-                    <v-btn class="mx-2" fab dark small color="purple">
-                      <v-icon dark @click="Collection(item.id)"> mdi-android </v-icon>
+                    <v-btn class="mx-2" fab dark small color="cyan">
+                      <v-icon dark  @click="Collection(item.id)"> mdi-star </v-icon>
                     </v-btn>
                   </div>
                 </v-expansion-panel-content>
@@ -125,6 +125,7 @@
 
     <div class="text-center mt-4 mb-10">
       <v-pagination
+      color="cyan"
         v-model="pageIndex"
         :length="lenData"
         :total-visible="7"

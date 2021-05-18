@@ -84,8 +84,7 @@
                 {{ item.name }}
               </div>
               <div class="font-weight-light mb-2 grey--text">
-                Our Vintage kitchen utensils delight any chef.<br />
-                Made of bamboo by hand
+                {{item.introduction}}
               </div>
             </v-card-text>
           </v-card>

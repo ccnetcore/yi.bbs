@@ -66,7 +66,7 @@
     <v-btn
       dark
       class="my-2 light-blue"
-      @click="login"
+      @click="register"
       large
       style="width: 100%"
     >
@@ -101,14 +101,15 @@ export default {
     password: "",
     passwordRules: [
       (v) => !!v || "密码不能为空",
-      (v) => (v && v.length <= 120) || "密码必须小于20个字符",
+      (v) => (v && v.length <= 120) || "密码必须小于120个字符",
+           (v) => (v && v.length >= 7) || "密码必须大于等于7个字符",
     ],
     select: null,
     checkbox: true,
   }),
   methods: {
-    login() {
-      this.$refs.form.validate(
+    register() {
+      if (this.$refs.form.validate()) {
         this.$store
           .dispatch("Register", {
             username: this.user_name,
@@ -127,8 +128,13 @@ export default {
                 timeout: 5000,
               });
             }
-          })
-      );
+          });
+      } else {
+        this.$dialog.notify.error("请合理输入数据", {
+          position: "top-right",
+          timeout: 5000,
+        });
+      }
     },
     reset() {
       this.$refs.form.reset();

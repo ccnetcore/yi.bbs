@@ -1,18 +1,18 @@
 <template>
-  <v-card class="mx-auto" height="100%" width="100%">
-    <!-- deep-purple -->
+  <v-card class="mx-auto " height="100%" width="100%">
+
 
     <v-list-item >
       <v-list-item-content >
-        <v-list-item-title class="title primary--text"> 服装交流平台 </v-list-item-title>
+        <v-list-item-title class="title blue--text"> 服装交流平台 </v-list-item-title>
         <v-list-item-subtitle> 正式版 </v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>
 
     <v-divider></v-divider>
 
-    <v-list>
-      <v-list-item v-for="item in items" :key="item.title" :to="item.router">
+    <v-list class="blue--text">
+      <v-list-item v-for="item in items" :key="item.title" :to="item.router" >
         <v-list-item-icon>
           <v-icon>{{ item.icon }}</v-icon>
         </v-list-item-icon>
@@ -22,7 +22,7 @@
         </v-list-item-content>
       </v-list-item>
 
-      <v-list-group :value="true" prepend-icon="mdi-account-circle">
+      <v-list-group :value="true" prepend-icon="mdi-account-circle" class="blue--text">
         <template v-slot:activator>
           <v-list-item-title>我的权限</v-list-item-title>
         </template>
@@ -35,7 +35,7 @@
         </v-list-item>
       </v-list-group>
 
-      <v-list-group :value="true" prepend-icon="mdi-account-circle">
+      <v-list-group :value="true" prepend-icon="mdi-account-circle" class="blue--text">
         <template v-slot:activator>
           <v-list-item-title>其他</v-list-item-title>
         </template>

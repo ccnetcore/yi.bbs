@@ -25,15 +25,15 @@
         <v-btn text color="teal accent-4" @click="reveal = true">
           更多信息
         </v-btn>
-        <v-btn class="mx-2" fab dark small color="primary">
-          <v-icon dark> mdi-heart </v-icon>
+        <v-btn class="mx-2" fab dark small color="cyan">
+          <v-icon dark> mdi-close </v-icon>
         </v-btn>
 
-        <v-btn class="mx-2" fab dark small color="primary">
-          <v-icon dark> mdi-heart </v-icon>
+        <v-btn class="mx-2" fab dark small color="cyan">
+          <v-icon dark> mdi-close </v-icon>
         </v-btn>
-        <v-btn class="mx-2" fab dark small color="primary">
-          <v-icon dark @click="Collection(discussData.id)"> mdi-heart </v-icon>
+        <v-btn class="mx-2" fab dark small color="cyan">
+          <v-icon dark @click="Collection(discussData.id)"> mdi-star </v-icon>
         </v-btn>
       </v-card-actions>
 
@@ -58,13 +58,13 @@
     <v-card class="my-2 mb-6">
       <v-list>
         <v-subheader>评论</v-subheader>
-        <v-text-field class="mx-6" v-model="form.content" label="发表评论">
-          <v-icon slot="append" color="green" @click="sentComment()">
+        <v-text-field class="mx-6" ref="com" v-model="form.content" label="发表评论"  required :rules="commentRules">
+          <v-icon slot="append" color="blue" @click="sentComment()">
             mdi-send
           </v-icon></v-text-field
         >
 
-        <v-list-item-group v-model="selectedItem" color="primary">
+        <v-list-item-group v-model="selectedItem" color="blue">
           <v-list-item v-for="(item, i) in commentList" :key="i">
             <v-list-item-icon>
               <v-avatar size="36px">
@@ -77,7 +77,7 @@
               </v-avatar>
             </v-list-item-icon>
             <v-list-item-content>
-              <p class="light-blue--text">
+              <p class="light-ayan--text">
                 {{ i + 1 }}楼:<br />
                 作者：{{ item.user.username
                 }}<v-divider class="mx-2" vertical></v-divider>发表时间：
@@ -98,6 +98,7 @@
           prev-icon="mdi-menu-left"
           next-icon="mdi-menu-right"
           circle
+           color="cyan"
         ></v-pagination>
       </div>
     </v-card>
@@ -109,6 +110,10 @@ import commentApi from "@/api/commentApi";
 import collectionApi from "@/api/collectionApi";
 export default {
   data: () => ({
+    commentRules:[
+          (v) => !!v || "评论不能为空",
+      (v) => (v && v.length <= 200) || "评论必须小于200个字符",
+    ],
     pageIndex: 1,
     pageSize: 10,
     total: 100,
@@ -170,7 +175,9 @@ export default {
         });
     },
     sentComment() {
-      commentApi
+     if(this.$refs.com.validate())
+     {
+             commentApi
         .addComment(this.form, this.$store.state.home.discussId)
         .then((resp) => {
           //设置等级
@@ -179,6 +186,16 @@ export default {
           this.form.content = "";
           this.initializa();
         });
+     }
+     else
+     {
+         this.$dialog.notify.error("请合理输入数据", {
+            position: "top-right",
+            timeout: 5000,
+          });
+     }
+     
+
     },
   },
 };

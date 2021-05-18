@@ -29,7 +29,7 @@ const actions = { //动作
 
     setLevel({ commit, state }, level) {
 
-        state.user.icon = level;
+        state.user.level = level;
 
         commit('SET_USER', state.user)
     },

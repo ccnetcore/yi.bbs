@@ -1,20 +1,27 @@
 <template>
   <v-row class="mt-2">
-    <v-col cols="6" offset="0" class="mt-2" offset-md="4" md="5">
+    <v-col cols="5" offset="0" class="mt-2" offset-md="4" md="5">
       <v-text-field
         label="全站搜索"
         placeholder="输入"
         dense
         prepend-inner-icon="mdi-magnify"
-      ></v-text-field>
+      >
+        <v-icon slot="append" color="blue">
+            mdi-send
+          </v-icon>
+      </v-text-field>
     </v-col>
-    <v-col cols="6" md="3" class="mb-2 text-right">
-      <v-btn icon medium>
-        <v-icon dark> mdi-content-paste </v-icon>
+    <v-col cols="7" md="3" class="mb-2 text-right">
+
+
+      <v-btn icon medium class="">
+        <v-icon dark > mdi-content-paste </v-icon>
       </v-btn>
-      <v-btn icon medium class="mr-2">
-        <v-icon dark> mdi-home </v-icon>
+      <v-btn icon medium class="mr-2 " >
+       <router-link :to="{path:'/index'}">  <v-icon dark  color="blue" > mdi-home </v-icon></router-link>
       </v-btn>
+
 
       <v-menu offset-y>
         <template v-slot:activator="{ on, attrs }">
@@ -99,9 +106,8 @@ export default {
     selectedItem: "",
     items: [
       { text: "个人资料", icon: "mdi-folder", router: "/userInfo" },
-      { text: "我的主题", icon: "mdi-star", router: "/myDiscuss" },
-      { text: "我的收藏", icon: "mdi-account-multiple", router: "/collection" },
-      { text: "我的评论", icon: "mdi-history", router: "" },
+      { text: "我的主题", icon: "mdi-account-multiple", router: "/myDiscuss" },
+      { text: "我的收藏", icon: "mdi-star", router: "/collection" },
       { text: "其他", icon: "mdi-check-circle", router: "" },
     ],
   }),

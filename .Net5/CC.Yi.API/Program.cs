@@ -52,7 +52,7 @@ namespace CC.Yi.API
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
 
-                    webBuilder.UseUrls("http://*:19000").UseStartup<Startup>();
+                    webBuilder.UseUrls("http://*:20000").UseStartup<Startup>();
                 }).UseServiceProviderFactory(new AutofacServiceProviderFactory())
                  .ConfigureLogging(logging =>
                  {
