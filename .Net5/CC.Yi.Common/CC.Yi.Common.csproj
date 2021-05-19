@@ -26,6 +26,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CC.Yi.ViewModel\CC.Yi.ViewModel.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="T4Vue\T4Api.vue">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

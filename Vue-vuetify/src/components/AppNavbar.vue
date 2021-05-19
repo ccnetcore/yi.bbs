@@ -4,7 +4,7 @@
 
     <v-list-item >
       <v-list-item-content >
-        <v-list-item-title class="title blue--text"> 服装交流平台 </v-list-item-title>
+        <v-list-item-title class="title blue--text"> {{title}} </v-list-item-title>
         <v-list-item-subtitle> 正式版 </v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>
@@ -52,10 +52,14 @@
 </template>
 <script>
 import userApi from "@/api/userApi";
+import settingApi from "@/api/settingApi";
+
 import myaction from "../utils/myaction";
+
 export default {
   data() {
     return {
+      title:"",
       actions: [],
       cruds: [], //这个是权限目录
       other: [], //这个是其他目录
@@ -70,6 +74,12 @@ export default {
 //先查询是否在myactions中
 //如果在，添加到我的权限中
 //如果不在，再判断前4个字符是不是/my/,是就添加到其他中，不是就添加到根目录
+
+
+settingApi.getTitle().then(resp=>{
+  this.title=resp.data
+})
+
       var user = this.$store.state.user.user;
       userApi.getActionByUserId(user.id).then((resp) => {
         const response = resp.data;

@@ -60,7 +60,7 @@ namespace CC.Yi.API.Controllers
                              };
 
             //现在升级一下，开始分页
-            int pageSize = 10;//每页数量从redis中获取
+            int pageSize = settingHelper.commentPage();
 
             int total = dataFilter.Count();
             var pageData = dataFilter
@@ -88,9 +88,9 @@ namespace CC.Yi.API.Controllers
             discussData.comments.Add(myComment);
 
             _discussBll.Update(discussData);
-
+            int Experience = settingHelper.commentExperience();
             //注意，这里经验可以从redis中获取，现在先设置一个1定值
-            int level = await _user_extraBll.UpdateExperience(myComment.user.id, 1, false);
+            int level = await _user_extraBll.UpdateExperience(myComment.user.id, Experience, false);
             return Result.Success().SetData(new { level });
         }
     }

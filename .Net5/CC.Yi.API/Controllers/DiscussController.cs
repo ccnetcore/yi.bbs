@@ -130,7 +130,7 @@ namespace CC.Yi.API.Controllers
                               }).ToList();
 
 
-            int pageSize = 10;//每页数量从redis中获取
+            int pageSize = settingHelper.discussPage();//每页数量从redis中获取
 
             int total = dataFilter.Count();
             var pageData = dataFilter
@@ -174,8 +174,8 @@ namespace CC.Yi.API.Controllers
 
             _plateBll.Update(plateData);
 
-            //注意，这里经验可以从redis中获取，现在先设置一个1定值
-            int level = await _user_extraBll.UpdateExperience(data.user.id, 1, false);
+            int Experience = settingHelper.discussExperience();
+            int level = await _user_extraBll.UpdateExperience(data.user.id, Experience, false);
 
             return Result.Success().SetData(new { data.id, level });
         }

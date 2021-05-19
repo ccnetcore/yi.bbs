@@ -19,6 +19,7 @@ import AdmAction from '@/views/admin/AdmAction'
 import AdmDiscuss from '@/views/admin/AdmDiscuss'
 import AdmPlate from '@/views/admin/AdmPlate'
 import AdmLevel from '@/views/admin/AdmLevel'
+import AdmSetting from '@/views/admin/AdmSetting'
 
 
 import login from '@/views/login'
@@ -105,6 +106,12 @@ const routes = [{
                 name: 'AdmDiscuss',
                 component: AdmDiscuss
             },
+            {
+                path: '/AdmSetting',
+                name: 'AdmSetting',
+                component: AdmSetting
+            },
+
             {
                 path: '/userInfo',
                 name: 'userInfo',

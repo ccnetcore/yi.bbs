@@ -55,7 +55,7 @@
           <v-card class="mx-auto" color="grey lighten-4" max-width="600">
             <v-img
               :aspect-ratio="16 / 9"
-              src="https://z3.ax1x.com/2021/05/05/gMZNjK.jpg"
+              :src="item.logo"
             >
               <v-expand-transition>
                 <div
