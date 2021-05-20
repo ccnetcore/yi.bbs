@@ -20,6 +20,7 @@ import AdmDiscuss from '@/views/admin/AdmDiscuss'
 import AdmPlate from '@/views/admin/AdmPlate'
 import AdmLevel from '@/views/admin/AdmLevel'
 import AdmSetting from '@/views/admin/AdmSetting'
+import AdmBanner from '@/views/admin/AdmBanner'
 
 
 import login from '@/views/login'
@@ -96,6 +97,12 @@ const routes = [{
                 name: 'AdmPlate',
                 component: AdmPlate
             },
+            {
+                path: '/AdmBanner',
+                name: 'AdmBanner',
+                component: AdmBanner
+            },
+
             {
                 path: '/AdmLevel',
                 name: 'AdmLevel',

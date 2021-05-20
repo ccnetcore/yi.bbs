@@ -200,4 +200,23 @@ namespace CC.Yi.BLL
             }
 
         }
+    public partial class bannerBll : BaseBll<banner>, IbannerBll
+        {
+            public bannerBll(IBaseDal<banner> cd,DataContext _Db):base(cd,_Db)
+            {
+                CurrentDal = cd;
+                Db = _Db;
+            }
+
+            public async Task<bool> DelListByUpdateList(List<int> Ids)
+            {
+                var entitys = await CurrentDal.GetEntities(u => Ids.Contains(u.id)).ToListAsync();
+                foreach (var entity in entitys)
+                {
+                    entity.is_delete = (short)ViewModel.Enum.DelFlagEnum.Deleted;
+                }
+                return Db.SaveChanges() > 0;
+            }
+
+        }
 }

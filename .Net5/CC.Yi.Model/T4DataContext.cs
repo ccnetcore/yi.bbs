@@ -16,5 +16,6 @@ namespace CC.Yi.Model
         public DbSet<user_extra> user_extra { get; set; }
         public DbSet<label> label { get; set; }
         public DbSet<collection> collection { get; set; }
+        public DbSet<banner> banner { get; set; }
     }
 }

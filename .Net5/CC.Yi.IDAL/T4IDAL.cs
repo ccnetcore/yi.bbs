@@ -35,4 +35,7 @@ namespace CC.Yi.IDAL
     public partial interface IcollectionDal:IBaseDal<collection>
     {
     }
+    public partial interface IbannerDal:IBaseDal<banner>
+    {
+    }
 }

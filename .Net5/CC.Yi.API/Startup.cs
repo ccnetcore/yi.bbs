@@ -49,6 +49,8 @@ namespace CC.Yi.API
                 options.AddPolicy("板块管理", policy => policy.RequireClaim("action", "板块管理"));
                 options.AddPolicy("主题管理", policy => policy.RequireClaim("action", "主题管理"));
                 options.AddPolicy("等级管理", policy => policy.RequireClaim("action", "等级管理"));
+                options.AddPolicy("设置管理", policy => policy.RequireClaim("action", "设置管理"));
+                options.AddPolicy("横幅管理", policy => policy.RequireClaim("action", "横幅管理"));
 
                 options.AddPolicy("用户管理", policy => policy.RequireClaim("action", "用户管理"));
                 options.AddPolicy("角色管理", policy => policy.RequireClaim("action", "角色管理"));
@@ -62,6 +64,7 @@ namespace CC.Yi.API
                 options.AddPolicy("发布主题", policy => policy.RequireClaim("action", "发布主题"));
                 options.AddPolicy("发布评论", policy => policy.RequireClaim("action", "发布评论"));
                 options.AddPolicy("修改信息", policy => policy.RequireClaim("action", "修改信息"));
+                options.AddPolicy("样式管理", policy => policy.RequireClaim("action", "样式管理"));
 
             });
 

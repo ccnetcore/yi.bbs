@@ -1,1 +1,1 @@
-plate,discuss,comment,user,role,action,level,user_extra,label,collection
+plate,discuss,comment,user,role,action,level,user_extra,label,collection,banner

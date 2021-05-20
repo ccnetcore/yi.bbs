@@ -7,13 +7,14 @@
           height="300"
           hide-delimiter-background
           show-arrows-on-hover
+          
         >
-          <v-carousel-item v-for="(slide, i) in slides" :key="i">
-            <v-sheet :color="colors[i]" height="100%">
-              <v-row class="fill-height" align="center" justify="center">
-                <div class="display-3">{{ slide }} Slide</div>
+          <v-carousel-item :src="slide.logo" v-for="(slide, i) in bannerList" :key="i">
+            
+              <v-row  class="fill-height" align="center" justify="center">
+                <div :class="'display-3 '+slide.color+'--text'">{{ slide.name }} </div>
               </v-row>
-            </v-sheet>
+          
           </v-carousel-item>
         </v-carousel>
       </v-col>
@@ -97,10 +98,12 @@
 </template>
 <script>
 import plateApi from "@/api/plateApi";
+import bannerApi from "@/api/bannerApi";
 export default {
   data() {
     return {
       plateList: [],
+      bannerList:[],
       labels: ["12am", "3am", "6am", "9am", "12pm", "3pm", "6pm"],
 
       value: [423, 446, 675, 510, 590, 610, 760],
@@ -113,7 +116,9 @@ export default {
   },
   methods: {
     initializa() {
-    
+    bannerApi.getBanners().then(resp=>{
+      this.bannerList=resp.data;
+    })
 
       plateApi.getPlates().then((resp) => {
         this.plateList = resp.data;

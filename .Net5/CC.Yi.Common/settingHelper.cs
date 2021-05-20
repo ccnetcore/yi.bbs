@@ -8,7 +8,7 @@ namespace CC.Yi.Common
 {
     public static class settingHelper
     {
-        public static RedisCache CacheWriter { get; set; }
+        public static ICacheWriter CacheWriter { get; set; }
 
         static settingHelper()
         {

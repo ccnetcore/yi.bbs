@@ -30,6 +30,7 @@ namespace CC.Yi.API.Controllers
             return Result.Success().SetData(title);
         }
 
+        [Authorize(Policy = "设置管理")]
         [HttpGet]
         public Result getSetting()
         {
@@ -42,6 +43,7 @@ namespace CC.Yi.API.Controllers
             return Result.Success().SetData(data);
         }
 
+        [Authorize(Policy = "设置管理")]
         [HttpPost]
         public Result UpdateSetting(setting data)
         {

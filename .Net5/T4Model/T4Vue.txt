@@ -1,4 +1,4 @@
-label
-name,colour
-名称,颜色
-"",""
+banner
+name,logo,color
+名称,图标,名称颜色
+"","","cyan"

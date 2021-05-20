@@ -77,4 +77,11 @@ namespace CC.Yi.DAL
             Db = _Db;
         }
     }
+    public partial class bannerDal : BaseDal<banner>, IbannerDal
+    {
+        public bannerDal(DataContext _Db):base(_Db)
+        {
+            Db = _Db;
+        }
+    }
 }
