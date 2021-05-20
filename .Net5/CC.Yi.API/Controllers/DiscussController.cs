@@ -151,7 +151,7 @@ namespace CC.Yi.API.Controllers
             }
             var data = await _discussBll.GetEntities(u => u.id == discussId).Include(u => u.user).FirstOrDefaultAsync();
 
-            return Result.Success().SetData(new { data.id,data.introduction,data.content,data.time,data.title,user=new {data.user?.username,data.user?.icon } });
+            return Result.Success().SetData(new { data.id,data.introduction,data.content,data.time,data.title,data.agree_num, user=new {data.user?.username,data.user?.icon } });
         }
 
         [Authorize(Policy = "发布主题")]

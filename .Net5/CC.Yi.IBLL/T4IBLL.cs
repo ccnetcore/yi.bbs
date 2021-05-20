@@ -50,4 +50,8 @@ namespace CC.Yi.IBLL
     {
         Task<bool> DelListByUpdateList(List<int> Ids);
     }
+   public partial interface IagreeBll : IBaseBll<agree>
+    {
+        Task<bool> DelListByUpdateList(List<int> Ids);
+    }
 }

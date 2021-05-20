@@ -84,7 +84,7 @@
                       <v-icon dark> mdi-login </v-icon>
                     </v-btn>
 
-                    <v-btn class="mx-2" fab dark small color="teal">
+                    <v-btn class="mx-2" fab dark small color="cyan">
                       <v-icon dark> mdi-format-list-bulleted-square </v-icon>
                     </v-btn>
 
@@ -92,8 +92,8 @@
                       <v-icon dark> mdi-pencil </v-icon>
                     </v-btn>
 
-                    <v-btn class="mx-2" fab dark small color="purple">
-                      <v-icon dark @click="deleteItem(item.id)"> mdi-access-point-remove </v-icon>
+                    <v-btn class="mx-2" fab dark small color="cyan">
+                      <v-icon dark @click="deleteItem(item.id)"> mdi-close </v-icon>
                     </v-btn>
                   </div>
                 </v-expansion-panel-content>

@@ -84,4 +84,11 @@ namespace CC.Yi.DAL
             Db = _Db;
         }
     }
+    public partial class agreeDal : BaseDal<agree>, IagreeDal
+    {
+        public agreeDal(DataContext _Db):base(_Db)
+        {
+            Db = _Db;
+        }
+    }
 }

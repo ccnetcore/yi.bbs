@@ -17,5 +17,6 @@ namespace CC.Yi.Model
         public DbSet<label> label { get; set; }
         public DbSet<collection> collection { get; set; }
         public DbSet<banner> banner { get; set; }
+        public DbSet<agree> agree { get; set; }
     }
 }

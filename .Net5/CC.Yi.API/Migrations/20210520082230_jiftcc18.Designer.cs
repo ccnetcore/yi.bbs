@@ -3,14 +3,16 @@ using System;
 using CC.Yi.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CC.Yi.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210520082230_jiftcc18")]
+    partial class jiftcc18
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,30 +39,6 @@ namespace CC.Yi.API.Migrations
                     b.HasKey("id");
 
                     b.ToTable("action");
-                });
-
-            modelBuilder.Entity("CC.Yi.Model.agree", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("discussid")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("is_delete")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("userid")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("discussid");
-
-                    b.HasIndex("userid");
-
-                    b.ToTable("agree");
                 });
 
             modelBuilder.Entity("CC.Yi.Model.banner", b =>
@@ -393,21 +371,6 @@ namespace CC.Yi.API.Migrations
                     b.HasIndex("usersid");
 
                     b.ToTable("roleuser");
-                });
-
-            modelBuilder.Entity("CC.Yi.Model.agree", b =>
-                {
-                    b.HasOne("CC.Yi.Model.discuss", "discuss")
-                        .WithMany()
-                        .HasForeignKey("discussid");
-
-                    b.HasOne("CC.Yi.Model.user", "user")
-                        .WithMany()
-                        .HasForeignKey("userid");
-
-                    b.Navigation("discuss");
-
-                    b.Navigation("user");
                 });
 
             modelBuilder.Entity("CC.Yi.Model.collection", b =>

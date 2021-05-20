@@ -25,8 +25,10 @@
         <v-btn text color="teal accent-4" @click="reveal = true">
           更多信息
         </v-btn>
-        <v-btn class="mx-2" fab dark small color="cyan">
-          <v-icon dark> mdi-close </v-icon>
+        <v-btn @click="agrees" class="mx-2"  dark  outlined color="cyan">
+          <v-icon large dark > mdi-menu-up-outline </v-icon>
+          {{discussData.agree_num}}
+          赞同
         </v-btn>
 
         <v-btn class="mx-2" fab dark small color="cyan">
@@ -58,7 +60,14 @@
     <v-card class="my-2 mb-6">
       <v-list>
         <v-subheader>评论</v-subheader>
-        <v-text-field class="mx-6" ref="com" v-model="form.content" label="发表评论"  required :rules="commentRules">
+        <v-text-field
+          class="mx-6"
+          ref="com"
+          v-model="form.content"
+          label="发表评论"
+          required
+          :rules="commentRules"
+        >
           <v-icon slot="append" color="blue" @click="sentComment()">
             mdi-send
           </v-icon></v-text-field
@@ -98,7 +107,7 @@
           prev-icon="mdi-menu-left"
           next-icon="mdi-menu-right"
           circle
-           color="cyan"
+          color="cyan"
         ></v-pagination>
       </div>
     </v-card>
@@ -108,10 +117,11 @@
 import discussApi from "@/api/discussApi";
 import commentApi from "@/api/commentApi";
 import collectionApi from "@/api/collectionApi";
+import agreesApi from "@/api/agreesApi";
 export default {
   data: () => ({
-    commentRules:[
-          (v) => !!v || "评论不能为空",
+    commentRules: [
+      (v) => !!v || "评论不能为空",
       (v) => (v && v.length <= 200) || "评论必须小于200个字符",
     ],
     pageIndex: 1,
@@ -174,28 +184,39 @@ export default {
           this.total = resp.data.total;
         });
     },
-    sentComment() {
-     if(this.$refs.com.validate())
-     {
-             commentApi
-        .addComment(this.form, this.$store.state.home.discussId)
-        .then((resp) => {
-          //设置等级
-          this.$store.dispatch("setLevel", resp.data.level);
-
-          this.form.content = "";
-          this.initializa();
-        });
-     }
-     else
-     {
-         this.$dialog.notify.error("请合理输入数据", {
+    agrees() {
+      agreesApi.getAgrees(this.$store.state.home.discussId).then((resp) => {
+        if (resp.data > this.discussData.agree_num) {
+          this.$dialog.notify.success(resp.msg, {
             position: "top-right",
-            timeout: 5000,
           });
-     }
-     
+        } else {
+          this.$dialog.notify.error(resp.msg, {
+            position: "top-right",
+          });
+        }
+          this.discussData.agree_num=resp.data;
+      });
+    
+    },
 
+    sentComment() {
+      if (this.$refs.com.validate()) {
+        commentApi
+          .addComment(this.form, this.$store.state.home.discussId)
+          .then((resp) => {
+            //设置等级
+            this.$store.dispatch("setLevel", resp.data.level);
+
+            this.form.content = "";
+            this.initializa();
+          });
+      } else {
+        this.$dialog.notify.error("请合理输入数据", {
+          position: "top-right",
+          timeout: 5000,
+        });
+      }
     },
   },
 };

@@ -38,4 +38,7 @@ namespace CC.Yi.IDAL
     public partial interface IbannerDal:IBaseDal<banner>
     {
     }
+    public partial interface IagreeDal:IBaseDal<agree>
+    {
+    }
 }

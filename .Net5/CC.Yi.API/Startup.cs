@@ -65,6 +65,7 @@ namespace CC.Yi.API
                 options.AddPolicy("发布评论", policy => policy.RequireClaim("action", "发布评论"));
                 options.AddPolicy("修改信息", policy => policy.RequireClaim("action", "修改信息"));
                 options.AddPolicy("样式管理", policy => policy.RequireClaim("action", "样式管理"));
+                options.AddPolicy("点赞管理", policy => policy.RequireClaim("action", "点赞管理"));
 
             });
 

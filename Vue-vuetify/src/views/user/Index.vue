@@ -36,14 +36,14 @@
           </v-sheet>
 
           <v-card-text class="pt-0">
-            <div class="title font-weight-light mb-2">User Registrations</div>
+            <div class="title font-weight-light mb-2">用户访问数量</div>
             <div class="subheading font-weight-light grey--text">
-              Last Campaign Performance
+              数据分析
             </div>
             <v-divider class="my-2"></v-divider>
             <v-icon class="mr-2" small> mdi-clock </v-icon>
             <span class="caption grey--text font-weight-light"
-              >last registration 26 minutes ago</span
+              >最新来自26分钟之前</span
             >
           </v-card-text>
         </v-card>
@@ -104,7 +104,7 @@ export default {
     return {
       plateList: [],
       bannerList:[],
-      labels: ["12am", "3am", "6am", "9am", "12pm", "3pm", "6pm"],
+      labels: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
 
       value: [423, 446, 675, 510, 590, 610, 760],
       colors: ["cyan", "primary", "cyan", "light-blue"],
