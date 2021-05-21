@@ -82,8 +82,6 @@ v1.0.0------2021/5/12 (上传基础框架)
 
 2：修改appsettings.json连接数据库json配置
 
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20210520202619586.png)
-
 3：修改对应的数据库连接字符串与options
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20210520202347139.png)
