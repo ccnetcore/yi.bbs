@@ -114,7 +114,7 @@ namespace CC.Yi.API.Controllers
         [HttpPost]//判断是否有有登录
         public Result Logged()
         {
-            if (_user==null)
+            if (_user.id==0)
             {
                 return Result.Error("登录超时！请重新登录");
             }

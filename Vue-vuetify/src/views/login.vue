@@ -53,7 +53,7 @@
       登入
     </v-btn>
     <p class="my-2">或使用登录</p>
-    <v-btn dark class="my-2 cyan" @click="login" large style="width: 100%">
+    <v-btn dark class="my-2 cyan" @click="login" id="qqLoginBtn" large style="width: 100%">
       <v-icon class="mx-2"> mdi-qqchat </v-icon>
       QQ
     </v-btn>

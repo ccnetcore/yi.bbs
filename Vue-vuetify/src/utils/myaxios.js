@@ -20,14 +20,15 @@ myaxios.interceptors.request.use(function(config) {
 // 响应拦截器
 myaxios.interceptors.response.use(function(response) {
     const resp = response.data
+    console.log(resp.code)
     switch (resp.code) {
         case 200:
             break;
         case 401:
-            console.log("权限不足");
+            alert("权限不足");
             break;
         case 403:
-            console.log("权限不足");
+            alert("权限不足");
             break;
         case 404:
             console.log("未找到");

@@ -87,7 +87,10 @@ for(var i=0;i<this.selectLabel.length;i++)
      }
    }
  }
-
+if(this.form.type=="")
+{
+this.form.type="闲聊";
+}
       this.form.content = this.myeditor.txt.html();
       discussApi
         .addDiscuss(this.form, this.$store.state.home.plateId,Ids)

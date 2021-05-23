@@ -22,7 +22,7 @@ import AdmLevel from '@/views/admin/AdmLevel'
 import AdmSetting from '@/views/admin/AdmSetting'
 import AdmBanner from '@/views/admin/AdmBanner'
 
-
+import qq from '@/views/qq'
 import login from '@/views/login'
 import register from '@/views/register'
 
@@ -44,6 +44,11 @@ const routes = [{
                 path: '/register',
                 name: 'register',
                 component: register
+            },
+            {
+                path: '/qq',
+                name: 'qq',
+                component: qq
             }
         ]
     },

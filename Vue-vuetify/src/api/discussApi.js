@@ -12,9 +12,12 @@ export default {
             method: 'get'
         })
     },
-    getDiscussByUserId(pageIndex) {
+    getDiscussByUserId(userId, pageIndex) {
+        if (userId == undefined) {
+            userId = 0
+        }
         return myaxios({
-            url: `/Discuss/getDiscussByUserId?pageIndex=${pageIndex}`,
+            url: `/Discuss/getDiscussByUserId?userId=${userId}&pageIndex=${pageIndex}`,
             method: 'get'
         })
     },

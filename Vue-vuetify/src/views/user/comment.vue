@@ -4,7 +4,7 @@
       <v-card-text>
         <p class="display-1 text--primary">{{ discussData.title }}</p>
         <v-divider class="my-2"></v-divider>
-        <v-avatar size="60px">
+        <v-avatar size="60px" @click="intoInfo(discussData.user.id)">
           <img
             v-if="discussData.user != undefined"
             alt="Avatar"
@@ -76,7 +76,7 @@
         <v-list-item-group v-model="selectedItem" color="blue">
           <v-list-item v-for="(item, i) in commentList" :key="i">
             <v-list-item-icon>
-              <v-avatar size="36px">
+              <v-avatar size="36px" @click="intoInfo(item.user.id)">
                 <img
                   alt="Avatar"
                   :src="
@@ -154,6 +154,15 @@ export default {
     this.baseurl = process.env.VUE_APP_BASE_API;
   },
   methods: {
+        intoInfo(userId)
+    {
+              this.$router.push({
+          path: `/userInfo`,
+　　　　　　query:{
+　　　　　　　　userId:userId
+　　　　　　}
+        })
+    },
     Collection(Id) {
       collectionApi.addCollection(Id).then((resp) => {
         if (resp.status) {

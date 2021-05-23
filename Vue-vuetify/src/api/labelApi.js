@@ -1,14 +1,20 @@
 import myaxios from '@/utils/myaxios'
 export default {
-    getLabelByUserId() {
+    getLabelByUserId(userId) {
+        if (userId == undefined) {
+            userId = 0;
+        }
         return myaxios({
-            url: `/Label/getLabelByUserId`,
+            url: `/Label/getLabelByUserId?userId=${userId}`,
             method: 'get'
         })
     },
-    getDiscussByLabelId(pageIndex, labelId) {
+    getDiscussByLabelId(userId, pageIndex, labelId) {
+        if (userId == undefined) {
+            userId = 0;
+        }
         return myaxios({
-            url: `/Label/getDiscussByLabelId?labelId=${labelId}&pageIndex=${pageIndex}`,
+            url: `/Label/getDiscussByLabelId?userId=${userId}&labelId=${labelId}&pageIndex=${pageIndex}`,
             method: 'get'
         })
     },

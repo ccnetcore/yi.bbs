@@ -33,19 +33,27 @@ namespace CC.Yi.API.Controllers
         [Authorize(Policy = "标签管理")]
         [HttpGet]
         //得到用户具有哪些标签
-        public async Task<Result> getLabelByUserId()
+        public async Task<Result> getLabelByUserId(int userId)
         {
-            var data = await _labelBll.GetEntities(u => u.user.id == _user.id && u.is_delete == delFlagNormal).ToListAsync();
+            if (userId == 0)
+            {
+                userId = _user.id;
+                    }
+            var data = await _labelBll.GetEntities(u => u.user.id == userId && u.is_delete == delFlagNormal).ToListAsync();
             return Result.Success().SetData(data);
         }
 
 
         [Authorize(Policy = "标签管理")]
         [HttpGet]
-        public async Task<Result> getDiscussByLabelId(int pageIndex, int labelId)
+        public async Task<Result> getDiscussByLabelId(int userId, int pageIndex, int labelId)
         {
+            if (userId == 0)
+            {
+                userId = _user.id;
+            }
             var data = await _labelBll.GetEntities
-                (u => u.user.id == _user.id && u.is_delete == delFlagNormal&&u.id== labelId).Include(u=>u.discusses).ThenInclude(u=>u.user).Include(u => u.discusses).ThenInclude(u =>u.plate)
+                (u => u.user.id == userId && u.is_delete == delFlagNormal&&u.id== labelId).Include(u=>u.discusses).ThenInclude(u=>u.user).Include(u => u.discusses).ThenInclude(u =>u.plate)
                 .FirstOrDefaultAsync();
             var discuss = data.discusses;
             var dataFilter = from r in discuss

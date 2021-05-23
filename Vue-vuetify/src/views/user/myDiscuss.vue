@@ -70,7 +70,7 @@
             <v-list-item>
               <v-list-item-content>
                 <v-btn
-             
+             v-if="my"
                   color="cyan"
                   elevation="2"
                   @click="Add"
@@ -110,7 +110,7 @@
                         color: myitem.color,
                       }"
                       >{{ myitem.name }}
-                      <v-icon @click="deleteItem(myitem.id)">mdi-close-circle</v-icon>
+                      <v-icon v-if="my" @click="deleteItem(myitem.id)">mdi-close-circle</v-icon>
    
                       </v-chip
                     >
@@ -185,15 +185,15 @@
                       <v-icon dark > mdi-login </v-icon>
                     </v-btn>
 
-                    <v-btn class="mx-2" fab dark small color="ayan">
+                    <v-btn class="mx-2" fab dark small color="cyan">
                       <v-icon dark> mdi-format-list-bulleted-square </v-icon>
                     </v-btn>
 
-                    <v-btn class="mx-2" fab dark small color="ayan">
+                    <v-btn class="mx-2" fab dark small color="cyan">
                       <v-icon dark > mdi-pencil </v-icon>
                     </v-btn>
 
-                    <v-btn class="mx-2" fab dark small color="ayan">
+                    <v-btn class="mx-2" fab dark small color="cyan">
                       <v-icon dark > mdi-android </v-icon>
                     </v-btn>
                   </div>
@@ -213,7 +213,7 @@
         prev-icon="mdi-menu-left"
         next-icon="mdi-menu-right"
         circle
-        color="ayan"
+        color="cyan"
       ></v-pagination>
     </div>
   </v-container>
@@ -224,6 +224,7 @@ import labelApi from "@/api/labelApi";
 export default {
   data() {
     return {
+      my:false,
       drawer:"true",
       dialogDelete: false,
       delId: 0,
@@ -267,19 +268,26 @@ export default {
   },
   methods: {
     initializa() {
-      labelApi.getLabelByUserId().then((resp) => {
+
+      if (this.$route.query.userId==undefined||this.$route.query.userId == this.$store.state.user.user.id) {
+        //表示是自己的用户
+        this.my = true;
+
+      }
+
+      labelApi.getLabelByUserId(this.$route.query.userId).then((resp) => {
         this.items = resp.data;
       });
 
       //初始化创建
-      discussApi.getDiscussByUserId(this.pageIndex).then((resp) => {
+      discussApi.getDiscussByUserId(this.$route.query.userId,this.pageIndex).then((resp) => {
         this.discussList = resp.data.pageData;
         this.total = resp.data.total;
         this.pageSize = resp.data.pageSize;
       });
     },
     selctDiscuss(id) {
-      labelApi.getDiscussByLabelId(this.pageIndex, id).then((resp) => {
+      labelApi.getDiscussByLabelId(this.$route.query.userId,this.pageIndex, id).then((resp) => {
         this.discussList = resp.data.pageData;
         this.total = resp.data.total;
         this.pageSize = resp.data.pageSize;

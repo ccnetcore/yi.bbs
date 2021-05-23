@@ -12,7 +12,7 @@
           <v-carousel-item :src="slide.logo" v-for="(slide, i) in bannerList" :key="i">
             
               <v-row  class="fill-height" align="center" justify="center">
-                <div :class="'display-3 '+slide.color+'--text'">{{ slide.name }} </div>
+                <div :style="{color:slide.color}" class="display-3">{{ slide.name }} </div>
               </v-row>
           
           </v-carousel-item>

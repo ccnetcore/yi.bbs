@@ -61,10 +61,14 @@ namespace CC.Yi.API.Controllers
             return Result.Success();
         }
 
-        [HttpGet]//得到当前登录的用户
-        public async Task<Result> getUserByUserId()
+        [HttpGet]//得到该id的用户(如果没有传值，就返回当前用户的值)
+        public async Task<Result> getUserByUserId(int userId)
         {
-            var data = await _userBll.GetEntities(u => u.id == _user.id).AsNoTracking(). FirstOrDefaultAsync();
+            if (userId == 0)
+            {
+                userId = _user.id;
+            }
+            var data = await _userBll.GetEntities(u => u.id == userId).AsNoTracking(). FirstOrDefaultAsync();
             data.password = "";
             return Result.Success().SetData(data);
         }

@@ -6,9 +6,12 @@ export default {
             method: 'get'
         })
     },
-    getUserByUserId() {
+    getUserByUserId(userId) {
+        if (userId == undefined) {
+            userId = 0;
+        }
         return myaxios({
-            url: '/User/getUserByUserId',
+            url: `/User/getUserByUserId?userId=${userId}`,
             method: 'get'
         })
     },

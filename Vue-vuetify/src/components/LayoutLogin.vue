@@ -10,7 +10,7 @@
           class="white d-none d-sm-flex text-center"
         >
           <div style="width:100%">
-            <h1 class="light-blue--text mt-8">服装交流平台</h1>
+            <h1 class="light-blue--text mt-8">意论坛BBS</h1>
                          <p class="my-4 title">clothing communication platform</p>
             <p class="my-4 title">欢迎！在这里，我们无所不谈！</p>
 

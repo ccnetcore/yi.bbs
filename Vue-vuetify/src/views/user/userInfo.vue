@@ -18,7 +18,24 @@
     </v-tabs>
     <v-card>
       <v-tabs-items v-model="tab">
-        <v-tab-item v-for="i in 3" :key="i" :value="'tab-' + i">
+<v-tab-item :value="'tab-3'">
+    <v-card class="mx-auto">
+            <v-card-text>
+              <div>Discuss Information</div>
+              <v-row>
+                  <v-card-actions>
+                    <v-btn dark color="cyan" class="mr-2" @click="intoMyDiscuss()">
+                      查看主题
+                    </v-btn>
+                  </v-card-actions>
+               
+              </v-row>
+            </v-card-text>
+          </v-card>
+</v-tab-item>
+
+
+        <v-tab-item  :value="'tab-1'">
           <v-card class="mx-auto">
             <v-card-text>
               <div>Basic Information</div>
@@ -34,7 +51,7 @@
                     @change="uploadImage()"
                     class="d-none"
                   />
-                  <v-btn dark color="cyan" @click="choiceImg" class="mt-4">
+                  <v-btn v-if="my" dark color="cyan" @click="choiceImg" class="mt-4">
                     编辑
                   </v-btn>
                 </v-col>
@@ -50,9 +67,12 @@
                     required
                     :counter="10"
                     label="昵称"
+                    
+                    :disabled="!my"
                   ></v-text-field>
 
                   <v-divider class="my-8"></v-divider>
+                  <div  v-if="my">
                   <p>修改密码</p>
                   <v-text-field
                     v-model="form.password"
@@ -73,11 +93,16 @@
                     </v-btn>
                     <v-btn dark color="cyan" @click="send()"> 保存 </v-btn>
                   </v-card-actions>
+                  </div>
                 </v-col>
               </v-row>
             </v-card-text>
           </v-card>
         </v-tab-item>
+
+
+
+
       </v-tabs-items>
     </v-card>
   </div>
@@ -89,9 +114,10 @@ import axios from "axios";
 export default {
   data() {
     return {
-      baseurl: "",///prod-apis或发展模式的基础前缀
-      imgurl: "",///baseurl+图片名
-      en_new: true,//密码框是否能输入
+      my: false, //判定打开的是否是自己的用户
+      baseurl: "", ///prod-apis或发展模式的基础前缀
+      imgurl: "", ///baseurl+图片名
+      en_new: true, //密码框是否能输入
       form: {
         username: "",
         password: "",
@@ -147,21 +173,37 @@ export default {
           },
         })
         .then((resp) => {
-          this.imgurl = resp.data.data[0].url.replace("#",this.baseurl);;
-          
-          const stringList=this.imgurl.split("=")
+          this.imgurl = resp.data.data[0].url.replace("#", this.baseurl);
+
+          const stringList = this.imgurl.split("=");
           this.form.icon = stringList[1];
-
-        
-
         });
     },
+    intoMyDiscuss()
+    {
+         this.$router.push({
+          path: `/myDiscuss`,
+　　　　　　query:{
+　　　　　　　　userId:this.$route.query.userId
+　　　　　　}
+        })
+    },
     initializa() {
-      userApi.getUserByUserId().then((resp) => {
+   
+      if (this.$route.query.userId==undefined||this.$route.query.userId == this.$store.state.user.user.id) {
+        //表示是自己的用户
+        this.my = true;
+
+      }
+
+
+
+      userApi.getUserByUserId(this.$route.query.userId).then((resp) => {
         this.form.username = resp.data.username;
         this.form.icon = resp.data.icon;
 
-        this.imgurl=this.baseurl+'/File/ShowNoticeImg?filePath='+this.form.icon;
+        this.imgurl =
+          this.baseurl + "/File/ShowNoticeImg?filePath=" + this.form.icon;
       });
     },
     clear() {
@@ -173,12 +215,9 @@ export default {
     send() {
       userApi.tryUpdateUser(this.form).then((resp) => {
         if (resp.status) {
+          //同时更新一下store
 
-  //同时更新一下store
-
-           this.$store.dispatch("setIcon",this.form.icon);
-
-
+          this.$store.dispatch("setIcon", this.form.icon);
 
           this.$dialog.notify.success(resp.msg, {
             position: "top-right",

@@ -73,17 +73,19 @@ namespace CC.Yi.API.Controllers
             return Result.Success().SetData(discussList);
         }
 
-        [HttpGet]//根据用户id得到全部主题(有效)
-        public async Task<Result> getDiscussByUserId( int pageIndex)
+        [HttpGet]//根据用户id得到全部主题(有效),如果没有传入用户，那就默认自己已登录用户
+        public async Task<Result> getDiscussByUserId(int userId, int pageIndex)
         {
-            //var myPlate = await _plateBll.GetEntities(u =>   == plateId).Include(u => u.discusses).ThenInclude(u => u.user).FirstOrDefaultAsync();
-            var myDiscuss = await _discussBll.GetEntities(u => u.user.id == _user.id && u.is_delete == delFlagNormal).Include(u=>u.user).Include(u=>u.plate) .ToListAsync();
+            if (userId == 0)
+            {
+                userId = _user.id;
+            }
+            var myDiscuss = await _discussBll.GetEntities(u => u.user.id == userId && u.is_delete == delFlagNormal).Include(u=>u.user).Include(u=>u.plate) .ToListAsync();
             //数据筛选
             var dataFilter = (from r in myDiscuss
                         select new
                         {
                             r.id,
-                            r.content,
                             r.time,
                             r.title,
                             r.type,
@@ -126,7 +128,7 @@ namespace CC.Yi.API.Controllers
                                   r.time,
                                   r.title,
                                   r.type,
-                                  user = new { r.user?.username, r.user?.icon }
+                                  user = new {r.user?.id,  r.user?.username, r.user?.icon }
                               }).ToList();
 
 
@@ -151,7 +153,7 @@ namespace CC.Yi.API.Controllers
             }
             var data = await _discussBll.GetEntities(u => u.id == discussId).Include(u => u.user).FirstOrDefaultAsync();
 
-            return Result.Success().SetData(new { data.id,data.introduction,data.content,data.time,data.title,data.agree_num, user=new {data.user?.username,data.user?.icon } });
+            return Result.Success().SetData(new { data.id,data.introduction,data.content,data.time,data.title,data.agree_num, user=new {data.user?.id, data.user?.username,data.user?.icon } });
         }
 
         [Authorize(Policy = "发布主题")]

@@ -27,7 +27,7 @@
                 link
                 @click="intoAdd"
               >
-                <v-list-item-icon>
+                <v-list-item-icon >
                   <v-icon>{{ myitem.icon }}</v-icon>
                 </v-list-item-icon>
 
@@ -65,7 +65,7 @@
                 <v-expansion-panel-header>
                   <v-row align="center" class="spacer" no-gutters>
                     <v-col cols="2" sm="1" md="1">
-                      <v-avatar size="36px">
+                      <v-avatar size="36px " @click="intoInfo(item.user.id)">
                         <img
                           alt="Avatar"
                           :src="
@@ -186,6 +186,15 @@ export default {
           });
         }
       });
+    },
+    intoInfo(userId)
+    {
+              this.$router.push({
+          path: `/userInfo`,
+　　　　　　query:{
+　　　　　　　　userId:userId
+　　　　　　}
+        })
     },
     initializa() {
       //初始化创建
