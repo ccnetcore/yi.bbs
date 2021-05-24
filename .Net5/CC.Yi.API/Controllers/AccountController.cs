@@ -31,6 +31,8 @@ namespace CC.Yi.API.Controllers
             _logger = logger;
         }
 
+      
+
         [HttpPost]//验证登录
         public async Task<Result> login(user myUser)
         {
@@ -43,37 +45,38 @@ namespace CC.Yi.API.Controllers
                     //HttpContext.Session.SetString("loginId", JsonHelper.ToString(_info_user));
                     _logger.LogInformation("登录成功!");
 
-                    //通过查询权限，把所有权限加入进令牌中
-                    List<Claim> claims = new List<Claim>();
-                    claims.Add(new Claim(JwtRegisteredClaimNames.Nbf, $"{new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds()}"));
-                    claims.Add(new Claim(JwtRegisteredClaimNames.Exp, $"{new DateTimeOffset(DateTime.Now.AddMinutes(30)).ToUnixTimeSeconds()}"));
-                    claims.Add(new Claim(ClaimTypes.Name, data.username));
-                    claims.Add(new Claim("Id", data.id.ToString()));
+                   return await _userBll.login(data);
+                   // //通过查询权限，把所有权限加入进令牌中
+                   // List<Claim> claims = new List<Claim>();
+                   // claims.Add(new Claim(JwtRegisteredClaimNames.Nbf, $"{new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds()}"));
+                   // claims.Add(new Claim(JwtRegisteredClaimNames.Exp, $"{new DateTimeOffset(DateTime.Now.AddMinutes(30)).ToUnixTimeSeconds()}"));
+                   // claims.Add(new Claim(ClaimTypes.Name, data.username));
+                   // claims.Add(new Claim("Id", data.id.ToString()));
 
-                   var actions = await _userBll.getActionByUserId(data.id);
+                   //var actions = await _userBll.getActionByUserId(data.id);
 
-                    foreach (var k in actions)
-                    {
-                        claims.Add(new Claim("action", k.action_name));
-                    }
-
-
+                   // foreach (var k in actions)
+                   // {
+                   //     claims.Add(new Claim("action", k.action_name));
+                   // }
 
 
-                    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtConst.SecurityKey));
-                    var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-                    var token = new JwtSecurityToken(
-                        issuer: JwtConst.Domain,
-                        audience: JwtConst.Domain,
-                        claims: claims,
-                        expires: DateTime.Now.AddMinutes(30),
-                        signingCredentials: creds);
-                    _logger.LogInformation("登录成功!");
-                    var tokenData = new JwtSecurityTokenHandler().WriteToken(token);
+
+                   // var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtConst.SecurityKey));
+                   // var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+                   // var token = new JwtSecurityToken(
+                   //     issuer: JwtConst.Domain,
+                   //     audience: JwtConst.Domain,
+                   //     claims: claims,
+                   //     expires: DateTime.Now.AddMinutes(30),
+                   //     signingCredentials: creds);
+                   // _logger.LogInformation("登录成功!");
+                   // var tokenData = new JwtSecurityTokenHandler().WriteToken(token);
 
                  
-                    return Result.Success("登录成功!").SetData(new { token = tokenData,user=new { id=data.id,username=data.username,level=data.user_extra.level,icon=data.icon } });
+                   // return Result.Success("登录成功!").SetData(new { token = tokenData,user=new { id=data.id,username=data.username,level=data.user_extra.level,icon=data.icon } });
                 }
             }
 
@@ -96,7 +99,11 @@ namespace CC.Yi.API.Controllers
             {
                 user_extra user_Extra = new user_extra();
                 myUser.user_extra = user_Extra;
+
+                myUser.icon = "ea017c40-9205-4541-8cd4-f23e036f7795.jpg";
                 var data = _userBll.Add(myUser);
+
+                
                var roleData= await _roleBll.GetEntities(u => u.role_name == "普通用户").FirstOrDefaultAsync();
                 
                 await _userBll.setRole(data.id, new List<int> { roleData.id});

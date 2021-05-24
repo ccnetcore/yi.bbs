@@ -14,7 +14,7 @@ module.exports = {
                 pathRewrite: {
                     ['^' + process.env.VUE_APP_BASE_API]: ''
                 }
-            }
+            },
         }
     },
     lintOnSave: false, //关闭格式检查

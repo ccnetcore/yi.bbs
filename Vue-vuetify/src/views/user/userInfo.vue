@@ -18,24 +18,27 @@
     </v-tabs>
     <v-card>
       <v-tabs-items v-model="tab">
-<v-tab-item :value="'tab-3'">
-    <v-card class="mx-auto">
+        <v-tab-item :value="'tab-3'">
+          <v-card class="mx-auto">
             <v-card-text>
               <div>Discuss Information</div>
               <v-row>
-                  <v-card-actions>
-                    <v-btn dark color="cyan" class="mr-2" @click="intoMyDiscuss()">
-                      查看主题
-                    </v-btn>
-                  </v-card-actions>
-               
+                <v-card-actions>
+                  <v-btn
+                    dark
+                    color="cyan"
+                    class="mr-2"
+                    @click="intoMyDiscuss()"
+                  >
+                    查看主题
+                  </v-btn>
+                </v-card-actions>
               </v-row>
             </v-card-text>
           </v-card>
-</v-tab-item>
+        </v-tab-item>
 
-
-        <v-tab-item  :value="'tab-1'">
+        <v-tab-item :value="'tab-1'">
           <v-card class="mx-auto">
             <v-card-text>
               <div>Basic Information</div>
@@ -51,8 +54,24 @@
                     @change="uploadImage()"
                     class="d-none"
                   />
-                  <v-btn v-if="my" dark color="cyan" @click="choiceImg" class="mt-4">
-                    编辑
+                  <v-btn
+                    v-if="my"
+                    dark
+                    color="cyan"
+                    @click="choiceImg"
+                    class="mt-4 mx-2"
+                  >
+                    编辑头像
+                  </v-btn>
+
+                  <v-btn
+                    v-if="my"
+                    dark
+                    color="cyan"
+                    class="mt-4"
+                    @click="qqUpdate"
+                  >
+                    绑定QQ
                   </v-btn>
                 </v-col>
                 <v-col cols="12" md="6">
@@ -63,53 +82,48 @@
                   ></v-text-field>
 
                   <v-text-field
-                    v-model="form.username"
+                    v-model="form.nick"
                     required
                     :counter="10"
                     label="昵称"
-                    
                     :disabled="!my"
                   ></v-text-field>
 
                   <v-divider class="my-8"></v-divider>
-                  <div  v-if="my">
-                  <p>修改密码</p>
-                  <v-text-field
-                    v-model="form.password"
-                    label="原密码"
-                    outlined
-                    clearable
-                  ></v-text-field>
-                  <v-text-field
-                    v-model="form.password_new"
-                    required
-                    :counter="120"
-                    label="新密码"
-                    :disabled="en_new"
-                  ></v-text-field>
-                  <v-card-actions>
-                    <v-btn dark color="cyan" class="mr-2" @click="clear()">
-                      清除
-                    </v-btn>
-                    <v-btn dark color="cyan" @click="send()"> 保存 </v-btn>
-                  </v-card-actions>
+                  <div v-if="my">
+                    <p>修改密码</p>
+                    <v-text-field
+                      v-model="form.password"
+                      label="原密码"
+                      outlined
+                      clearable
+                    ></v-text-field>
+                    <v-text-field
+                      v-model="form.password_new"
+                      required
+                      :counter="120"
+                      label="新密码"
+                      :disabled="en_new"
+                    ></v-text-field>
+                    <v-card-actions>
+                      <v-btn dark color="cyan" class="mr-2" @click="clear()">
+                        清除
+                      </v-btn>
+                      <v-btn dark color="cyan" @click="send()"> 保存 </v-btn>
+                    </v-card-actions>
                   </div>
                 </v-col>
               </v-row>
             </v-card-text>
           </v-card>
         </v-tab-item>
-
-
-
-
       </v-tabs-items>
     </v-card>
   </div>
 </template>
 <script>
 import userApi from "@/api/userApi";
-
+import myqq from "../../utils/myqq";
 import axios from "axios";
 export default {
   data() {
@@ -158,12 +172,14 @@ export default {
     // uploadImage：发送图片过去，这个要绑定要@change上，当有东西改变
 
     // 通过ref获取文件，然后通过axios发送文件给后端，后端返回一个回调地址，前端解析一下换成图片和文件名
-
+    qqUpdate() {
+      QC.Login.showPopup(myqq.myqqUpdate);
+    },
     choiceImg() {
-      this.$refs.imgFile[0].dispatchEvent(new MouseEvent("click"));
+      this.$refs.imgFile.dispatchEvent(new MouseEvent("click"));
     },
     uploadImage() {
-      const file = this.$refs.imgFile[0].files[0];
+      const file = this.$refs.imgFile.files[0];
       let formData = new FormData();
       formData.append("img", file);
       axios
@@ -179,24 +195,22 @@ export default {
           this.form.icon = stringList[1];
         });
     },
-    intoMyDiscuss()
-    {
-         this.$router.push({
-          path: `/myDiscuss`,
-　　　　　　query:{
-　　　　　　　　userId:this.$route.query.userId
-　　　　　　}
-        })
+    intoMyDiscuss() {
+      this.$router.push({
+        path: `/myDiscuss`,
+        query: {
+          userId: this.$route.query.userId,
+        },
+      });
     },
     initializa() {
-   
-      if (this.$route.query.userId==undefined||this.$route.query.userId == this.$store.state.user.user.id) {
+      if (
+        this.$route.query.userId == undefined ||
+        this.$route.query.userId == this.$store.state.user.user.id
+      ) {
         //表示是自己的用户
         this.my = true;
-
       }
-
-
 
       userApi.getUserByUserId(this.$route.query.userId).then((resp) => {
         this.form.username = resp.data.username;

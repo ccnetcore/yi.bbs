@@ -53,7 +53,7 @@
       登入
     </v-btn>
     <p class="my-2">或使用登录</p>
-    <v-btn dark class="my-2 cyan" @click="login" id="qqLoginBtn" large style="width: 100%">
+    <v-btn dark class="my-2 cyan" @click="qqlogin" large style="width: 100%">
       <v-icon class="mx-2"> mdi-qqchat </v-icon>
       QQ
     </v-btn>
@@ -65,6 +65,7 @@
   </v-card>
 </template>
 <script>
+import myqq from "../utils/myqq";
 export default {
   data: () => ({
     valid: true,
@@ -73,11 +74,6 @@ export default {
       (v) => !!v || "用户名不能为空",
       (v) => (v && v.length <= 20) || "用户名必须小于20个字符",
     ],
-    //   email: '',
-    //   emailRules: [
-    //     v => !!v || 'E-mail is required',
-    //     v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
-    //   ],
     password: "",
     passwordRules: [
       (v) => !!v || "密码不能为空",
@@ -87,6 +83,10 @@ export default {
     checkbox: true,
   }),
   methods: {
+    qqlogin() {
+      QC.Login.showPopup(myqq.myqqLogin);
+      // window.close();
+    },
     login() {
       if (this.$refs.form.validate()) {
         this.$store
@@ -95,15 +95,20 @@ export default {
             password: this.password,
           })
           .then((resp) => {
-            this.$router.push("/");
+            if (resp.status) {
+              this.$router.push("/");
+            } else {
+              this.$dialog.notify.error(resp.msg, {
+                position: "top-right",
+                timeout: 5000,
+              });
+            }
           });
-      }
-      else
-      {
-           this.$dialog.notify.error("请合理输入数据", {
-            position: "top-right",
-            timeout: 5000,
-          });
+      } else {
+        this.$dialog.notify.error("请合理输入数据", {
+          position: "top-right",
+          timeout: 5000,
+        });
       }
     },
     reset() {

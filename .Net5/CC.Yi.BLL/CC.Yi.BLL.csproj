@@ -11,6 +11,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Microsoft.IdentityModel.Tokens">
+      <HintPath>..\..\..\..\..\Nuget\Package\microsoft.identitymodel.tokens\6.7.1\lib\netstandard2.0\Microsoft.IdentityModel.Tokens.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IdentityModel.Tokens.Jwt">
+      <HintPath>..\..\..\..\..\Nuget\Package\system.identitymodel.tokens.jwt\6.7.1\lib\netstandard2.0\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="T4BLL.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>T4BLL.cs</LastGenOutput>

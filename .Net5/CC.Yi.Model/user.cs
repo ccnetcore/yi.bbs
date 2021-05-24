@@ -13,6 +13,8 @@ namespace CC.Yi.Model
         public string username { get; set; }
         public string password { get; set; }
         public string icon { get; set; }
+        public string nick { get; set; }
+        public string openid { get; set; }
 
         public user_extra user_extra { get; set; }
 

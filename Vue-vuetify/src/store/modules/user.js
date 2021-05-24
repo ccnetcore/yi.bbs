@@ -1,5 +1,6 @@
 import { getToken, setToken, getUser, setUser, removeToken } from '../../utils/usertoken'
 import accountApi from "@/api/accountApi"
+import qqApi from "@/api/qqApi"
 //再导入axion请求
 const state = { //状态
     token: getToken(),
@@ -34,17 +35,47 @@ const actions = { //动作
         commit('SET_USER', state.user)
     },
 
-    Login({ commit }, form) {
+    qqUpdate({ state }, openid) {
         return new Promise((resolv, reject) => {
-            accountApi.login(form.username.trim(), form.password.trim()).then(resp => {
-                commit('SET_TOKEN', resp.data.token)
-                commit('SET_USER', resp.data.user)
+            qqApi.qqupdate(openid, state.user.id).then(resp => {
                 resolv(resp)
             }).catch(error => {
                 reject(error)
             })
         })
     },
+
+    qqLogin({ commit }, openid) {
+        return new Promise((resolv, reject) => {
+            qqApi.qqlogin(openid).then(resp => {
+                if (resp.status) {
+                    commit('SET_TOKEN', resp.data.token)
+                    commit('SET_USER', resp.data.user)
+                }
+                resolv(resp)
+            }).catch(error => {
+                reject(error)
+            })
+        })
+    },
+
+    Login({ commit }, form) {
+        return new Promise((resolv, reject) => {
+            accountApi.login(form.username.trim(), form.password.trim()).then(resp => {
+                if (resp.status) {
+                    commit('SET_TOKEN', resp.data.token)
+                    commit('SET_USER', resp.data.user)
+                }
+
+                resolv(resp)
+            }).catch(error => {
+                reject(error)
+            })
+        })
+    },
+
+
+
     Register({ commit }, form) {
         return new Promise((resolv, reject) => {
             accountApi.register(form.username.trim(), form.password.trim()).then(resp => {

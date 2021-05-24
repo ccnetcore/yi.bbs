@@ -78,9 +78,9 @@ namespace CC.Yi.API
                            ValidateIssuer = true,//是否验证Issuer
                            ValidateAudience = true,//是否验证Audience
                            ValidateLifetime = true,//是否验证失效时间
-                           //ClockSkew = TimeSpan.FromDays(1),
-                    
-                           ClockSkew=TimeSpan.FromMinutes(1),
+                           ClockSkew = TimeSpan.FromDays(1),
+
+
                            ValidateIssuerSigningKey = true,//是否验证SecurityKey
                            ValidAudience = JwtConst.Domain,//Audience
                            ValidIssuer = JwtConst.Domain,//Issuer，这两项和前面签发jwt的设置一致

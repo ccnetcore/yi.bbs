@@ -1,10 +1,15 @@
-﻿using CC.Yi.IBLL;
+﻿using CC.Yi.Common;
+using CC.Yi.Common.Jwt;
+using CC.Yi.IBLL;
 using CC.Yi.Model;
 using CC.Yi.ViewModel;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -68,6 +73,38 @@ namespace CC.Yi.BLL
                 user.actions.Add(k);
             }
             return Db.SaveChanges() > 0;
+        }
+
+
+        //已经从数据库中查找到的数据data  这里是登录操作
+        public async Task<Result> login(user data)
+        {
+            //通过查询权限，把所有权限加入进令牌中
+            List<Claim> claims = new List<Claim>();
+            claims.Add(new Claim(JwtRegisteredClaimNames.Nbf, $"{new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds()}"));
+            claims.Add(new Claim(JwtRegisteredClaimNames.Exp, $"{new DateTimeOffset(DateTime.Now.AddMinutes(30)).ToUnixTimeSeconds()}"));
+            claims.Add(new Claim(ClaimTypes.Name, data.username));
+            claims.Add(new Claim("Id", data.id.ToString()));
+
+            var actions = await getActionByUserId(data.id);
+
+            foreach (var k in actions)
+            {
+                claims.Add(new Claim("action", k.action_name));
+            }
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtConst.SecurityKey));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                issuer: JwtConst.Domain,
+                audience: JwtConst.Domain,
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(30),
+                signingCredentials: creds);
+            var tokenData = new JwtSecurityTokenHandler().WriteToken(token);
+            return Result.Success("登录成功!").SetData(new { token = tokenData, user = new { id = data.id, username = data.username, level = data.user_extra.level, icon = data.icon } });
+
         }
     }
 }

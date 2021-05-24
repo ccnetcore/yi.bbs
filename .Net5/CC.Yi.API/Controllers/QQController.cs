@@ -22,39 +22,44 @@ namespace CC.Yi.API.Controllers
     {
 
         private ILogger<PlateController> _logger;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        public QQController(ILogger<PlateController> logger, IHttpContextAccessor httpContextAccessor)
+        private IuserBll _userBll;
+        public QQController(ILogger<PlateController> logger,IuserBll userBll)
         {
-            _httpContextAccessor = httpContextAccessor;
+            _userBll = userBll;
             _logger = logger;
         }
-
-        [HttpGet("signin-callback")]
-        public async Task<IActionResult> Home(string provider, string redirectUrl = "")
+        [HttpGet]
+        public async Task<Result> qqlogin(string openid)
         {
+            // string oauth_consumer_key = "101951505";
+            //string p=HttpHelper.HttpGet($"https://graph.qq.com/user/get_user_info?access_token={access_token}&oauth_consumer_key={oauth_consumer_key}&openid={openid}");
+            var user = await _userBll.GetEntities(u => u.openid == openid && u.is_delete == (short)ViewModel.Enum.DelFlagEnum.Normal).Include(u => u.user_extra).FirstOrDefaultAsync();
+            if ( user!=null)
+            {
 
-            AuthenticateResult authenticateResult = await _httpContextAccessor.HttpContext.AuthenticateAsync(provider);
-            if (!authenticateResult.Succeeded) return Redirect(redirectUrl);
-            var openIdClaim = authenticateResult.Principal.FindFirst(ClaimTypes.NameIdentifier);
-            if (openIdClaim == null || string.IsNullOrWhiteSpace(openIdClaim.Value))
-                return Redirect(redirectUrl);
+                _logger.LogInformation("QQ登录成功");
+            return   await _userBll.login(user);
 
+            }
+            _logger.LogInformation("QQ登录失败");
+            return Result.Error("请注册账号，进入个人信息中绑定");
+        }
 
-            ClaimsPrincipal principal = authenticateResult.Principal;
-
-            string nickname = principal.FindFirst(ClaimTypes.Name)?.Value;
-            string gender = principal.FindFirst(ClaimTypes.Gender)?.Value;
-            string picture = principal.FindFirst(QQAuthenticationConstants.Claims.PictureUrl)?.Value;
-            string picture_medium = principal.FindFirst(QQAuthenticationConstants.Claims.PictureMediumUrl)?.Value;
-            string picture_full = principal.FindFirst(QQAuthenticationConstants.Claims.PictureFullUrl)?.Value;
-            string avatar = principal.FindFirst(QQAuthenticationConstants.Claims.AvatarUrl)?.Value;
-            string avatar_full = principal.FindFirst(QQAuthenticationConstants.Claims.AvatarFullUrl)?.Value;
-            //根据provider，处理用户的基础信息，
-
-            //long id = SaveQQAsync(principal, openIdClaim.Value)
-
-
-            return Ok("true");
+        [HttpGet]
+        public async Task<Result> qqUpdate(string openid,int userId)
+        {
+            //先判断openid是否被人注册，另外，userId是否存在
+            if (await _userBll.GetEntities(u => u.openid == openid).CountAsync() == 0)
+            {
+               var myUser= await _userBll.GetEntityById(userId);
+                myUser.openid = openid;
+                _userBll.Update(myUser);
+                return Result.Success("QQ绑定成功");
+            }
+            else
+            {
+                return Result.Error("该qq账号已被绑定");
+            }
         }
     }
 }

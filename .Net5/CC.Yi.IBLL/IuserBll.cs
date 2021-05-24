@@ -1,4 +1,5 @@
-﻿using CC.Yi.Model;
+﻿using CC.Yi.Common;
+using CC.Yi.Model;
 using CC.Yi.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -23,5 +24,10 @@ namespace CC.Yi.IBLL
         //给用户设置特殊权限
         #endregion
         Task<bool> setSpecialAction(int userId, List<int> actionIds);
+
+        #region
+        //登录的通用方法
+        #endregion
+        Task<Result> login(user data);
     }
 }
