@@ -1,4 +1,5 @@
 ﻿using CC.Yi.Common;
+using CC.Yi.Common.Cache;
 using CC.Yi.Common.Jwt;
 using CC.Yi.IBLL;
 using CC.Yi.Model;
@@ -91,25 +92,68 @@ namespace CC.Yi.API.Controllers
             return Result.Success("成功退出！");
         }
 
-        [HttpPost]//注册
-        public async Task<Result> Register(user myUser)
+
+        [HttpGet]//邮箱验证
+        public async  Task<Result> Email(string emailAddress)
         {
+            emailAddress= emailAddress.Trim().ToLower();
+            //先判断邮箱是否被注册使用过，如果被使用过，便不让操作
+            if (!await _userBll.mail_exist(emailAddress))
+            {
+                string code = RandomHelper.GenerateRandomLetter(6);
+                code = code.ToUpper();//全部转为大写
+                EmailHelper.sendMail("江西服装学院论坛账号注册验证码", code, emailAddress);
+
+                //我要把邮箱和对应的code加进到数据库，还有申请时间
+                //设置10分钟过期
+                //set不存在便添加，如果存在便替换
+                CacheHelper.SetCache<string>(emailAddress, code, DateTime.Now.AddMinutes(10));
+
+                return Result.Success("发送邮件成功，请查看邮箱（可能在垃圾箱）");
+            }
+            else
+            {
+                return Result.Error("该邮箱已被注册");
+            }
+           
+          //  邮箱和验证码都要被记住，然后注册时候比对邮箱和验证码是不是都和现在生成的一样
+        }
+
+        [HttpPost]//注册
+        public async Task<Result> Register(user myUser,string code)
+        {
+            code = code.Trim().ToUpper();
+            //先判断用户名是否存在，如果不存在便开始比对邮箱和验证码
             var user = await _userBll.GetEntities(u => u.username == myUser.username).CountAsync();
             if (user==0)
             {
-                user_extra user_Extra = new user_extra();
-                myUser.user_extra = user_Extra;
 
-                myUser.icon = "ea017c40-9205-4541-8cd4-f23e036f7795.jpg";
-                var data = _userBll.Add(myUser);
+               string true_code= CacheHelper.GetCache<string>(myUser.email);
+                //如果邮箱和验证码比对都成功，再给它往下走，否则直接返回验证码或邮箱错误
+                if (true_code == code)//现在表示邮箱和验证码正确，并且用户名也并未注册，即可进入注册
+                {
+                    user_extra user_Extra = new user_extra();
+                    myUser.user_extra = user_Extra;
 
-                
-               var roleData= await _roleBll.GetEntities(u => u.role_name == "普通用户").FirstOrDefaultAsync();
-                
-                await _userBll.setRole(data.id, new List<int> { roleData.id});
-    
-                _logger.LogInformation("注册成功!");
-                return Result.Success("注册成功！");
+                    
+                    myUser.icon = "ea017c40-9205-4541-8cd4-f23e036f7795.jpg";
+                    var data = _userBll.Add(myUser);
+
+
+                    var roleData = await _roleBll.GetEntities(u => u.role_name == "普通用户").FirstOrDefaultAsync();
+
+                    await _userBll.setRole(data.id, new List<int> { roleData.id });
+
+                    _logger.LogInformation("注册成功!");
+                    return Result.Success("注册成功！");
+                }
+                else
+                {
+                    _logger.LogInformation("注册成功!");
+                    return Result.Error("注册失败！邮箱验证码错误！请重试!");
+                }
+
+             
             }
             else
             {

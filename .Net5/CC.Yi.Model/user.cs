@@ -6,7 +6,7 @@ using System.Text;
 
 namespace CC.Yi.Model
 {
-    public class user:baseModel
+    public class user : baseModel
     {
 
         public DateTime? time { get; set; }
@@ -15,6 +15,7 @@ namespace CC.Yi.Model
         public string icon { get; set; }
         public string nick { get; set; }
         public string openid { get; set; }
+        public string email { get; set; }
 
         public user_extra user_extra { get; set; }
 

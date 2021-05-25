@@ -89,6 +89,13 @@
                     :disabled="!my"
                   ></v-text-field>
 
+                  <v-text-field
+                    v-model="form.email"
+                    required
+                    label="邮箱"
+                    disabled
+                  ></v-text-field>
+
                   <v-divider class="my-8"></v-divider>
                   <div v-if="my">
                     <p>修改密码</p>
@@ -137,6 +144,7 @@ export default {
         password: "",
         password_new: "",
         icon: "",
+        email:""
       },
       tab: null,
       picker: new Date().toISOString().substr(0, 10),
@@ -215,7 +223,7 @@ export default {
       userApi.getUserByUserId(this.$route.query.userId).then((resp) => {
         this.form.username = resp.data.username;
         this.form.icon = resp.data.icon;
-
+this.form.email=resp.data.email;
         this.imgurl =
           this.baseurl + "/File/ShowNoticeImg?filePath=" + this.form.icon;
       });

@@ -29,5 +29,10 @@ namespace CC.Yi.IBLL
         //登录的通用方法
         #endregion
         Task<Result> login(user data);
+
+        #region
+        //检测邮箱是否存在
+        #endregion
+        Task<bool> mail_exist(string mail);
     }
 }

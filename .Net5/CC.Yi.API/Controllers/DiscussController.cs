@@ -65,10 +65,15 @@ namespace CC.Yi.API.Controllers
             {
                 foreach (var p in k.discusses)
                 {
-                    p.plate = null;
-                    discussList.Add(p);
+                    if (p.is_delete == (short)delFlagNormal)
+                    {
+                        p.plate = null;
+                        discussList.Add(p);
+                    }
                 }
             }
+
+
 
             return Result.Success().SetData(discussList);
         }

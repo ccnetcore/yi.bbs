@@ -86,10 +86,6 @@ namespace CC.Yi.API
                            ValidIssuer = JwtConst.Domain,//Issuer，这两项和前面签发jwt的设置一致
                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtConst.SecurityKey))//拿到SecurityKey
                        };
-                   }).AddQQ(options =>
-                   {
-                       options.ClientId = Configuration["Authentication:QQ:ClientId"];
-                       options.ClientSecret = Configuration["Authentication:QQ:ClientSecret"];
                    });
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

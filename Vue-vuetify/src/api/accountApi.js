@@ -22,11 +22,17 @@ export default {
             method: 'post',
         })
     },
-    register(username, password) {
+    register(username, password, email, code) {
         return myaxios({
-            url: '/Account/register',
+            url: `/Account/register?code=${code}`,
             method: 'post',
-            data: { username, password }
+            data: { username, password, email }
+        })
+    },
+    email(emailAddress) {
+        return myaxios({
+            url: `/Account/email?emailAddress=${emailAddress}`,
+            method: 'get',
         })
     }
 

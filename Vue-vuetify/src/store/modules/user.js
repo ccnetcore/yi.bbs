@@ -78,7 +78,7 @@ const actions = { //动作
 
     Register({ commit }, form) {
         return new Promise((resolv, reject) => {
-            accountApi.register(form.username.trim(), form.password.trim()).then(resp => {
+            accountApi.register(form.username.trim(), form.password.trim(), form.email.trim(), form.code.trim()).then(resp => {
                 resolv(resp)
             }).catch(error => {
                 reject(error)

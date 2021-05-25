@@ -106,5 +106,11 @@ namespace CC.Yi.BLL
             return Result.Success("登录成功!").SetData(new { token = tokenData, user = new { id = data.id, username = data.username, level = data.user_extra.level, icon = data.icon } });
 
         }
+
+
+        public async Task<bool> mail_exist(string mail)//大于0表示邮箱已经被注册
+        {
+            return await CurrentDal.GetEntities(u => u.email == mail.Trim().ToLower()).CountAsync() > 0;
+        }
     }
 }

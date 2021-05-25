@@ -22,7 +22,18 @@ namespace CC.Yi.Common.Cache
 
         public bool AddCache<T>(string key, T value, DateTime expDate)
         {
-            return client.Add<T>(key, value, expDate);
+            try
+            {
+                using (client = new RedisClient(ip, port, pwd))
+                {
+                    return client.Add<T>(key, value, expDate);
+                }
+            }
+            catch
+            {
+
+                return false;
+            }
         }
 
         public bool AddCache<T>(string key, T value)
@@ -55,7 +66,17 @@ namespace CC.Yi.Common.Cache
 
         public bool SetCache<T>(string key, T value, DateTime expDate)
         {
-            return client.Set<T>(key, value, expDate);
+            try
+            {
+                using (client = new RedisClient(ip, port, pwd))
+                {
+                    return client.Set<T>(key, value, expDate);
+                }
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public bool SetCache<T>(string key, T value)
