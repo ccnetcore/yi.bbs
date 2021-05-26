@@ -122,6 +122,37 @@
                         label="密码"
                       ></v-text-field>
                     </v-col>
+
+                                        <v-col cols="12" sm="6" md="4">
+                      <v-text-field
+                        v-model="editedItem.icon"
+                        label="头像"
+                      ></v-text-field>
+                    </v-col>
+
+
+                                        <v-col cols="12" sm="6" md="4">
+                      <v-text-field
+                        v-model="editedItem.email"
+                        label="邮箱"
+                      ></v-text-field>
+                    </v-col>
+
+
+
+                                        <v-col cols="12" sm="6" md="4">
+                      <v-text-field
+                        v-model="editedItem.nick"
+                        label="昵称"
+                      ></v-text-field>
+                    </v-col>
+
+                                                            <v-col cols="12" sm="6" md="4">
+                      <v-text-field
+                        v-model="editedItem.openId"
+                        label="QQid"
+                      ></v-text-field>
+                    </v-col>
                   </v-row>
                 </v-container>
               </v-card-text>
@@ -206,6 +237,10 @@ export default {
       },
       { text: "用户名", value: "username", sortable: false },
       { text: "密码", value: "password", sortable: false },
+      { text: "头像", value: "icon", sortable: false },
+      { text: "昵称", value: "nick", sortable: false },
+      { text: "邮箱", value: "email", sortable: false },
+      { text: "QQId", value: "openid", sortable: false },
       { text: "操作", value: "actions", sortable: false },
     ],
     desserts: [],
@@ -214,10 +249,18 @@ export default {
     editedItem: {
       user_name: "",
       password: "",
+      icon:"",
+      nick:"",
+      email:"",
+      openid:""
     },
     defaultItem: {
       user_name: "",
       password: "",
+      icon:"",
+      nick:"",
+      email:"",
+      openid:""
     },
   }),
 

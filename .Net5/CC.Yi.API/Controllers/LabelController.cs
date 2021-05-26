@@ -63,6 +63,7 @@ namespace CC.Yi.API.Controllers
                                  r.introduction,
                                  r.time,
                                  r.title,
+                                 r.type,
                                  user = new { r.user?.icon, r.user?.username },
                                  plate = new { r.plate?.id}
                              };

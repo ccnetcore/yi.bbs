@@ -68,9 +68,9 @@ namespace CC.Yi.API.Controllers
             {
                 userId = _user.id;
             }
-            var data = await _userBll.GetEntities(u => u.id == userId).AsNoTracking(). FirstOrDefaultAsync();
-            data.password = "";
-            return Result.Success().SetData(data);
+            var data = await _userBll.GetEntities(u => u.id == userId).Include(u=>u.user_extra). FirstOrDefaultAsync();
+          
+            return Result.Success().SetData(new { data.id,data.email,data.icon,data.nick,data.username, extra = new { data.user_extra.experience,data.user_extra.level,data.user_extra.num_release,data.user_extra.num_reply} });
         }
 
         [Authorize(Policy = "用户管理")]
@@ -114,6 +114,10 @@ namespace CC.Yi.API.Controllers
             var user = await _userBll.GetEntities(u => u.id == _user.id).FirstOrDefaultAsync();
             user.username = _user.username;
             user.password = _user.password;
+            user.icon = _user.icon;
+            user.nick = _user.nick;
+            user.openid = _user.openid;
+            user.email = _user.email;
             _userBll.Update(user);
             return Result.Success(); 
         }

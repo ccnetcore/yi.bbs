@@ -8,31 +8,89 @@
 
       <v-tab href="#tab-2">
         额外信息
-        <v-icon>mdi-heart</v-icon>
-      </v-tab>
-
-      <v-tab href="#tab-3">
-        其他信息
         <v-icon>mdi-account-box</v-icon>
       </v-tab>
     </v-tabs>
     <v-card>
       <v-tabs-items v-model="tab">
-        <v-tab-item :value="'tab-3'">
+        <v-tab-item :value="'tab-2'">
           <v-card class="mx-auto">
             <v-card-text>
-              <div>Discuss Information</div>
+              <div>Extra Information</div>
               <v-row>
-                <v-card-actions>
-                  <v-btn
-                    dark
-                    color="cyan"
-                    class="mr-2"
-                    @click="intoMyDiscuss()"
-                  >
-                    查看主题
-                  </v-btn>
-                </v-card-actions>
+                <v-col cols="12">
+                  <v-list two-line>
+                    <v-list-item>
+                      <v-list-item-icon>
+                        <v-icon color="indigo"> mdi-phone </v-icon>
+                      </v-list-item-icon>
+
+                      <v-list-item-content>
+                        <v-list-item-title>等级：</v-list-item-title>
+                        <v-list-item-subtitle>{{form.extra.level}}</v-list-item-subtitle>
+                      </v-list-item-content>
+
+                      <v-list-item-icon>
+                        <v-icon>mdi-message-text</v-icon>
+                      </v-list-item-icon>
+                    </v-list-item>
+
+                    <v-list-item>
+                      <v-list-item-action></v-list-item-action>
+
+                      <v-list-item-content>
+                        <v-list-item-title>经验：</v-list-item-title>
+                        <v-list-item-subtitle>{{form.extra.experience}}</v-list-item-subtitle>
+                      </v-list-item-content>
+
+                      <v-list-item-icon>
+                        <v-icon>mdi-message-text</v-icon>
+                      </v-list-item-icon>
+                    </v-list-item>
+
+                    <v-divider inset></v-divider>
+
+                    <v-list-item>
+                      <v-list-item-icon>
+                        <v-icon color="indigo"> mdi-email </v-icon>
+                      </v-list-item-icon>
+
+                      <v-list-item-content>
+                        <v-list-item-title>发帖总数：</v-list-item-title>
+                        <v-list-item-subtitle>{{form.extra.num_release}}</v-list-item-subtitle>
+                      </v-list-item-content>
+                    </v-list-item>
+
+                    <v-list-item>
+                      <v-list-item-action></v-list-item-action>
+
+                      <v-list-item-content>
+                        <v-list-item-title>评论总数：</v-list-item-title>
+                        <v-list-item-subtitle>{{form.extra.num_reply}}</v-list-item-subtitle>
+                      </v-list-item-content>
+                    </v-list-item>
+
+                    <v-list-item>
+                      <v-list-item-action></v-list-item-action>
+                      <v-list-item-content>
+                        <v-btn
+                          dark
+                          color="cyan"
+                          @click="intoMyDiscuss()"
+                          class="ml-0"
+                          dense
+                        >
+                          查看主题
+                        </v-btn>
+                      </v-list-item-content>
+                    </v-list-item>
+                    <v-divider inset></v-divider>
+                  </v-list>
+                </v-col>
+
+                <v-col cols="12" md="2">
+                  <v-card-actions> </v-card-actions>
+                </v-col>
               </v-row>
             </v-card-text>
           </v-card>
@@ -106,7 +164,7 @@
                       clearable
                     ></v-text-field>
                     <v-text-field
-                      v-model="form.password_new"
+                      v-model="password_new"
                       required
                       :counter="120"
                       label="新密码"
@@ -139,12 +197,18 @@ export default {
       baseurl: "", ///prod-apis或发展模式的基础前缀
       imgurl: "", ///baseurl+图片名
       en_new: true, //密码框是否能输入
+      password_new: "",
       form: {
         username: "",
         password: "",
-        password_new: "",
         icon: "",
-        email:""
+        email: "",
+        extra:{
+          experience:0,
+          level:0,
+          num_reply:0,
+          num_release:0
+        }
       },
       tab: null,
       picker: new Date().toISOString().substr(0, 10),
@@ -221,9 +285,7 @@ export default {
       }
 
       userApi.getUserByUserId(this.$route.query.userId).then((resp) => {
-        this.form.username = resp.data.username;
-        this.form.icon = resp.data.icon;
-this.form.email=resp.data.email;
+        this.form = resp.data;
         this.imgurl =
           this.baseurl + "/File/ShowNoticeImg?filePath=" + this.form.icon;
       });
@@ -231,10 +293,12 @@ this.form.email=resp.data.email;
     clear() {
       this.form.username = "";
       this.form.password = "";
-      this.form.password_new = "";
+      this.password_new = "";
     },
 
     send() {
+
+      this.form.password_new=this.password_new;
       userApi.tryUpdateUser(this.form).then((resp) => {
         if (resp.status) {
           //同时更新一下store
