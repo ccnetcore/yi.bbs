@@ -68,7 +68,7 @@ v1.0.0------2021/5/12 (上传基础框架)
  - 安装 Visual Studio 2019
  - 安装.Net5（.Netcore 5.0）
 
-运行：使用 Visual Studio 2019启动sln文件，启动后端项目，另外，请确保将Assembly中的程序集替换到Bll层
+运行：使用 Visual Studio 2019启动sln文件，所有程序已经配置完成，一键启动后端项目
 #### 前端：
  - 安装 Node.js
  - 安装npm
