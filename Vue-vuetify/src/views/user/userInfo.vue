@@ -27,7 +27,7 @@
 
                       <v-list-item-content>
                         <v-list-item-title>等级：</v-list-item-title>
-                        <v-list-item-subtitle>{{form.extra.level}}</v-list-item-subtitle>
+                        <v-list-item-subtitle>{{form.user_extra.level}}</v-list-item-subtitle>
                       </v-list-item-content>
 
                       <v-list-item-icon>
@@ -40,7 +40,7 @@
 
                       <v-list-item-content>
                         <v-list-item-title>经验：</v-list-item-title>
-                        <v-list-item-subtitle>{{form.extra.experience}}</v-list-item-subtitle>
+                        <v-list-item-subtitle>{{form.user_extra.experience}}</v-list-item-subtitle>
                       </v-list-item-content>
 
                       <v-list-item-icon>
@@ -57,7 +57,7 @@
 
                       <v-list-item-content>
                         <v-list-item-title>发帖总数：</v-list-item-title>
-                        <v-list-item-subtitle>{{form.extra.num_release}}</v-list-item-subtitle>
+                        <v-list-item-subtitle>{{form.user_extra.num_release}}</v-list-item-subtitle>
                       </v-list-item-content>
                     </v-list-item>
 
@@ -66,7 +66,7 @@
 
                       <v-list-item-content>
                         <v-list-item-title>评论总数：</v-list-item-title>
-                        <v-list-item-subtitle>{{form.extra.num_reply}}</v-list-item-subtitle>
+                        <v-list-item-subtitle>{{form.user_extra.num_reply}}</v-list-item-subtitle>
                       </v-list-item-content>
                     </v-list-item>
 
@@ -154,6 +154,14 @@
                     disabled
                   ></v-text-field>
 
+                  <v-text-field
+                    v-model="form.user_extra.introduction"
+                    required
+                    label="简介"
+                    :counter="50"
+                    :disabled="!my"
+                  ></v-text-field>
+
                   <v-divider class="my-8"></v-divider>
                   <div v-if="my">
                     <p>修改密码</p>
@@ -203,8 +211,9 @@ export default {
         password: "",
         icon: "",
         email: "",
-        extra:{
+        user_extra:{
           experience:0,
+          introduction:"",
           level:0,
           num_reply:0,
           num_release:0
@@ -294,6 +303,7 @@ export default {
       this.form.username = "";
       this.form.password = "";
       this.password_new = "";
+      this.form.user_extra.introduction="";
     },
 
     send() {

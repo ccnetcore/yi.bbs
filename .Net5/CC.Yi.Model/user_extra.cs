@@ -10,6 +10,7 @@ namespace CC.Yi.Model
     {
         public int experience { get; set; }
         public int level { get; set; }
+        public string introduction { get; set; }
         public int num_reply { get; set; }//总共回复数
         public int num_release { get; set; }//总共发帖数
     }

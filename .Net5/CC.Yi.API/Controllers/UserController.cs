@@ -3,6 +3,7 @@ using CC.Yi.IBLL;
 using CC.Yi.Model;
 using CC.Yi.ViewModel;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -21,10 +22,12 @@ namespace CC.Yi.API.Controllers
         private readonly ILogger<UserController> _logger;//处理日志相关文件
 
         private IuserBll _userBll;
-        public UserController(ILogger<UserController> logger, IuserBll userBll)
+        private IHttpContextAccessor _httpContext;
+        public UserController(ILogger<UserController> logger, IHttpContextAccessor httpContext, IuserBll userBll)
         {
             _logger = logger;
             _userBll = userBll;
+            _httpContext = httpContext;
         }
 
         [Authorize(Policy = "用户管理")]
@@ -70,7 +73,7 @@ namespace CC.Yi.API.Controllers
             }
             var data = await _userBll.GetEntities(u => u.id == userId).Include(u=>u.user_extra). FirstOrDefaultAsync();
           
-            return Result.Success().SetData(new { data.id,data.email,data.icon,data.nick,data.username, extra = new { data.user_extra.experience,data.user_extra.level,data.user_extra.num_release,data.user_extra.num_reply} });
+            return Result.Success().SetData(new { data.id,data.email,data.icon,data.nick,data.username,user_extra = new {data.user_extra.introduction ,data.user_extra.experience,data.user_extra.level,data.user_extra.num_release,data.user_extra.num_reply} });
         }
 
         [Authorize(Policy = "用户管理")]
@@ -113,6 +116,7 @@ namespace CC.Yi.API.Controllers
         {
             var user = await _userBll.GetEntities(u => u.id == _user.id).FirstOrDefaultAsync();
             user.username = _user.username;
+            user.ip = _user.ip;
             user.password = _user.password;
             user.icon = _user.icon;
             user.nick = _user.nick;
@@ -126,8 +130,8 @@ namespace CC.Yi.API.Controllers
         [HttpPost]
         public async Task<Result> TryUpdateUser(userTry myUserTry)
         {
-            var user = await _userBll.GetEntities(u => u.id == _user.id).FirstOrDefaultAsync();
-            if (myUserTry.password != "" )//表示没有输入原密码，直接修改其他属性
+            var user = await _userBll.GetEntities(u => u.id == _user.id).Include(u=>u.user_extra).FirstOrDefaultAsync();
+            if (myUserTry.password !="" && myUserTry.password!=null )//表示没有输入原密码，直接修改其他属性
             {
                 if (user.password != myUserTry.password)
                 {
@@ -135,8 +139,10 @@ namespace CC.Yi.API.Controllers
                 }
                 user.password = myUserTry.password_new;
             }
+            user.nick = myUserTry.nick;
             user.username = myUserTry.username;
             user.icon = myUserTry.icon;
+            user.user_extra.introduction = myUserTry.user_extra.introduction;
             _userBll.Update(user);
             return Result.Success("修改成功");
 

@@ -12,6 +12,7 @@ import userInfo from '@/views/user/userInfo'
 import myDiscuss from '@/views/user/myDiscuss'
 import collection from '@/views/user/collection'
 import theme from '@/views/user/theme'
+import version from '@/views/user/version'
 
 import AdmUser from '@/views/admin/AdmUser'
 import AdmRole from '@/views/admin/AdmRole'
@@ -21,6 +22,7 @@ import AdmPlate from '@/views/admin/AdmPlate'
 import AdmLevel from '@/views/admin/AdmLevel'
 import AdmSetting from '@/views/admin/AdmSetting'
 import AdmBanner from '@/views/admin/AdmBanner'
+import AdmVersion from '@/views/admin/AdmVersion'
 
 import qq from '@/views/qq'
 import login from '@/views/login'
@@ -119,6 +121,11 @@ const routes = [{
                 component: AdmDiscuss
             },
             {
+                path: '/AdmVersion',
+                name: 'AdmVersion',
+                component: AdmVersion
+            },
+            {
                 path: '/AdmSetting',
                 name: 'AdmSetting',
                 component: AdmSetting
@@ -143,6 +150,11 @@ const routes = [{
                 path: '/theme',
                 name: 'theme',
                 component: theme
+            },
+            {
+                path: '/version',
+                name: 'version',
+                component: version
             }
         ]
     }

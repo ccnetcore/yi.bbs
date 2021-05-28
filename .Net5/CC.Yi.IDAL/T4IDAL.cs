@@ -41,4 +41,7 @@ namespace CC.Yi.IDAL
     public partial interface IagreeDal:IBaseDal<agree>
     {
     }
+    public partial interface IversionDal:IBaseDal<version>
+    {
+    }
 }

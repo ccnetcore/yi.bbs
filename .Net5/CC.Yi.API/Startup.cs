@@ -51,6 +51,7 @@ namespace CC.Yi.API
                 options.AddPolicy("等级管理", policy => policy.RequireClaim("action", "等级管理"));
                 options.AddPolicy("设置管理", policy => policy.RequireClaim("action", "设置管理"));
                 options.AddPolicy("横幅管理", policy => policy.RequireClaim("action", "横幅管理"));
+                options.AddPolicy("版本管理", policy => policy.RequireClaim("action", "版本管理"));
 
                 options.AddPolicy("用户管理", policy => policy.RequireClaim("action", "用户管理"));
                 options.AddPolicy("角色管理", policy => policy.RequireClaim("action", "角色管理"));

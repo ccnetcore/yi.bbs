@@ -174,7 +174,12 @@ namespace CC.Yi.API.Controllers
             }
             var plateData = await _plateBll.GetEntities(u => u.id == plateId).Include(u => u.discusses).ThenInclude(u => u.user).Include(u => u.discusses).ThenInclude(u => u.labels).FirstOrDefaultAsync();
             data.time = DateTime.Now;
-            data.user = await _userBll.GetEntities(u => u.id == _user.id).FirstOrDefaultAsync();
+            
+            //发帖数+=1
+            var myUser= await _userBll.GetEntities(u => u.id == _user.id).Include(u=>u.user_extra).FirstOrDefaultAsync();
+            myUser.user_extra.num_release += 1;
+
+            data.user = myUser;
 
             data.labels = await _labelBll.GetEntities(u => Ids.Contains(u.id)).ToListAsync();
             plateData.discusses.Add(data);

@@ -18,5 +18,6 @@ namespace CC.Yi.Model
         public DbSet<collection> collection { get; set; }
         public DbSet<banner> banner { get; set; }
         public DbSet<agree> agree { get; set; }
+        public DbSet<version> version { get; set; }
     }
 }

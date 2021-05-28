@@ -1,4 +1,4 @@
-banner
-name,logo,color
-名称,图标,名称颜色
-"","","cyan"
+version
+ver,time,color,context
+版本号,时间,颜色,内容
+"","","cyan",""

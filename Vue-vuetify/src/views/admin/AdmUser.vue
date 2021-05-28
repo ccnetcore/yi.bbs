@@ -241,6 +241,7 @@ export default {
       { text: "昵称", value: "nick", sortable: false },
       { text: "邮箱", value: "email", sortable: false },
       { text: "QQId", value: "openid", sortable: false },
+      { text: "ip", value: "ip", sortable: false },
       { text: "操作", value: "actions", sortable: false },
     ],
     desserts: [],
@@ -252,7 +253,8 @@ export default {
       icon:"",
       nick:"",
       email:"",
-      openid:""
+      openid:"",
+      ip:""
     },
     defaultItem: {
       user_name: "",
@@ -260,7 +262,8 @@ export default {
       icon:"",
       nick:"",
       email:"",
-      openid:""
+      openid:"",
+      ip:""
     },
   }),
 

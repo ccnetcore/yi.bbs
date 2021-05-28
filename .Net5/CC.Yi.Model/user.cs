@@ -16,6 +16,7 @@ namespace CC.Yi.Model
         public string nick { get; set; }
         public string openid { get; set; }
         public string email { get; set; }
+        public string ip { get; set; }
 
         public user_extra user_extra { get; set; }
 

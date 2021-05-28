@@ -82,7 +82,11 @@ namespace CC.Yi.API.Controllers
                 return Result.Error();
             }
             myComment.time = DateTime.Now;
-            myComment.user = await _userBll.GetEntities(u => u.id == _user.id).FirstOrDefaultAsync();
+
+            //回复数+1
+            var myUser = await _userBll.GetEntities(u => u.id == _user.id).Include(u=>u.user_extra).FirstOrDefaultAsync();
+            myUser.user_extra.num_reply += 1;
+            myComment.user = myUser;
 
             var discussData = await _discussBll.GetEntities(u => u.id == discussId).Include(u => u.comments).FirstOrDefaultAsync();
             discussData.comments.Add(myComment);

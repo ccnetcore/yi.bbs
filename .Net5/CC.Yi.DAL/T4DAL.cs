@@ -91,4 +91,11 @@ namespace CC.Yi.DAL
             Db = _Db;
         }
     }
+    public partial class versionDal : BaseDal<version>, IversionDal
+    {
+        public versionDal(DataContext _Db):base(_Db)
+        {
+            Db = _Db;
+        }
+    }
 }

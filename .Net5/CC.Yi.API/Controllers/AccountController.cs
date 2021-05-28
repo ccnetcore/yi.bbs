@@ -4,6 +4,7 @@ using CC.Yi.Common.Jwt;
 using CC.Yi.IBLL;
 using CC.Yi.Model;
 using CC.Yi.ViewModel;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -25,11 +26,13 @@ namespace CC.Yi.API.Controllers
         private IuserBll _userBll;
         private IroleBll _roleBll;
         private ILogger<AccountController> _logger;
-        public AccountController(IuserBll iuserBll, ILogger<AccountController> logger,IroleBll roleBll)
+        private IHttpContextAccessor _httpContext;
+        public AccountController(IuserBll iuserBll, IHttpContextAccessor httpContext, ILogger<AccountController> logger,IroleBll roleBll)
         {
             _roleBll=roleBll;
             _userBll = iuserBll;
             _logger = logger;
+            _httpContext = httpContext;
         }
 
       
@@ -133,10 +136,12 @@ namespace CC.Yi.API.Controllers
                 if (true_code == code)//现在表示邮箱和验证码正确，并且用户名也并未注册，即可进入注册
                 {
                     user_extra user_Extra = new user_extra();
+                    user_Extra.introduction = "暂未简介，什么也没有留下";
                     myUser.user_extra = user_Extra;
 
-                    
-                    myUser.icon = "ea017c40-9205-4541-8cd4-f23e036f7795.jpg";
+                    myUser.ip=_httpContext.HttpContext.Request.Headers["X-Real-IP"].FirstOrDefault();//通过上下文获取ip
+
+                    myUser.icon = "ea017c40-9205-4541-8cd4-f23e036f7795.jpg";//默认头像
                     var data = _userBll.Add(myUser);
 
 

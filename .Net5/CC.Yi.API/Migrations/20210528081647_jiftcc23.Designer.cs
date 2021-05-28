@@ -3,14 +3,16 @@ using System;
 using CC.Yi.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CC.Yi.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210528081647_jiftcc23")]
+    partial class jiftcc23
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -354,32 +356,6 @@ namespace CC.Yi.API.Migrations
                     b.HasKey("id");
 
                     b.ToTable("user_extra");
-                });
-
-            modelBuilder.Entity("CC.Yi.Model.version", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("color")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("context")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("is_delete")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("time")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ver")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("id");
-
-                    b.ToTable("version");
                 });
 
             modelBuilder.Entity("actionrole", b =>

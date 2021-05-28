@@ -29,6 +29,7 @@ namespace CC.Yi.API
             builder.RegisterType<collectionBll>().As<IcollectionBll>().EnableInterfaceInterceptors();//表示注入前后要执行Castle，AOP
             builder.RegisterType<bannerBll>().As<IbannerBll>().EnableInterfaceInterceptors();//表示注入前后要执行Castle，AOP
             builder.RegisterType<agreeBll>().As<IagreeBll>().EnableInterfaceInterceptors();//表示注入前后要执行Castle，AOP
+            builder.RegisterType<versionBll>().As<IversionBll>().EnableInterfaceInterceptors();//表示注入前后要执行Castle，AOP
         }
     }
 }
