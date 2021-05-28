@@ -45,7 +45,6 @@ namespace CC.Yi.API.Extension
                     case 403: msg = "未授权"; break;
                     case 404: msg = "未找到服务"; break;
                     case 502: msg = "请求错误"; break;
-                    default: msg = "未知错误"; break;
 
                 }
                 if (!string.IsNullOrWhiteSpace(msg))
@@ -55,11 +54,11 @@ namespace CC.Yi.API.Extension
             }
         }
         //异常错误信息捕获，将错误信息用Json方式返回
-        private static Task HandleExceptionAsync(HttpContext context, int statusCode, string msg)
+        private static  Task HandleExceptionAsync(HttpContext context, int statusCode, string msg)
         {
             var result = JsonConvert.SerializeObject( Result.Error(msg).SetCode(statusCode));
             context.Response.ContentType = "application/json;charset=utf-8";
-            return context.Response.WriteAsync(result);
+            return  context.Response.WriteAsync(result);
         }
     }
     //扩展方法

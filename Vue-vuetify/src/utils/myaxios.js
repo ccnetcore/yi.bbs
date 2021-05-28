@@ -4,7 +4,7 @@ import store from '../store/index'
 const myaxios = axios.create({
         // baseURL:'/'// 
         baseURL: process.env.VUE_APP_BASE_API, // /dev-apis
-        timeout: 5000,
+        timeout: 50000,
         headers: {
             'Authorization': 'Bearer ' + ""
         },

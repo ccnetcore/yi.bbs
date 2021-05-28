@@ -159,7 +159,7 @@ export default {
           context: "",
         },
         defaultItem: {
-          ver: "",
+          ver: "v",
           time: "",
           color: "cyan",
           context: "",

@@ -16,7 +16,7 @@
             <p class="my-4 title">欢迎！在这里，我们无所不谈！</p>
 
             <v-img
-              src="../../public/image/login.svg"
+              src="../assets/login.svg"
               contain
               v-bind:style="{ marginTop:imgDiv }"
               style="width:100%;"
