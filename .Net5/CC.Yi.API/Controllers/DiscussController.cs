@@ -94,6 +94,8 @@ namespace CC.Yi.API.Controllers
                             r.time,
                             r.title,
                             r.type,
+                            r.agree_num,
+                            r.see_num,
                             plate = new { r.plate?.id },
                             user = new { r.user?.username, r.user?.icon }
                         }).ToList();
@@ -114,16 +116,21 @@ namespace CC.Yi.API.Controllers
 
 
         [HttpGet]//根据板块Id得到主题(有效)
-        public async Task<Result> getDiscussByPlateId(int plateId, int pageIndex)
+        public async Task<Result> getDiscussByPlateId(int plateId, int pageIndex,int orderbyId)
         {
             if (plateId == 0)
             {
                 return Result.Error();
             }
-            var myPlate = await _plateBll.GetEntities(u => u.id == plateId).Include(u => u.discusses).ThenInclude(u => u.user).FirstOrDefaultAsync();
-            var myDiscuss = (from r in myPlate.discusses
-                             where r.is_delete == delFlagNormal
-                             select r).ToList();
+            Func<discuss, int> orderbyLambda = r => r.id;//根据条件进行排序操作
+            switch (orderbyId)
+            {
+                case 1: orderbyLambda = r => r.see_num; break;
+                case 2: orderbyLambda = r => r.agree_num; break;
+            }
+            var myPlate = await _plateBll.GetEntities(u => u.id == plateId).Include(u => u.discusses).ThenInclude(u => u.user). FirstOrDefaultAsync();
+
+            var myDiscuss = myPlate.discusses.Where(r => r.is_delete == delFlagNormal).OrderByDescending(orderbyLambda).ToList();//降序排序
 
             var dataFilter = (from r in myDiscuss
                               select new
@@ -133,6 +140,8 @@ namespace CC.Yi.API.Controllers
                                   r.time,
                                   r.title,
                                   r.type,
+                                  r.see_num,
+                                  r.agree_num,
                                   user = new {r.user?.id,  r.user?.username, r.user?.icon }
                               }).ToList();
 
@@ -141,7 +150,6 @@ namespace CC.Yi.API.Controllers
 
             int total = dataFilter.Count();
             var pageData = dataFilter
-                         .OrderByDescending(u => u.id)  //降序排序
                          .Skip(pageSize * (pageIndex - 1))
                          .Take(pageSize).AsQueryable();
 
@@ -158,6 +166,9 @@ namespace CC.Yi.API.Controllers
             }
             var data = await _discussBll.GetEntities(u => u.id == discussId).Include(u => u.user).FirstOrDefaultAsync();
 
+            data.see_num += 1;
+            _discussBll.Update(data);
+            //查阅数+1
             return Result.Success().SetData(new { data.id,data.introduction,data.content,data.time,data.title,data.agree_num, user=new {data.user?.id, data.user?.username,data.user?.icon } });
         }
 

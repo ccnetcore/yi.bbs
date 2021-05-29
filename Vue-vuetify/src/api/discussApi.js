@@ -6,9 +6,9 @@ export default {
             method: 'get'
         })
     },
-    getDiscussByPlateId(plateId, pageIndex) {
+    getDiscussByPlateId(plateId, pageIndex, orderbyId) {
         return myaxios({
-            url: `/Discuss/getDiscussByPlateId?plateId=${plateId}&pageIndex=${pageIndex}`,
+            url: `/Discuss/getDiscussByPlateId?plateId=${plateId}&pageIndex=${pageIndex}&orderbyId=${orderbyId}`,
             method: 'get'
         })
     },

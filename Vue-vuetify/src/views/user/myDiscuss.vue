@@ -146,8 +146,8 @@
               >
                 <v-expansion-panel-header>
                   <v-row align="center" class="spacer" no-gutters>
-                    <v-col cols="2" sm="1" md="1">
-                      <v-avatar size="36px">
+                                    <v-col cols="2" sm="1" md="1">
+                      <v-avatar size="36px " @click="intoInfo(item.user.id)">
                         <img
                           alt="Avatar"
                           :src="
@@ -157,15 +157,17 @@
                           "
                         />
                       </v-avatar>
+                      <br>
+                  <span class="ml-2">     {{ item.user.username }}</span>
                     </v-col>
-                    <v-col cols="8" sm="5" md="8">
+                    <v-col cols="6" sm="5" md="8">
                       [{{ item.type }}] {{ item.title }}
                     </v-col>
 
-                    <v-col cols="2" sm="5" md="3" class="hidden-sm-and-down">
+                    <v-col cols="4" sm="5" md="3">
                       <v-subheader>
-                        {{ item.user.username }}<br />
-                        {{ item.time }}</v-subheader
+                  {{ item.time }} 发布    <br />
+              {{item.see_num}}阅览 | {{item.agree_num}}点赞         </v-subheader
                       >
                     </v-col>
                   </v-row>
@@ -324,6 +326,14 @@ export default {
       this.$store.dispatch("set_plateId", plateId);
       this.$store.dispatch("set_discussId", discussId);
       this.$router.push({ path: "/comment" });
+    },
+        intoInfo(userId) {
+      this.$router.push({
+        path: `/userInfo`,
+        query: {
+          userId: userId,
+        },
+      });
     },
   },
 };

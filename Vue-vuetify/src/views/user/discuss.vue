@@ -3,16 +3,10 @@
     <v-row>
       <v-col class="pb-0">
         <v-card height="100%" class="mx-auto">
-          <v-navigation-drawer right  app v-model="drawer">
+          <v-navigation-drawer right app v-model="drawer">
             <v-list-item>
               <v-list-item-content>
-                <v-btn
-                  color="cyan"
-                  elevation="2"
-                  @click="intoAdd"
-                  large
-                  dark
-                >
+                <v-btn color="cyan" elevation="2" @click="intoAdd" large dark>
                   添加主题
                 </v-btn>
               </v-list-item-content>
@@ -21,13 +15,8 @@
             <v-divider></v-divider>
 
             <v-list dense nav>
-              <v-list-item
-                v-for="myitem in items"
-                :key="myitem.title"
-                link
-                @click="intoAdd"
-              >
-                <v-list-item-icon >
+              <v-list-item v-for="myitem in items" :key="myitem.title" link @click="orderby(myitem.id)">
+                <v-list-item-icon>
                   <v-icon>{{ myitem.icon }}</v-icon>
                 </v-list-item-icon>
 
@@ -43,7 +32,10 @@
       <v-col cols="12" class="elevation-2 mt-3">
         <v-row>
           <v-col cols="4" md="6">
-            <div class="text-h5 title pt-6"><v-icon class="mx-2"  @click="drawer = !drawer">mdi-menu</v-icon>    主题</div>
+            <div class="text-h5 title pt-6">
+              <v-icon class="mx-2" @click="drawer = !drawer">mdi-menu</v-icon>
+              主题
+            </div>
           </v-col>
           <v-col cols="8" md="6">
             <v-text-field label="搜索">
@@ -75,15 +67,17 @@
                           "
                         />
                       </v-avatar>
+                      <br>
+                  <span class="ml-2">     {{ item.user.username }}</span>
                     </v-col>
-                    <v-col cols="8" sm="5" md="8">
+                    <v-col cols="6" sm="5" md="8">
                       [{{ item.type }}] {{ item.title }}
                     </v-col>
 
-                    <v-col cols="2" sm="5" md="3" class="hidden-sm-and-down">
+                    <v-col cols="4" sm="5" md="3">
                       <v-subheader>
-                        {{ item.user.username }}<br />
-                        {{ item.time }}</v-subheader
+                  {{ item.time }} 发布    <br />
+              {{item.see_num}}阅览 | {{item.agree_num}}点赞         </v-subheader
                       >
                     </v-col>
                   </v-row>
@@ -112,7 +106,9 @@
                     </v-btn>
 
                     <v-btn class="mx-2" fab dark small color="cyan">
-                      <v-icon dark  @click="Collection(item.id)"> mdi-star </v-icon>
+                      <v-icon dark @click="Collection(item.id)">
+                        mdi-star
+                      </v-icon>
                     </v-btn>
                   </div>
                 </v-expansion-panel-content>
@@ -125,7 +121,7 @@
 
     <div class="text-center mt-4 mb-10">
       <v-pagination
-      color="cyan"
+        color="cyan"
         v-model="pageIndex"
         :length="lenData"
         :total-visible="7"
@@ -142,11 +138,12 @@ import collectionApi from "@/api/collectionApi";
 export default {
   data() {
     return {
-      drawer:"true",
+      orderbyId:0,
+      drawer: "true",
       items: [
-        { title: "添加主题", icon: "mdi-toy-brick-plus" },
-        { title: "最新主题", icon: "mdi-image" },
-        { title: "最热主题", icon: "mdi-help-box" },
+        { title: "最新主题", icon: "mdi-toy-brick-plus", id: "0" },
+        { title: "最热主题", icon: "mdi-image", id: "1" },
+        { title: "推荐主题", icon: "mdi-help-box", id: "2" },
       ],
       baseurl: "",
       pageIndex: 1,
@@ -174,7 +171,7 @@ export default {
     },
   },
   methods: {
-        Collection(Id) {
+    Collection(Id) {
       collectionApi.addCollection(Id).then((resp) => {
         if (resp.status) {
           this.$dialog.message.success(resp.msg, {
@@ -187,19 +184,18 @@ export default {
         }
       });
     },
-    intoInfo(userId)
-    {
-              this.$router.push({
-          path: `/userInfo`,
-　　　　　　query:{
-　　　　　　　　userId:userId
-　　　　　　}
-        })
+    intoInfo(userId) {
+      this.$router.push({
+        path: `/userInfo`,
+        query: {
+          userId: userId,
+        },
+      });
     },
     initializa() {
       //初始化创建
       discussApi
-        .getDiscussByPlateId(this.$store.state.home.plateId, this.pageIndex)
+        .getDiscussByPlateId(this.$store.state.home.plateId, this.pageIndex,this.orderbyId)
         .then((resp) => {
           this.discussList = resp.data.pageData;
           this.total = resp.data.total;
@@ -208,6 +204,11 @@ export default {
     },
     intoAdd() {
       this.$router.push({ path: "/addDiscuss" });
+    },
+    orderby(itemId)
+    {
+      this.orderbyId=itemId;
+      this.initializa();
     },
     intoComment(discussId) {
       this.$store.dispatch("set_discussId", discussId);

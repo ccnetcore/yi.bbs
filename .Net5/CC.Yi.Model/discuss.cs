@@ -13,6 +13,7 @@ namespace CC.Yi.Model
         public string introduction { get; set; }
         public DateTime? time { get; set; }
         public int agree_num { get; set; }
+        public int see_num { get; set; }
 
         public string content { get; set; }
 

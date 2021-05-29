@@ -64,6 +64,8 @@ namespace CC.Yi.API.Controllers
                                  r.time,
                                  r.title,
                                  r.type,
+                                 r.agree_num,
+                                 r.see_num,
                                  user = new { r.user?.icon, r.user?.username },
                                  plate = new { r.plate?.id}
                              };
