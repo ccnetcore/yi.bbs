@@ -30,7 +30,7 @@
       ></v-text-field>
 
       <v-row>
-        <v-col cols="7">
+        <v-col cols="6" md="8">
           <v-text-field
             v-model="code"
             label="验证码"
@@ -40,10 +40,10 @@
             :counter="20"
           ></v-text-field>
         </v-col>
-        <v-col cols="1">
+        <v-col cols="2" md="1">
               <v-progress-circular
               class="mt-2"
-              size="40"
+           size="40"
       :rotate="360"
       :value="value"
       color="cyan"
@@ -51,10 +51,10 @@
       {{ value }}
     </v-progress-circular>
         </v-col>
-        <v-col cols="4">
+        <v-col cols="4" md="3">
           <v-btn class="mt-1" large :dark="!dis_mail"  color="cyan" @click="sendMail"
           :disabled="dis_mail"
-            >发送验证码</v-btn
+            >发送</v-btn
           >
         </v-col>
       </v-row>
