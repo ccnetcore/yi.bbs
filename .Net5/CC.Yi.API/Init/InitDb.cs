@@ -43,7 +43,7 @@ namespace CC.Yi.API.Init
                            new role{ role_name="普通用户"}
                                            }
                 };
-                Db.Set<user>().Update(initUser);
+                Db.Set<user>().Add(initUser);
                 //-------------------------------------------------------------------------------------添加管理员账户
                 List<level> levels = new List<level>
                 {

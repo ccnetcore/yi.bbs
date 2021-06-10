@@ -17,7 +17,13 @@ namespace CC.Yi.Model
 
         public string content { get; set; }
 
-        public  ICollection<label> labels { get; set; }
+
+        public string color { get; set; }
+        public int is_top { get; set; }
+        public int is_anonymous { get; set; }
+        public int is_encryption { get; set; }
+
+        public ICollection<label> labels { get; set; }
         public ICollection<comment> comments { get; set; }
         public user user { get; set; }
         public plate plate { get; set; }

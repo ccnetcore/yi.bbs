@@ -15,7 +15,12 @@
             <v-divider></v-divider>
 
             <v-list dense nav>
-              <v-list-item v-for="myitem in items" :key="myitem.title" link @click="orderby(myitem.id)">
+              <v-list-item
+                v-for="myitem in items"
+                :key="myitem.title"
+                link
+                @click="orderby(myitem.id)"
+              >
                 <v-list-item-icon>
                   <v-icon>{{ myitem.icon }}</v-icon>
                 </v-list-item-icon>
@@ -67,18 +72,18 @@
                           "
                         />
                       </v-avatar>
-                      <br>
-                  <span class="ml-2">     {{ item.user.username }}</span>
+                      <br />
+                      <span class="ml-2"> {{ item.user.username }}</span>
                     </v-col>
-                    <v-col cols="6" sm="5" md="8">
+                    <v-col cols="6" sm="5" md="8" :style="{'color':item.color}">
                       [{{ item.type }}] {{ item.title }}
                     </v-col>
 
                     <v-col cols="4" sm="5" md="3">
                       <v-subheader>
-                  {{ item.time }} 发布    <br />
-              {{item.see_num}}阅览 | {{item.agree_num}}点赞         </v-subheader
-                      >
+                        {{ item.time }} 发布 <br />
+                        {{ item.see_num }}阅览 | {{ item.agree_num }}点赞
+                      </v-subheader>
                     </v-col>
                   </v-row>
                 </v-expansion-panel-header>
@@ -138,7 +143,7 @@ import collectionApi from "@/api/collectionApi";
 export default {
   data() {
     return {
-      orderbyId:0,
+      orderbyId: 0,
       drawer: "true",
       items: [
         { title: "最新主题", icon: "mdi-toy-brick-plus", id: "0" },
@@ -195,9 +200,13 @@ export default {
     initializa() {
       //初始化创建
       discussApi
-        .getDiscussByPlateId(this.$store.state.home.plateId, this.pageIndex,this.orderbyId)
+        .getDiscussByPlateId(
+          this.$store.state.home.plateId,
+          this.pageIndex,
+          this.orderbyId
+        )
         .then((resp) => {
-          this.discussList = resp.data.pageData;
+          this.discussList = resp.data.dataFilter;
           this.total = resp.data.total;
           this.pageSize = resp.data.pageSize;
         });
@@ -205,9 +214,8 @@ export default {
     intoAdd() {
       this.$router.push({ path: "/addDiscuss" });
     },
-    orderby(itemId)
-    {
-      this.orderbyId=itemId;
+    orderby(itemId) {
+      this.orderbyId = itemId;
       this.initializa();
     },
     intoComment(discussId) {

@@ -25,15 +25,38 @@
         <v-btn text color="teal accent-4" @click="reveal = true">
           更多信息
         </v-btn>
-        <v-btn @click="agrees" class="mx-2"  dark  outlined color="cyan">
-          <v-icon large dark > mdi-menu-up-outline </v-icon>
-          {{discussData.agree_num}}
+        <v-btn @click="agrees" class="mx-2" dark outlined color="cyan">
+          <v-icon large dark> mdi-menu-up-outline </v-icon>
+          {{ discussData.agree_num }}
           赞同
         </v-btn>
 
-        <v-btn class="mx-2" fab dark small color="cyan">
-          <v-icon dark> mdi-close </v-icon>
-        </v-btn>
+        <v-menu offset-y>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              v-bind="attrs"
+              v-on="on"
+              class="mx-2"
+              fab
+              dark
+              small
+              color="cyan"
+            >
+              <v-icon dark> mdi-credit-card-settings </v-icon>
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item
+              v-for="(item, index) in myPorp"
+              :key="index"
+              link
+              @click="openCard(item.method)"
+            >
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+
         <v-btn class="mx-2" fab dark small color="cyan">
           <v-icon dark @click="Collection(discussData.id)"> mdi-star </v-icon>
         </v-btn>
@@ -111,6 +134,26 @@
         ></v-pagination>
       </div>
     </v-card>
+
+    <v-dialog v-model="dialog" max-width="600px">
+      <v-card class="px-6 py-4">
+        <v-card-title class="headline" v-show="openIndex!=1">你确定要使用此道具吗？</v-card-title>
+      
+            <v-text-field
+            v-show="openIndex==1"
+              v-model="mycolor"
+              label="请输入颜色"
+            ></v-text-field>
+      
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="close">取消</v-btn>
+          <v-btn color="blue darken-1" text @click="useCard">确定</v-btn>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 <script>
@@ -120,10 +163,19 @@ import collectionApi from "@/api/collectionApi";
 import agreesApi from "@/api/agreesApi";
 export default {
   data: () => ({
+    dialog: false,
+    mycolor: "#212121",
+    myPorp: [
+      { title: "置顶卡", method: "0" },
+      { title: "色彩卡", method: "1" },
+      { title: "匿名卡", method: "2" },
+      { title: "加密卡", method: "3" },
+    ],
     commentRules: [
       (v) => !!v || "评论不能为空",
       (v) => (v && v.length <= 200) || "评论必须小于200个字符",
     ],
+    openIndex: -1,
     pageIndex: 1,
     pageSize: 10,
     total: 100,
@@ -154,14 +206,13 @@ export default {
     this.baseurl = process.env.VUE_APP_BASE_API;
   },
   methods: {
-        intoInfo(userId)
-    {
-              this.$router.push({
-          path: `/userInfo`,
-　　　　　　query:{
-　　　　　　　　userId:userId
-　　　　　　}
-        })
+    intoInfo(userId) {
+      this.$router.push({
+        path: `/userInfo`,
+        query: {
+          userId: userId,
+        },
+      });
     },
     Collection(Id) {
       collectionApi.addCollection(Id).then((resp) => {
@@ -204,9 +255,8 @@ export default {
             position: "top-right",
           });
         }
-          this.discussData.agree_num=resp.data;
+        this.discussData.agree_num = resp.data;
       });
-    
     },
 
     sentComment() {
@@ -226,6 +276,33 @@ export default {
           timeout: 5000,
         });
       }
+    },
+    openCard(index) {
+      this.openIndex = index;
+      this.dialog = true;
+    },
+    close() {
+      this.openIndex = -1;
+      this.dialog = false;
+      this.mycolor="#212121";
+    },
+    useCard() {
+      
+      if (this.openIndex == -1) {
+        return 0;
+      }
+      discussApi
+        .UpdatePorp(this.discussData.id, this.openIndex, this.mycolor)
+        .then((resp) => {
+          if (resp.status) {
+            this.$dialog.notify.success("使用道具成功", {
+              position: "top-right",
+              timeout: 5000,
+            });
+          }
+
+          this.close();
+        });
     },
   },
 };

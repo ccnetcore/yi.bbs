@@ -26,7 +26,7 @@ namespace CC.Yi.API.Controllers
         private IplateBll _plateBll;
         private IlabelBll _labelBll;
         private Iuser_extraBll _user_extraBll;
-        public DiscussController(ILogger<DiscussController> logger, IdiscussBll discussBll, IuserBll userBll, IplateBll plateBll, Iuser_extraBll user_extraBll,IlabelBll labelBll)
+        public DiscussController(ILogger<DiscussController> logger, IdiscussBll discussBll, IuserBll userBll, IplateBll plateBll, Iuser_extraBll user_extraBll, IlabelBll labelBll)
         {
             _logger = logger;
             _discussBll = discussBll;
@@ -85,20 +85,20 @@ namespace CC.Yi.API.Controllers
             {
                 userId = _user.id;
             }
-            var myDiscuss = await _discussBll.GetEntities(u => u.user.id == userId && u.is_delete == delFlagNormal).Include(u=>u.user).Include(u=>u.plate) .ToListAsync();
+            var myDiscuss = await _discussBll.GetEntities(u => u.user.id == userId && u.is_delete == delFlagNormal).Include(u => u.user).Include(u => u.plate).ToListAsync();
             //数据筛选
             var dataFilter = (from r in myDiscuss
-                        select new
-                        {
-                            r.id,
-                            r.time,
-                            r.title,
-                            r.type,
-                            r.agree_num,
-                            r.see_num,
-                            plate = new { r.plate?.id },
-                            user = new { r.user?.username, r.user?.icon }
-                        }).ToList();
+                              select new
+                              {
+                                  r.id,
+                                  r.time,
+                                  r.title,
+                                  r.type,
+                                  r.agree_num,
+                                  r.see_num,
+                                  plate = new { r.plate?.id },
+                                  user = new { r.user?.username, r.user?.icon }
+                              }).ToList();
             //现在升级一下，开始分页
             int pageSize = 10;//每页数量从redis中获取
 
@@ -115,8 +115,8 @@ namespace CC.Yi.API.Controllers
         }
 
 
-        [HttpGet]//根据板块Id得到主题(有效)
-        public async Task<Result> getDiscussByPlateId(int plateId, int pageIndex,int orderbyId)
+        [HttpGet]//根据板块Id得到主题(有效)，注意：由于道具卡的出现，现在要做特殊处理
+        public async Task<Result> getDiscussByPlateId(int plateId, int pageIndex, int orderbyId)
         {
             if (plateId == 0)
             {
@@ -128,11 +128,37 @@ namespace CC.Yi.API.Controllers
                 case 1: orderbyLambda = r => r.see_num; break;
                 case 2: orderbyLambda = r => r.agree_num; break;
             }
-            var myPlate = await _plateBll.GetEntities(u => u.id == plateId).Include(u => u.discusses).ThenInclude(u => u.user). FirstOrDefaultAsync();
+            var myPlate = await _plateBll.GetEntities(u => u.id == plateId).Include(u => u.discusses).ThenInclude(u => u.user).FirstOrDefaultAsync();
 
-            var myDiscuss = myPlate.discusses.Where(r => r.is_delete == delFlagNormal).OrderByDescending(orderbyLambda).ToList();//降序排序
+            var myDiscuss = myPlate.discusses.Where(r => r.is_delete == delFlagNormal && r.is_top == delFlagNormal).OrderByDescending(orderbyLambda);//降序排序，这里地方是所有没置顶的帖子
 
-            var dataFilter = (from r in myDiscuss
+            var topDiscuss = myPlate.discusses.Where(r => r.is_delete == delFlagNormal &&  r.is_top == (short)ViewModel.Enum.DelFlagEnum.Deleted).OrderByDescending(orderbyLambda).ToList();//这里是放置顶的帖子
+
+
+            foreach (var k in topDiscuss)//将置顶的帖子加入前缀
+            {
+                k.type = "置顶][" + k.type;
+            }
+            //这里修正一下,应该先分页再合并,最后再进行过滤
+
+
+            int pageSize = settingHelper.discussPage();//每页数量从redis中获取
+
+            int total = myDiscuss.Count();
+            var pageData = myDiscuss
+                         .Skip(pageSize * (pageIndex - 1))
+                         .Take(pageSize).ToList();
+            //查询前面全部没有加进内存中，从这一步加入内存.
+
+            //这里添加置顶的帖子
+
+         
+
+            topDiscuss.AddRange(pageData);
+            
+
+            //最后再过滤
+            var dataFilter = (from r in topDiscuss
                               select new
                               {
                                   r.id,
@@ -142,19 +168,14 @@ namespace CC.Yi.API.Controllers
                                   r.type,
                                   r.see_num,
                                   r.agree_num,
-                                  user = new {r.user?.id,  r.user?.username, r.user?.icon }
+                                  r.color,
+                                  user = new { r.user?.id, r.user?.username, r.user?.icon }
                               }).ToList();
 
 
-            int pageSize = settingHelper.discussPage();//每页数量从redis中获取
-
-            int total = dataFilter.Count();
-            var pageData = dataFilter
-                         .Skip(pageSize * (pageIndex - 1))
-                         .Take(pageSize).AsQueryable();
 
 
-            return Result.Success().SetData(new { pageData, pageSize, total } );
+            return Result.Success().SetData(new { dataFilter, pageSize, total });
         }
 
         [HttpGet]
@@ -169,7 +190,7 @@ namespace CC.Yi.API.Controllers
             data.see_num += 1;
             _discussBll.Update(data);
             //查阅数+1
-            return Result.Success().SetData(new { data.id,data.introduction,data.content,data.time,data.title,data.agree_num, user=new {data.user?.id, data.user?.username,data.user?.icon } });
+            return Result.Success().SetData(new { data.id, data.introduction, data.content, data.time, data.title, data.agree_num, user = new { data.user?.id, data.user?.username, data.user?.icon } });
         }
 
         [Authorize(Policy = "发布主题")]
@@ -185,9 +206,9 @@ namespace CC.Yi.API.Controllers
             }
             var plateData = await _plateBll.GetEntities(u => u.id == plateId).Include(u => u.discusses).ThenInclude(u => u.user).Include(u => u.discusses).ThenInclude(u => u.labels).FirstOrDefaultAsync();
             data.time = DateTime.Now;
-            
+
             //发帖数+=1
-            var myUser= await _userBll.GetEntities(u => u.id == _user.id).Include(u=>u.user_extra).FirstOrDefaultAsync();
+            var myUser = await _userBll.GetEntities(u => u.id == _user.id).Include(u => u.user_extra).FirstOrDefaultAsync();
             myUser.user_extra.num_release += 1;
 
             data.user = myUser;
@@ -222,6 +243,14 @@ namespace CC.Yi.API.Controllers
             return Result.Success();
         }
 
-      
+
+        [HttpGet]//使用道具
+        public async Task<Result> UpdatePorp(int disucssId, int propId, string color)
+        {
+           await _discussBll.setProp(disucssId, propId, color);
+            return Result.Success();
+        }
+
+
     }
 }

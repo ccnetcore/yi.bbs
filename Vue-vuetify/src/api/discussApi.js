@@ -53,5 +53,12 @@ export default {
             url: `/Discuss/getDiscussByDiscussId?DiscussId=${id}`,
             method: 'get'
         })
+    },
+    UpdatePorp(disucssId, propId, color) {
+        color = color.replace("#", "%23"); //颜色代码替换
+        return myaxios({
+            url: `/Discuss/UpdatePorp?disucssId=${disucssId}&propId=${propId}&color=${color}`,
+            method: 'get'
+        })
     }
 }

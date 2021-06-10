@@ -132,11 +132,9 @@ namespace CC.Yi.API
             using (var serviceScope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
             { 
                 var Db = serviceScope.ServiceProvider.GetService<DataContext>();
-                var log= serviceScope.ServiceProvider.GetService<Logger<string>>();
-                if (Init.InitDb.Init(Db))
-                {
-                    log.LogInformation("数据库初始化成功！");
-                }
+
+                Init.InitDb.Init(Db);
+
             }
         }
 

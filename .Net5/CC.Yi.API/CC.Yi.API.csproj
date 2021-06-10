@@ -44,9 +44,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="JiftCC.db">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="T4Startup.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>T4Startup.cs</LastGenOutput>

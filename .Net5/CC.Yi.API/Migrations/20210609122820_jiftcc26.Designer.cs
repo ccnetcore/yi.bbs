@@ -3,14 +3,16 @@ using System;
 using CC.Yi.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CC.Yi.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210609122820_jiftcc26")]
+    partial class jiftcc26
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -152,25 +154,13 @@ namespace CC.Yi.API.Migrations
                     b.Property<int>("agree_num")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("color")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("content")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("introduction")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("is_anonymous")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("is_delete")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("is_encryption")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("is_top")
                         .HasColumnType("INTEGER");
 
                     b.Property<int?>("plateid")
