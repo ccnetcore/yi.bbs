@@ -44,4 +44,13 @@ namespace CC.Yi.IDAL
     public partial interface IversionDal:IBaseDal<version>
     {
     }
+    public partial interface IshopDal:IBaseDal<shop>
+    {
+    }
+    public partial interface IwarehouseDal:IBaseDal<warehouse>
+    {
+    }
+    public partial interface IpropDal:IBaseDal<prop>
+    {
+    }
 }

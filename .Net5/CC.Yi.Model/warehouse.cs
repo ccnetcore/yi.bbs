@@ -11,5 +11,6 @@ namespace CC.Yi.Model
         public user user { get; set; }
         public prop prop { get; set; }
         public int number { get; set; }
+      
     }
 }

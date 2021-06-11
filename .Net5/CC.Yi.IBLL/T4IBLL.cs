@@ -58,4 +58,16 @@ namespace CC.Yi.IBLL
     {
         Task<bool> DelListByUpdateList(List<int> Ids);
     }
+   public partial interface IshopBll : IBaseBll<shop>
+    {
+        Task<bool> DelListByUpdateList(List<int> Ids);
+    }
+   public partial interface IwarehouseBll : IBaseBll<warehouse>
+    {
+        Task<bool> DelListByUpdateList(List<int> Ids);
+    }
+   public partial interface IpropBll : IBaseBll<prop>
+    {
+        Task<bool> DelListByUpdateList(List<int> Ids);
+    }
 }

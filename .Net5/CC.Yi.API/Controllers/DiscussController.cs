@@ -26,7 +26,8 @@ namespace CC.Yi.API.Controllers
         private IplateBll _plateBll;
         private IlabelBll _labelBll;
         private Iuser_extraBll _user_extraBll;
-        public DiscussController(ILogger<DiscussController> logger, IdiscussBll discussBll, IuserBll userBll, IplateBll plateBll, Iuser_extraBll user_extraBll, IlabelBll labelBll)
+        private IwarehouseBll _warehouseBll;
+        public DiscussController(ILogger<DiscussController> logger, IdiscussBll discussBll, IuserBll userBll, IplateBll plateBll, Iuser_extraBll user_extraBll, IlabelBll labelBll,IwarehouseBll warehouseBll)
         {
             _logger = logger;
             _discussBll = discussBll;
@@ -34,6 +35,7 @@ namespace CC.Yi.API.Controllers
             _userBll = userBll;
             _labelBll = labelBll;
             _user_extraBll = user_extraBll;
+            _warehouseBll = warehouseBll;
         }
 
         [Authorize(Policy = "主题管理")]
@@ -247,8 +249,16 @@ namespace CC.Yi.API.Controllers
         [HttpGet]//使用道具
         public async Task<Result> UpdatePorp(int disucssId, int propId, string color)
         {
-           await _discussBll.setProp(disucssId, propId, color);
-            return Result.Success();
+            //先往仓库里查是否存在，如果存在，更新数量-1，如果数量就是为1，那直接逻辑删除
+
+            if (await _warehouseBll.setWarehouse(_user.id, propId))
+            {
+                await _discussBll.setProp(disucssId, propId, color);
+                return Result.Success("道具使用成功！已从仓库中获取！");
+            }
+
+           
+            return Result.Error("仓库道具不足，请前往商城中购买!");
         }
 
 

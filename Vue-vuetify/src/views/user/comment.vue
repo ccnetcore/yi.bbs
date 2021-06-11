@@ -137,14 +137,15 @@
 
     <v-dialog v-model="dialog" max-width="600px">
       <v-card class="px-6 py-4">
-        <v-card-title class="headline" v-show="openIndex!=1">你确定要使用此道具吗？</v-card-title>
-      
-            <v-text-field
-            v-show="openIndex==1"
-              v-model="mycolor"
-              label="请输入颜色"
-            ></v-text-field>
-      
+        <v-card-title class="headline" v-show="openIndex != 2"
+          >你确定要使用此道具吗？</v-card-title
+        >
+
+        <v-text-field
+          v-show="openIndex == 2"
+          v-model="mycolor"
+          label="请输入颜色"
+        ></v-text-field>
 
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -166,10 +167,10 @@ export default {
     dialog: false,
     mycolor: "#212121",
     myPorp: [
-      { title: "置顶卡", method: "0" },
-      { title: "色彩卡", method: "1" },
-      { title: "匿名卡", method: "2" },
-      { title: "加密卡", method: "3" },
+      { title: "置顶卡", method: "1" },
+      { title: "色彩卡", method: "2" },
+      { title: "匿名卡", method: "3" },
+      { title: "加密卡", method: "4" },
     ],
     commentRules: [
       (v) => !!v || "评论不能为空",
@@ -284,10 +285,9 @@ export default {
     close() {
       this.openIndex = -1;
       this.dialog = false;
-      this.mycolor="#212121";
+      this.mycolor = "#212121";
     },
     useCard() {
-      
       if (this.openIndex == -1) {
         return 0;
       }
@@ -295,7 +295,12 @@ export default {
         .UpdatePorp(this.discussData.id, this.openIndex, this.mycolor)
         .then((resp) => {
           if (resp.status) {
-            this.$dialog.notify.success("使用道具成功", {
+            this.$dialog.notify.success(resp.msg, {
+              position: "top-right",
+              timeout: 5000,
+            });
+          } else {
+            this.$dialog.notify.error(resp.msg, {
               position: "top-right",
               timeout: 5000,
             });

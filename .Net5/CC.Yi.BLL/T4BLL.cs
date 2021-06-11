@@ -257,4 +257,61 @@ namespace CC.Yi.BLL
             }
 
         }
+    public partial class shopBll : BaseBll<shop>, IshopBll
+        {
+            public shopBll(IBaseDal<shop> cd,DataContext _Db):base(cd,_Db)
+            {
+                CurrentDal = cd;
+                Db = _Db;
+            }
+
+            public async Task<bool> DelListByUpdateList(List<int> Ids)
+            {
+                var entitys = await CurrentDal.GetEntities(u => Ids.Contains(u.id)).ToListAsync();
+                foreach (var entity in entitys)
+                {
+                    entity.is_delete = (short)ViewModel.Enum.DelFlagEnum.Deleted;
+                }
+                return Db.SaveChanges() > 0;
+            }
+
+        }
+    public partial class warehouseBll : BaseBll<warehouse>, IwarehouseBll
+        {
+            public warehouseBll(IBaseDal<warehouse> cd,DataContext _Db):base(cd,_Db)
+            {
+                CurrentDal = cd;
+                Db = _Db;
+            }
+
+            public async Task<bool> DelListByUpdateList(List<int> Ids)
+            {
+                var entitys = await CurrentDal.GetEntities(u => Ids.Contains(u.id)).ToListAsync();
+                foreach (var entity in entitys)
+                {
+                    entity.is_delete = (short)ViewModel.Enum.DelFlagEnum.Deleted;
+                }
+                return Db.SaveChanges() > 0;
+            }
+
+        }
+    public partial class propBll : BaseBll<prop>, IpropBll
+        {
+            public propBll(IBaseDal<prop> cd,DataContext _Db):base(cd,_Db)
+            {
+                CurrentDal = cd;
+                Db = _Db;
+            }
+
+            public async Task<bool> DelListByUpdateList(List<int> Ids)
+            {
+                var entitys = await CurrentDal.GetEntities(u => Ids.Contains(u.id)).ToListAsync();
+                foreach (var entity in entitys)
+                {
+                    entity.is_delete = (short)ViewModel.Enum.DelFlagEnum.Deleted;
+                }
+                return Db.SaveChanges() > 0;
+            }
+
+        }
 }

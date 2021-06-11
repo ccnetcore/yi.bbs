@@ -98,4 +98,25 @@ namespace CC.Yi.DAL
             Db = _Db;
         }
     }
+    public partial class shopDal : BaseDal<shop>, IshopDal
+    {
+        public shopDal(DataContext _Db):base(_Db)
+        {
+            Db = _Db;
+        }
+    }
+    public partial class warehouseDal : BaseDal<warehouse>, IwarehouseDal
+    {
+        public warehouseDal(DataContext _Db):base(_Db)
+        {
+            Db = _Db;
+        }
+    }
+    public partial class propDal : BaseDal<prop>, IpropDal
+    {
+        public propDal(DataContext _Db):base(_Db)
+        {
+            Db = _Db;
+        }
+    }
 }

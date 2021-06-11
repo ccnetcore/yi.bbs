@@ -10,7 +10,8 @@
       <template v-slot:opposite>
         <span>2020/10/01 10:21:51</span>
       </template>
-      <v-card class="elevation-2">
+       <v-hover v-slot="{ hover }">
+      <v-card  :elevation="hover ? 12 : 2">
         <v-card-title class="headline">
           {{item.ver}}
         </v-card-title>
@@ -18,6 +19,7 @@
        
         </v-card-text>
       </v-card>
+        </v-hover>
     </v-timeline-item>
   </v-timeline>
 </v-container>
