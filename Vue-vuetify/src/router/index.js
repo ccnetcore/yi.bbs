@@ -53,6 +53,9 @@ const version = () =>
     import ( /* webpackChunkName: 'User' */ "@/views/user/version");
 const warehouse = () =>
     import ( /* webpackChunkName: 'User' */ "@/views/user/warehouse");
+const shop = () =>
+    import ( /* webpackChunkName: 'User' */ "@/views/user/shop");
+
 
 const AdmUser = () =>
     import ( /* webpackChunkName: 'Admin' */ "@/views/admin/AdmUser");
@@ -72,7 +75,8 @@ const AdmBanner = () =>
     import ( /* webpackChunkName: 'Admin' */ "@/views/admin/AdmBanner");
 const AdmVersion = () =>
     import ( /* webpackChunkName: 'Admin' */ "@/views/admin/AdmVersion");
-
+const Admprop = () =>
+    import ( /* webpackChunkName: 'Admin' */ "@/views/admin/AdmProp");
 
 const Layout = () =>
     import ( /* webpackChunkName: 'Login' */ "@/components/Layout");
@@ -185,7 +189,11 @@ const routes = [{
                 name: 'AdmSetting',
                 component: AdmSetting
             },
-
+            {
+                path: '/Admprop',
+                name: 'Admprop',
+                component: Admprop
+            },
             {
                 path: '/userInfo',
                 name: 'userInfo',
@@ -215,7 +223,13 @@ const routes = [{
                 path: '/warehouse',
                 name: 'warehouse',
                 component: warehouse
-            }
+            },
+            {
+                path: '/shop',
+                name: 'shop',
+                component: shop
+            },
+
         ]
     }
 ]

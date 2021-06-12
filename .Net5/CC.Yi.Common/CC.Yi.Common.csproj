@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="T4Net\T4Api.vue" />
     <None Remove="T4Vue\T4Component - 复制.vue" />
   </ItemGroup>
 
@@ -14,6 +15,14 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="T4Net\T4Controller.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>T4Controller.tt</DependentUpon>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -30,6 +39,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="T4Net\T4Controller.tt">
+      <LastGenOutput>T4Controller.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
     <None Update="T4Vue\T4Api.vue">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -52,6 +65,14 @@
 
   <ItemGroup>
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="T4Net\T4Controller.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>T4Controller.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>

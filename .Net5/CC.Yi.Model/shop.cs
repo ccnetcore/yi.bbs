@@ -14,5 +14,7 @@ namespace CC.Yi.Model
         public int price { get; set; }
 
         public int number { get; set; }
+
+        public float discount { get; set; }
     }
 }

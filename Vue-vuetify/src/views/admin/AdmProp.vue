@@ -1,7 +1,3 @@
-﻿
-
-
-/*
 <template>
   <v-card>
     <v-data-table
@@ -252,4 +248,3 @@ export default {
   },
 };
 </script>
-*/

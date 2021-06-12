@@ -1,35 +1,30 @@
-﻿
-
-
-/*
 import myaxios from '@/utils/myaxios'
 export default {
-    getProps() {
+    getShops() {
         return myaxios({
-            url: '/Prop/getProps',
+            url: '/Shop/getShops',
             method: 'get'
         })
     },
-    addProp(prop) {
+    addShop(shop) {
         return myaxios({
-            url: '/Prop/addProp',
+            url: '/Shop/addShop',
             method: 'post',
-            data: prop
+            data: shop
         })
     },
-    updateProp(Prop) {
+    updateShop(Shop) {
         return myaxios({
-            url: '/Prop/UpdateProp',
+            url: '/Shop/UpdateShop',
             method: 'post',
-            data: Prop
+            data: Shop
         })
     },
-    delPropList(Ids) {
+    delShopList(Ids) {
         return myaxios({
-            url: '/Prop/DelPropList',
+            url: '/Shop/DelShopList',
             method: 'post',
             data: Ids
         })
     },
 }
-*/

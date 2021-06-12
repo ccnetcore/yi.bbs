@@ -1,4 +1,4 @@
-version
-ver,time,color,context
-版本号,时间,颜色,内容
-"","","cyan",""
+prop
+name,logo,introduction,color
+道具名,图标,简介,色彩
+"","mdi-message-text","暂无简介","cyan"

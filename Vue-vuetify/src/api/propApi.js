@@ -1,7 +1,3 @@
-﻿
-
-
-/*
 import myaxios from '@/utils/myaxios'
 export default {
     getProps() {
@@ -32,4 +28,3 @@ export default {
         })
     },
 }
-*/
