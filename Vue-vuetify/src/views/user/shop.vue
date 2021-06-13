@@ -47,7 +47,7 @@
 </template>
 <script>
 import shopApi from "@/api/shopApi";
-import dialog from "@/utils/dialog"
+
 export default {
   data() {
     return {
@@ -71,7 +71,15 @@ export default {
     },
     buy() {
       shopApi.BuyShop(this.shopId).then((resp) => {
-       dialog.notify(resp)
+        if (resp.status) {
+          this.$dialog.notify.success(resp.msg, {
+            position: "top-right",
+          });
+        } else {
+          this.$dialog.notify.error(resp.msg, {
+            position: "top-right",
+          });
+        }
       });
 
       this.close();
