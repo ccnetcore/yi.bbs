@@ -1,7 +1,3 @@
-﻿
-
-
-/*
 <template>
   <v-card>
     <v-data-table
@@ -47,9 +43,16 @@
 
               <v-card-text>
                 <v-container>
-<!-- 【1】这里设置对应的编辑框名 -->
+                  <!-- 【1】这里设置对应的编辑框名 -->
                   <v-row>
-
+                    <v-col cols="12" sm="6" md="4">
+                      <v-select
+                        :items="items"
+                        filled
+                        label="选择道具"
+                        v-model="propItem"
+                      ></v-select>
+                    </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
                         v-model="editedItem.price"
@@ -68,9 +71,6 @@
                         label="折扣"
                       ></v-text-field>
                     </v-col>
-
-
-                  
                   </v-row>
                 </v-container>
               </v-card-text>
@@ -119,7 +119,6 @@
         <v-btn color="primary" @click="initialize"> 刷新 </v-btn>
       </template>
     </v-data-table>
-
   </v-card>
 </template>
 <script>
@@ -127,19 +126,20 @@
 import shopApi from "@/api/shopApi";
 export default {
   data: () => ({
+    items: ["置顶卡", "色彩卡", "匿名卡", "加密卡"],
     page: 1,
     selected: [],
     search: "",
     dialog: false,
     dialogDelete: false,
-//【3】这里设置对应的模型字段
+    //【3】这里设置对应的模型字段
     headers: [
       {
         text: "编号",
         align: "start",
         value: "id",
       },
-
+      { text: "道具", value: "prop.name", sortable: false },
       { text: "定价", value: "price", sortable: false },
       { text: "数量", value: "number", sortable: false },
       { text: "折扣", value: "discount", sortable: false },
@@ -148,17 +148,18 @@ export default {
     ],
     desserts: [],
     editedIndex: -1,
-//【4】这里设置对应的模型默认字段
+    propItem:"",
+    //【4】这里设置对应的模型默认字段
     editedItem: {
-          price: "",
-          number: "1",
-          discount: "1.00",
-        },
-        defaultItem: {
-          price: "",
-          number: "1",
-          discount: "1.00",
-        },  
+      price: "",
+      number: "1",
+      discount: "1.00",
+    },
+    defaultItem: {
+      price: "",
+      number: "1",
+      discount: "1.00",
+    },
   }),
 
   computed: {
@@ -182,7 +183,7 @@ export default {
 
   methods: {
     initialize() {
-//【5】这里获取全部字段的API
+      //【5】这里获取全部字段的API
       shopApi.getShops().then((resp) => {
         const response = resp.data;
         this.desserts = response;
@@ -206,15 +207,15 @@ export default {
       if (this.editedIndex > -1) {
         Ids.push(this.editedItem.id);
       } else {
-         this.selected.forEach(function (item) {
+        this.selected.forEach(function (item) {
           Ids.push(item.id);
         });
       }
-//【6】这里多条删除的API
+      //【6】这里多条删除的API
       shopApi.delShopList(Ids).then(() => this.initialize());
       this.closeDelete();
     },
-    
+
     close() {
       this.dialog = false;
       this.$nextTick(() => {
@@ -232,15 +233,23 @@ export default {
     },
 
     save() {
-//【7】这里编辑和添加的API
+      //【7】这里编辑和添加的API
+              var propId=0;
+        switch(this.propItem){
+            case "置顶卡":propId=1;break;
+            case "色彩卡":propId=2;break;
+            case "匿名卡":propId=3;break;
+            case "加密卡":propId=4;break;
+
+        }
       if (this.editedIndex > -1) {
-        shopApi.updateShop(this.editedItem).then(() => this.initialize());
+        shopApi.updateShop(this.editedItem,propId).then(() => this.initialize());
       } else {
-        shopApi.addShop(this.editedItem).then(() => this.initialize());
+
+        shopApi.addShop(this.editedItem,propId).then(() => this.initialize());
       }
       this.close();
     },
   },
 };
 </script>
-*/

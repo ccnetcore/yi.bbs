@@ -75,8 +75,10 @@ const AdmBanner = () =>
     import ( /* webpackChunkName: 'Admin' */ "@/views/admin/AdmBanner");
 const AdmVersion = () =>
     import ( /* webpackChunkName: 'Admin' */ "@/views/admin/AdmVersion");
-const Admprop = () =>
+const AdmProp = () =>
     import ( /* webpackChunkName: 'Admin' */ "@/views/admin/AdmProp");
+const AdmShop = () =>
+    import ( /* webpackChunkName: 'Admin' */ "@/views/admin/AdmShop");
 
 const Layout = () =>
     import ( /* webpackChunkName: 'Login' */ "@/components/Layout");
@@ -190,9 +192,14 @@ const routes = [{
                 component: AdmSetting
             },
             {
-                path: '/Admprop',
-                name: 'Admprop',
-                component: Admprop
+                path: '/AdmProp',
+                name: 'AdmProp',
+                component: AdmProp
+            },
+            {
+                path: '/AdmShop',
+                name: 'AdmShop',
+                component: AdmShop
             },
             {
                 path: '/userInfo',

@@ -6,16 +6,16 @@ export default {
             method: 'get'
         })
     },
-    addShop(shop) {
+    addShop(shop, propId) {
         return myaxios({
-            url: '/Shop/addShop',
+            url: `/Shop/addShop?propId=${propId}`,
             method: 'post',
             data: shop
         })
     },
-    updateShop(Shop) {
+    updateShop(Shop, propId) {
         return myaxios({
-            url: '/Shop/UpdateShop',
+            url: `/Shop/UpdateShop?propId=${propId}`,
             method: 'post',
             data: Shop
         })
@@ -27,4 +27,10 @@ export default {
             data: Ids
         })
     },
+    BuyShop(shopId) {
+        return myaxios({
+            url: `/Shop/BuyShop?shopId=${shopId}`,
+            method: 'get'
+        })
+    }
 }

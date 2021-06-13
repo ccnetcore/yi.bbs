@@ -1,4 +1,4 @@
-prop
-name,logo,introduction,color
-道具名,图标,简介,色彩
-"","mdi-message-text","暂无简介","cyan"
+shop
+price,number,discount
+定价,数量,折扣
+"","1","1.00"
