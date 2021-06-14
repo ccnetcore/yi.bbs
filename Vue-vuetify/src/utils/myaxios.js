@@ -12,6 +12,7 @@ const myaxios = axios.create({
     // 请求拦截器
 myaxios.interceptors.request.use(function(config) {
     config.headers.Authorization = 'Bearer ' + store.state.user.token;
+    store.dispatch("openLoad");
     return config;
 }, function(error) {
     return Promise.reject(error);
@@ -20,7 +21,6 @@ myaxios.interceptors.request.use(function(config) {
 // 响应拦截器
 myaxios.interceptors.response.use(function(response) {
     const resp = response.data
-    console.log(resp.code)
     switch (resp.code) {
         case 200:
             break;
@@ -36,10 +36,11 @@ myaxios.interceptors.response.use(function(response) {
         default:
             console.log("未知原因");
     };
-
+    store.dispatch("closeLoad");
     return resp;
 }, function(error) {
     console.log(error.response, error.response.status)
+    store.dispatch("closeLoad");
     return Promise.reject(error);
 });
 export default myaxios

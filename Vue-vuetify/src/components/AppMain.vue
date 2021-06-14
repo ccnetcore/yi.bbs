@@ -7,16 +7,30 @@
         </v-breadcrumbs-item>
       </template>
     </v-breadcrumbs>
+         <v-progress-linear
+        :active="this.$store.state.loader.load"
+        :indeterminate="this.$store.state.loader.load"
+        color="cyan accent-4"
+        striped
+      ></v-progress-linear>
 
     <v-container>
+      
       <v-slide-y-transition>
         <router-view></router-view>
       </v-slide-y-transition>
+
+
+      <!-- <Loader></Loader> -->
     </v-container>
   </div>
 </template>
 <script>
+// import Loader from "../components/Loader.vue"
 export default {
+  // components: {
+  //     Loader
+  // },
   data: () => ({
     items: [{ text: "首页", to: "/index" }],
   }),
@@ -58,6 +72,6 @@ export default {
         ];
       }
     },
-  },
+  }
 };
 </script>

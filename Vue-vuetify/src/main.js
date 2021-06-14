@@ -13,6 +13,7 @@ Vue.use(VuetifyDialog, {
         vuetify
     }
 });
+
 new Vue({
     router,
     store,
