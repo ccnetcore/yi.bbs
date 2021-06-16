@@ -88,7 +88,7 @@
                   <v-icon v-text="'mdi-star'"></v-icon>
                 </v-list-item-icon>
                 <v-list-item-content>
-                  <v-list-item-title v-text="'退出登录'"></v-list-item-title>
+                  <v-list-item-title @click="off()" v-text="'退出登录'"></v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
               <v-system-bar></v-system-bar>
@@ -119,6 +119,11 @@ export default {
   },
   methods: {
     initialize() {},
+    off() {
+      this.$store.dispatch("Logout").then((resp) => {
+        this.$router.push("/login");
+      });
+    },
   },
 };
 </script>

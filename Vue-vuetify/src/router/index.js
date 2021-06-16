@@ -29,7 +29,7 @@ import VueRouter from 'vue-router'
 // import login from '@/views/login'
 // import register from '@/views/register'
 
-//采用懒加载
+//采用懒加载,优化一下，我们将用户和管理界面分离
 
 const Index = () =>
     import ( /* webpackChunkName: 'User' */ "@/views/user/Index");
@@ -81,15 +81,15 @@ const AdmShop = () =>
     import ( /* webpackChunkName: 'Admin' */ "@/views/admin/AdmShop");
 
 const Layout = () =>
-    import ( /* webpackChunkName: 'Login' */ "@/components/Layout");
+    import ( /* webpackChunkName: 'User' */ "@/components/Layout");
 const LayoutLogin = () =>
-    import ( /* webpackChunkName: 'Login' */ "@/components/LayoutLogin");
+    import ( /* webpackChunkName: 'User' */ "@/components/LayoutLogin");
 const qq = () =>
-    import ( /* webpackChunkName: 'Login' */ "@/views/qq");
+    import ( /* webpackChunkName: 'User' */ "@/views/qq");
 const login = () =>
-    import ( /* webpackChunkName: 'Login' */ "@/views/login");
+    import ( /* webpackChunkName: 'User' */ "@/views/login");
 const register = () =>
-    import ( /* webpackChunkName: 'Login' */ "@/views/register");
+    import ( /* webpackChunkName: 'User' */ "@/views/register");
 
 Vue.use(VueRouter)
 

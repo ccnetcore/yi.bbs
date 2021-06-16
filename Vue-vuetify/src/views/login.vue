@@ -1,7 +1,7 @@
 <template>
   <v-card
     class="px-6 py-4 mx-auto elevation-4 rounded-md"
-    style="margin-top: 120px; height: 600px; width: 500px"
+    style="margin-top: 100px; height: 600px; width: 500px"
   >
     <div>
       <h1 class="title my-2">Jift-CC</h1>
@@ -58,9 +58,9 @@
       QQ
     </v-btn>
 
-    <v-btn dark class="cyan" @click="login" large style="width: 100%">
+    <v-btn dark class="cyan" @click="yklogin" large style="width: 100%">
       <v-icon class="mx-2"> mdi-message-text </v-icon>
-      微信
+      临时游客
     </v-btn>
   </v-card>
 </template>
@@ -86,6 +86,23 @@ export default {
     qqlogin() {
       QC.Login.showPopup(myqq.myqqLogin);
       // window.close();
+    },
+    yklogin() {
+      this.$store
+        .dispatch("Login", {
+          username: "游客",
+          password: "",
+        })
+        .then((resp) => {
+          if (resp.status) {
+            this.$router.push("/");
+          } else {
+            this.$dialog.notify.error(resp.msg, {
+              position: "top-right",
+              timeout: 5000,
+            });
+          }
+        });
     },
     login() {
       if (this.$refs.form.validate()) {

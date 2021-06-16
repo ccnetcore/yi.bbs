@@ -1,7 +1,7 @@
 <template>
   <v-card
     class="px-6 py-4 mx-auto elevation-4 rounded-md"
-    style="margin-top: 120px; height: 600px; width: 500px"
+    style="margin-top: 100px; height: 600px; width: 500px"
   >
     <div>
       <h1 class="title my-2">Jift-CC</h1>

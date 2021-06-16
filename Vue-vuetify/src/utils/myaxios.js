@@ -21,25 +21,14 @@ myaxios.interceptors.request.use(function(config) {
 // 响应拦截器
 myaxios.interceptors.response.use(function(response) {
     const resp = response.data
-    switch (resp.code) {
-        case 200:
-            break;
-        case 401:
-            alert("权限不足");
-            break;
-        case 403:
-            alert("权限不足");
-            break;
-        case 404:
-            console.log("未找到");
-            break;
-        default:
-            console.log("未知原因");
-    };
     store.dispatch("closeLoad");
     return resp;
 }, function(error) {
-    console.log(error.response, error.response.status)
+    const resp = error.response.data
+
+    if (resp.code != 200) {
+        alert(`错误代码：${resp.code}，原因：${resp.msg}`)
+    }
     store.dispatch("closeLoad");
     return Promise.reject(error);
 });
