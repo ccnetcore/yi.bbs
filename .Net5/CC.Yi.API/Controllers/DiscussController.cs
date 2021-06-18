@@ -245,7 +245,7 @@ namespace CC.Yi.API.Controllers
             return Result.Success();
         }
 
-
+        [Authorize(Policy = "使用道具")]
         [HttpGet]//使用道具
         public async Task<Result> UpdatePorp(int disucssId, int propId, string color)
         {

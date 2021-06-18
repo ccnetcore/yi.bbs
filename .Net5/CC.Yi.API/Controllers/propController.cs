@@ -32,7 +32,7 @@ namespace CC.Yi.API.Controllers
             return Result.Success().SetData(data);
         }
 
-//      [Authorize(Policy = "板块管理")]
+        [Authorize(Policy = "道具管理")]
         [HttpPost]
         public Result AddProp(prop myProp)
         {
@@ -40,7 +40,7 @@ namespace CC.Yi.API.Controllers
             return Result.Success();
         }
 
-//      [Authorize(Policy = "板块管理")]
+        [Authorize(Policy = "道具管理")]
         [HttpPost]
         public Result UpdateProp(prop myProp)
         {
@@ -48,7 +48,7 @@ namespace CC.Yi.API.Controllers
             return Result.Success();
         }
 
-//      [Authorize(Policy = "板块管理")]
+        [Authorize(Policy = "道具管理")]
         [HttpPost]
         public Result delPropList(List<int> Ids)
         {

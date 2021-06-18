@@ -38,7 +38,7 @@ namespace CC.Yi.API.Controllers
             return Result.Success().SetData(data);
         }
 
-        //[Authorize(Policy = "商城管理")]
+        [Authorize(Policy = "商城管理")]
         [HttpPost]
         public async Task<Result> AddShop(shop myShop, int propId)
         {
@@ -47,7 +47,7 @@ namespace CC.Yi.API.Controllers
             return Result.Success();
         }
 
-        //[Authorize(Policy = "商城管理")]
+        [Authorize(Policy = "商城管理")]
         [HttpPost]
         public async Task<Result> UpdateShop(shop myShop, int propId)
         {
@@ -56,7 +56,7 @@ namespace CC.Yi.API.Controllers
             return Result.Success();
         }
 
-        //[Authorize(Policy = "商城管理")]
+        [Authorize(Policy = "商城管理")]
         [HttpPost]
         public Result delShopList(List<int> Ids)
         {
@@ -64,6 +64,7 @@ namespace CC.Yi.API.Controllers
             return Result.Success();
         }
 
+        [Authorize(Policy = "购买道具")]
         [HttpGet]// 购买道具，0:最先判断自己的金币是否足够 1：商城数量-1，并记住该道具,如果只剩下1个，直接删除。  2：仓库+1，并添加该道具,如果不存在，直接添加一个数量为1
         public async Task<Result> BuyShop(int shopId)
         {

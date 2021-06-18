@@ -27,7 +27,9 @@
 
                       <v-list-item-content>
                         <v-list-item-title>等级：</v-list-item-title>
-                        <v-list-item-subtitle>{{form.user_extra.level}}</v-list-item-subtitle>
+                        <v-list-item-subtitle>{{
+                          form.user_extra.level
+                        }}</v-list-item-subtitle>
                       </v-list-item-content>
 
                       <v-list-item-icon>
@@ -40,7 +42,9 @@
 
                       <v-list-item-content>
                         <v-list-item-title>经验：</v-list-item-title>
-                        <v-list-item-subtitle>{{form.user_extra.experience}}</v-list-item-subtitle>
+                        <v-list-item-subtitle>{{
+                          form.user_extra.experience
+                        }}</v-list-item-subtitle>
                       </v-list-item-content>
 
                       <v-list-item-icon>
@@ -52,12 +56,57 @@
 
                     <v-list-item>
                       <v-list-item-icon>
+                        <v-icon color="indigo"> mdi-lock </v-icon>
+                      </v-list-item-icon>
+
+                      <v-list-item-content>
+                        <v-list-item-title>拥有角色：</v-list-item-title>
+                        <v-list-item-subtitle>
+                          <v-row>
+                            <v-col
+                              v-for="(item, index) in roleList"
+                              :key="index"
+                              cols="6"
+                              sm="3"
+                              md="1"
+                              >{{ item.role_name }}</v-col
+                            >
+                          </v-row>
+                        </v-list-item-subtitle>
+                      </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item>
+                      <v-list-item-action></v-list-item-action>
+
+                      <v-list-item-content>
+                        <v-list-item-title>拥有权限：</v-list-item-title>
+                        <v-list-item-subtitle>
+                          <v-row>
+                            <v-col
+                              v-for="(item, index) in actionList"
+                              :key="index"
+                              cols="6"
+                              sm="3"
+                              md="1"
+                              >{{ item.action_name }}</v-col
+                            >
+                          </v-row>
+                        </v-list-item-subtitle>
+                      </v-list-item-content>
+                    </v-list-item>
+
+                    <v-divider inset></v-divider>
+
+                    <v-list-item>
+                      <v-list-item-icon>
                         <v-icon color="indigo"> mdi-email </v-icon>
                       </v-list-item-icon>
 
                       <v-list-item-content>
                         <v-list-item-title>发帖总数：</v-list-item-title>
-                        <v-list-item-subtitle>{{form.user_extra.num_release}}</v-list-item-subtitle>
+                        <v-list-item-subtitle>{{
+                          form.user_extra.num_release
+                        }}</v-list-item-subtitle>
                       </v-list-item-content>
                     </v-list-item>
 
@@ -66,7 +115,9 @@
 
                       <v-list-item-content>
                         <v-list-item-title>评论总数：</v-list-item-title>
-                        <v-list-item-subtitle>{{form.user_extra.num_reply}}</v-list-item-subtitle>
+                        <v-list-item-subtitle>{{
+                          form.user_extra.num_reply
+                        }}</v-list-item-subtitle>
                       </v-list-item-content>
                     </v-list-item>
 
@@ -201,6 +252,8 @@ import axios from "axios";
 export default {
   data() {
     return {
+      actionList: [],
+      roleList: [],
       my: false, //判定打开的是否是自己的用户
       baseurl: "", ///prod-apis或发展模式的基础前缀
       imgurl: "", ///baseurl+图片名
@@ -211,13 +264,13 @@ export default {
         password: "",
         icon: "",
         email: "",
-        user_extra:{
-          experience:0,
-          introduction:"",
-          level:0,
-          num_reply:0,
-          num_release:0
-        }
+        user_extra: {
+          experience: 0,
+          introduction: "",
+          level: 0,
+          num_reply: 0,
+          num_release: 0,
+        },
       },
       tab: null,
       picker: new Date().toISOString().substr(0, 10),
@@ -298,17 +351,23 @@ export default {
         this.imgurl =
           this.baseurl + "/File/ShowNoticeImg?filePath=" + this.form.icon;
       });
+
+      userApi.getRoleByuserId(this.$store.state.user.user.id).then((resp) => {
+        this.roleList = resp.data;
+      });
+      userApi.getActionByUserId(this.$store.state.user.user.id).then((resp) => {
+        this.actionList = resp.data;
+      });
     },
     clear() {
       this.form.username = "";
       this.form.password = "";
       this.password_new = "";
-      this.form.user_extra.introduction="";
+      this.form.user_extra.introduction = "";
     },
 
     send() {
-
-      this.form.password_new=this.password_new;
+      this.form.password_new = this.password_new;
       userApi.tryUpdateUser(this.form).then((resp) => {
         if (resp.status) {
           //同时更新一下store

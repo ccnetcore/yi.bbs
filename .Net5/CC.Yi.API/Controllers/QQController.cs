@@ -45,6 +45,7 @@ namespace CC.Yi.API.Controllers
             return Result.Error("请注册账号，进入个人信息中绑定");
         }
 
+        [Authorize(Policy = "绑定QQ")]
         [HttpGet]
         public async Task<Result> qqUpdate(string openid,int userId)
         {
