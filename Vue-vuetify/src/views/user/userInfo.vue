@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-container fluid>
     <v-tabs v-model="tab">
       <v-tab href="#tab-1">
         账户信息
@@ -243,7 +243,7 @@
         </v-tab-item>
       </v-tabs-items>
     </v-card>
-  </div>
+  </v-container>
 </template>
 <script>
 import userApi from "@/api/userApi";

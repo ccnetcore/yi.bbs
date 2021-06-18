@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container fluid>
     <v-row>
         <v-col cols="12" class="text-center" v-show="is_null">
             你的仓库，空空如也。。。。。。<br>

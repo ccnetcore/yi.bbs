@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-container fluid>
     <v-card class="mx-auto my-2" max-width="100%">
       <v-card-text>
         <p class="display-1 text--primary">{{ discussData.title }}</p>
@@ -155,7 +155,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </div>
+  </v-container>
 </template>
 <script>
 import discussApi from "@/api/discussApi";

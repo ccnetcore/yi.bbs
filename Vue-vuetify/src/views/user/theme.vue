@@ -1,13 +1,13 @@
 <template>
   <div>
-    <v-container>
+    <v-container fluid>
       <v-card class="pa-8">
-        <h2 class="mb-4">样式设置</h2>
+        <p class="mb-4 text-h6 text--secondary">样式设置</p>
         <v-divider></v-divider>
 
         <v-row>
           <v-col cols="9" md="10">
-            <h3 class="my-4 ml-4">深色模式</h3>
+            <p class="my-4 ml-4 text-h7 font-weight-bold">深色模式</p>
             <v-subheader>开启后，样式将变更为深色</v-subheader>
           </v-col>
 
@@ -19,7 +19,7 @@
 
         <v-row>
           <v-col cols="9" md="10">
-            <h3 class="my-4 ml-4">核心主题</h3>
+            <p class="my-4 ml-4 text-h7 font-weight-bold">核心主题</p>
             <v-subheader>可修改相当核心主题颜色</v-subheader>
           </v-col>
 
@@ -31,7 +31,7 @@
 
         <v-row>
           <v-col cols="9" md="10">
-            <h3 class="my-4 ml-4">次要主题</h3>
+            <p class="my-4 ml-4 text-h7 font-weight-bold">次要主题</p>
             <v-subheader>可修改当前次要主题颜色</v-subheader>
           </v-col>
 

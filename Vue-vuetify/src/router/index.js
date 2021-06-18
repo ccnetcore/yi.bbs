@@ -55,7 +55,8 @@ const warehouse = () =>
     import ( /* webpackChunkName: 'User' */ "@/views/user/warehouse");
 const shop = () =>
     import ( /* webpackChunkName: 'User' */ "@/views/user/shop");
-
+const friend = () =>
+    import ( /* webpackChunkName: 'User' */ "@/views/user/friend");
 
 const AdmUser = () =>
     import ( /* webpackChunkName: 'Admin' */ "@/views/admin/AdmUser");
@@ -236,6 +237,12 @@ const routes = [{
                 name: 'shop',
                 component: shop
             },
+            {
+                path: '/friend',
+                name: 'friend',
+                component: friend
+            },
+
 
         ]
     }

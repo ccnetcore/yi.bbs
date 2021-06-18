@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-container fluid>
     <v-row>
       <v-col cols="12" sm="1">
         <v-select
@@ -37,7 +37,7 @@
       >
       <v-btn color="success" large @click="send()">发布</v-btn>
     </div>
-  </div>
+  </v-container>
 </template>
 <script>
 import E from "wangeditor";

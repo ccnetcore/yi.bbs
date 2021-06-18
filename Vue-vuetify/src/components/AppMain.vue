@@ -1,25 +1,23 @@
 <template>
   <div>
-    <v-breadcrumbs :items="items" class="grey lighten-5" >
+    <v-breadcrumbs :items="items" class="grey lighten-5">
       <template v-slot:item="{ item }">
-        <v-breadcrumbs-item :to="item.to"  :disabled="false">
+        <v-breadcrumbs-item :to="item.to" :disabled="false">
           {{ item.text }}
         </v-breadcrumbs-item>
       </template>
     </v-breadcrumbs>
-         <v-progress-linear
-        :active="this.$store.state.loader.load"
-        :indeterminate="this.$store.state.loader.load"
-        color="cyan accent-4"
-        striped
-      ></v-progress-linear>
+    <v-progress-linear
+      :active="this.$store.state.loader.load"
+      :indeterminate="this.$store.state.loader.load"
+      color="cyan accent-4"
+      striped
+    ></v-progress-linear>
 
-    <v-container>
-      
+    <v-container fluid>
       <v-slide-y-transition>
         <router-view></router-view>
       </v-slide-y-transition>
-
 
       <!-- <Loader></Loader> -->
     </v-container>
@@ -72,6 +70,6 @@ export default {
         ];
       }
     },
-  }
+  },
 };
 </script>

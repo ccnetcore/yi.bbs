@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container fluid>
     <v-row>
          <!-- 删除提示框 -->
           <v-dialog v-model="dialogDelete" max-width="500px">

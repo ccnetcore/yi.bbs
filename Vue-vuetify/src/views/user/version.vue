@@ -1,5 +1,5 @@
 <template>
-<v-container>
+<v-container fluid>
   <v-timeline>
     <v-timeline-item
       v-for="(item,key) in form"

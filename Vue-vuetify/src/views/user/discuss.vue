@@ -1,6 +1,6 @@
 <template>
-  <v-container>
-    <v-row>
+  <v-container fluid >
+    <v-row >
       <v-col class="pb-0">
         <v-card height="100%" class="mx-auto">
           <v-navigation-drawer right app v-model="drawer">
