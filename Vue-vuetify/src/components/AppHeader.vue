@@ -17,16 +17,16 @@
 
       <v-btn icon medium class="">
         <v-icon dark > mdi-content-paste </v-icon>
-      </v-btn>
+      </v-btn> <router-link :to="{path:'/index'}"> 
       <v-btn icon medium class="mr-2 " >
-       <router-link :to="{path:'/index'}">  <v-icon dark  color="blue" > mdi-home </v-icon></router-link>
+       <v-icon dark  color="blue" > mdi-home </v-icon>
       </v-btn>
-
+</router-link>
 
       <v-menu offset-y>
         <template v-slot:activator="{ on, attrs }">
-          <v-btn icon>
-            <v-avatar v-bind="attrs" v-on="on" size="36" class="elevation-2">
+          <v-btn icon v-bind="attrs" v-on="on">
+            <v-avatar  size="36" class="elevation-2">
               <!-- <img src="https://z3.ax1x.com/2021/05/09/gJadhD.jpg" /> -->
               <img
                 :src="

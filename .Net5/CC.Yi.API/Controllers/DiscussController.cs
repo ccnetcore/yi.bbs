@@ -98,6 +98,7 @@ namespace CC.Yi.API.Controllers
                                   r.type,
                                   r.agree_num,
                                   r.see_num,
+                                  r.color,
                                   plate = new { r.plate?.id },
                                   user = new { r.user?.username, r.user?.icon }
                               }).ToList();

@@ -80,10 +80,11 @@ export default {
             position: "top-right",
           });
         }
+        this.close();
+      this.initializa();
       });
 
-      this.close();
-      this.initializa();
+      
     },
     initializa() {
       shopApi.getShops().then((resp) => {

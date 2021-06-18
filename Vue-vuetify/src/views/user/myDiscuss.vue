@@ -160,7 +160,7 @@
                       <br>
                   <span class="ml-2">     {{ item.user.username }}</span>
                     </v-col>
-                    <v-col cols="6" sm="5" md="8">
+                    <v-col cols="6" sm="5" md="8" :style="{'color':item.color}">
                       [{{ item.type }}] {{ item.title }}
                     </v-col>
 

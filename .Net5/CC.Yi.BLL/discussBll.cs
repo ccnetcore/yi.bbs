@@ -13,7 +13,7 @@ namespace CC.Yi.BLL
     {
         public async Task<bool> setProp(int disucssId, int propId, string color = "#212121")
         {
-            var myDiscuss = await CurrentDal.GetEntities(u => u.id == disucssId).Include(u => u.user).FirstOrDefaultAsync();
+            var myDiscuss = await CurrentDal.GetEntities(u => u.id == disucssId).Include(u => u.user).Include(u=>u.labels). FirstOrDefaultAsync();
 
 
             //{ title: "置顶卡", method: "1" },
@@ -24,7 +24,7 @@ namespace CC.Yi.BLL
             {
                 case 1: myDiscuss.is_top = 1; break;//置顶将置顶标识变为1
                 case 2: myDiscuss.color = color; break;//色彩直接更换即可
-                case 3: myDiscuss.is_anonymous = 1; myDiscuss.user = await Db.Set<user>().Where(u => u.username == "匿名").FirstOrDefaultAsync(); break;//匿名将作者和头像更换
+                case 3: myDiscuss.is_anonymous = 1; myDiscuss.user = await Db.Set<user>().Where(u => u.username == "匿名").FirstOrDefaultAsync();myDiscuss.labels = null; break;//匿名将作者更换，同时将标签清空
                 case 4: myDiscuss.is_encryption = 1; break;//暂时放一下
             }
             CurrentDal.Update(myDiscuss);
