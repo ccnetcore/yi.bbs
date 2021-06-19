@@ -7,7 +7,7 @@
 <#@ output extension=".cs" #>
 <#
   
-    string name="prop";
+    string name="friend";
     string uname=name.Substring(0,1).ToUpper()+name.Substring(1); 
  #>
 

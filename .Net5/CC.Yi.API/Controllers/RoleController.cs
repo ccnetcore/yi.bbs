@@ -40,6 +40,7 @@ namespace CC.Yi.API.Controllers
         [HttpGet]//通过角色id得到该角色的权限
         public async  Task<Result> GetActionByRoleId(int roleId)
         {
+
             var roles = await _roleBll.GetEntities(u => u.id == roleId).Include(u=>u.actions).FirstOrDefaultAsync();
             var actions = roles.actions;
             var mydata = (from r in actions

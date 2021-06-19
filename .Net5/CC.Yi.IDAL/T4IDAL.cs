@@ -53,4 +53,7 @@ namespace CC.Yi.IDAL
     public partial interface IpropDal:IBaseDal<prop>
     {
     }
+    public partial interface IfriendDal:IBaseDal<friend>
+    {
+    }
 }

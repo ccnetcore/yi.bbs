@@ -18,45 +18,45 @@ namespace CC.Yi.API.Controllers
 {
     [Route("[controller]/[action]")]
     [ApiController]
-    public class PropController : Controller
+    public class FriendController : Controller
     {
-        private IpropBll _propBll;
-        private ILogger<PropController> _logger;
+        private IfriendBll _friendBll;
+        private ILogger<FriendController> _logger;
         short delFlagNormal = (short)ViewModel.Enum.DelFlagEnum.Normal;
-        public PropController(IpropBll propBll, ILogger<PropController> logger)
+        public FriendController(IfriendBll friendBll, ILogger<FriendController> logger)
         {
-            _propBll = propBll;
+            _friendBll = friendBll;
             _logger = logger;
         }
 
         [HttpGet]
-        public async Task<Result> GetProps()
+        public async Task<Result> GetFriends()
         {
-            var data = await _propBll.GetEntities(u => u.is_delete == delFlagNormal).AsNoTracking().ToListAsync();
+            var data = await _friendBll.GetEntities(u => u.is_delete == delFlagNormal).AsNoTracking().ToListAsync();
             return Result.Success().SetData(data);
         }
 
 //      [Authorize(Policy = "板块管理")]
         [HttpPost]
-        public Result AddProp(prop myProp)
+        public Result AddFriend(friend myFriend)
         {
-            _propBll.Add(myProp);
+            _friendBll.Add(myFriend);
             return Result.Success();
         }
 
 //      [Authorize(Policy = "板块管理")]
         [HttpPost]
-        public Result UpdateProp(prop myProp)
+        public Result UpdateFriend(friend myFriend)
         {
-            _propBll.Update(myProp);
+            _friendBll.Update(myFriend);
             return Result.Success();
         }
 
 //      [Authorize(Policy = "板块管理")]
         [HttpPost]
-        public Result delPropList(List<int> Ids)
+        public Result delFriendList(List<int> Ids)
         {
-            _propBll.DelListByUpdateList(Ids);
+            _friendBll.DelListByUpdateList(Ids);
             return Result.Success();
         }
     }

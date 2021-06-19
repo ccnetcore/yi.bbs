@@ -71,12 +71,7 @@ namespace CC.Yi.API
                 options.AddPolicy("点赞管理", policy => policy.RequireClaim("action", "点赞管理"));
                 options.AddPolicy("购买道具", policy => policy.RequireClaim("action", "购买道具"));
                 options.AddPolicy("使用道具", policy => policy.RequireClaim("action", "使用道具"));
-
-
-
-
-
-
+                options.AddPolicy("好友管理", policy => policy.RequireClaim("action", "好友管理"));
 
             });
 

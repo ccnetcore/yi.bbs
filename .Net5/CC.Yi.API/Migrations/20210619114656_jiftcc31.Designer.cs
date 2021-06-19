@@ -3,14 +3,16 @@ using System;
 using CC.Yi.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CC.Yi.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210619114656_jiftcc31")]
+    partial class jiftcc31
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -212,7 +214,7 @@ namespace CC.Yi.API.Migrations
                     b.Property<int>("is_delete")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("time")
+                    b.Property<DateTime>("time")
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("user1id")

@@ -42,6 +42,10 @@ namespace CC.Yi.API.Controllers
         [HttpGet]//得到用户所具有的全部权限：正常权限+特殊权限
         public async Task<Result> getActionByUserId(int userId)
         {
+            if (userId == 0)
+            {
+                userId = _user.id;
+            }
             var data = await _userBll.getActionByUserId(userId);
             return Result.Success().SetData(data);
         }
@@ -152,6 +156,10 @@ namespace CC.Yi.API.Controllers
         [HttpGet]//通过Id得到该用户有哪些角色
         public async Task<Result> getRoleByuserId(int userId)
         {
+            if (userId == 0)
+            {
+                userId = _user.id;
+            }
             var user = await _userBll.GetEntities(u => u.id == userId).Include(u => u.roles).FirstOrDefaultAsync();
             var roles = (from u in user.roles
                          where u.is_delete == (short)ViewModel.Enum.DelFlagEnum.Normal

@@ -59,6 +59,9 @@ export default {
         })
     },
     getRoleByuserId(userId) {
+        if (userId == undefined) {
+            userId = 0;
+        }
         return myaxios({
             url: `/User/getRoleByuserId?userId=${userId}`,
             method: 'get'
@@ -78,6 +81,9 @@ export default {
         })
     },
     getActionByUserId(userId) {
+        if (userId == undefined) {
+            userId = 0;
+        }
         return myaxios({
             url: `/User/getActionByUserId?userId=${userId}`,
             method: 'get'

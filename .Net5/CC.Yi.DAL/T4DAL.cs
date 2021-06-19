@@ -119,4 +119,11 @@ namespace CC.Yi.DAL
             Db = _Db;
         }
     }
+    public partial class friendDal : BaseDal<friend>, IfriendDal
+    {
+        public friendDal(DataContext _Db):base(_Db)
+        {
+            Db = _Db;
+        }
+    }
 }

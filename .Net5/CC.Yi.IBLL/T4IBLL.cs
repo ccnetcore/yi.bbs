@@ -70,4 +70,8 @@ namespace CC.Yi.IBLL
     {
         Task<bool> DelListByUpdateList(List<int> Ids);
     }
+   public partial interface IfriendBll : IBaseBll<friend>
+    {
+        Task<bool> DelListByUpdateList(List<int> Ids);
+    }
 }

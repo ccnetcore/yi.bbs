@@ -352,10 +352,10 @@ export default {
           this.baseurl + "/File/ShowNoticeImg?filePath=" + this.form.icon;
       });
 
-      userApi.getRoleByuserId(this.$store.state.user.user.id).then((resp) => {
+      userApi.getRoleByuserId(this.$route.query.userId).then((resp) => {
         this.roleList = resp.data;
       });
-      userApi.getActionByUserId(this.$store.state.user.user.id).then((resp) => {
+      userApi.getActionByUserId(this.$route.query.userId).then((resp) => {
         this.actionList = resp.data;
       });
     },

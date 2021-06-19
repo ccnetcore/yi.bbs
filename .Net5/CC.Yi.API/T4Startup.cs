@@ -33,6 +33,7 @@ namespace CC.Yi.API
             builder.RegisterType<shopBll>().As<IshopBll>().EnableInterfaceInterceptors();//表示注入前后要执行Castle，AOP
             builder.RegisterType<warehouseBll>().As<IwarehouseBll>().EnableInterfaceInterceptors();//表示注入前后要执行Castle，AOP
             builder.RegisterType<propBll>().As<IpropBll>().EnableInterfaceInterceptors();//表示注入前后要执行Castle，AOP
+            builder.RegisterType<friendBll>().As<IfriendBll>().EnableInterfaceInterceptors();//表示注入前后要执行Castle，AOP
         }
     }
 }
