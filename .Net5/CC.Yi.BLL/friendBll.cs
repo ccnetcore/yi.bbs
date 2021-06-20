@@ -26,5 +26,15 @@ namespace CC.Yi.BLL
             friendData.is_delete = (short)ViewModel.Enum.DelFlagEnum.Deleted;
             return Db.SaveChanges() > 0;
         }
+
+        public IQueryable<friend> GetFriends(int id)
+        {
+            return CurrentDal.GetEntities(u => (u.is_delete == (short)ViewModel.Enum.DelFlagEnum.Normal && u.is_agree == (short)ViewModel.Enum.AgrFlagEnum.Agree) && (u.user1.id == id || u.user2.id == id)).Include(u => u.user1).ThenInclude(u => u.user_extra).Include(u => u.user2).ThenInclude(u => u.user_extra);
+        }
+
+        public IQueryable<friend> GetFriendsNotice(int id)
+        {
+            return CurrentDal.GetEntities(u => (u.is_delete == (short)ViewModel.Enum.DelFlagEnum.Normal && u.is_agree == (short)ViewModel.Enum.AgrFlagEnum.wait) && u.user2.id == id).Include(u => u.user1).ThenInclude(u => u.user_extra).Include(u => u.user2).ThenInclude(u => u.user_extra);
+        }
     }
 }

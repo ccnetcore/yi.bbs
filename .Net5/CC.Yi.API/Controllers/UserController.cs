@@ -152,7 +152,7 @@ namespace CC.Yi.API.Controllers
 
         }
 
-        [Authorize(Policy = "用户管理")]
+     
         [HttpGet]//通过Id得到该用户有哪些角色
         public async Task<Result> getRoleByuserId(int userId)
         {

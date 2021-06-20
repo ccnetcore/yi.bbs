@@ -19,8 +19,7 @@ namespace CC.Yi.API.Controllers
         private IfriendBll _friendBll;
         private ILogger<FriendController> _logger;
         private IuserBll _userBll;
-        short delFlagNormal = (short)ViewModel.Enum.DelFlagEnum.Normal;
-        public FriendController(IfriendBll friendBll, ILogger<FriendController> logger,IuserBll userBll)
+        public FriendController(IfriendBll friendBll, ILogger<FriendController> logger, IuserBll userBll)
         {
             _friendBll = friendBll;
             _userBll = userBll;
@@ -35,9 +34,9 @@ namespace CC.Yi.API.Controllers
         [HttpGet]//获取自己有哪些好友
         public async Task<Result> GetFriends()
         {
-            var data = await _friendBll.GetEntities(u => (u.is_delete == delFlagNormal&& u.is_agree== (short)ViewModel.Enum.AgrFlagEnum.Agree) && (u.user1.id==_user.id || u.user2.id==_user.id)).Include(u=>u.user1).ThenInclude(u=>u.user_extra).Include(u=>u.user2).ThenInclude(u => u.user_extra). ToListAsync();
-           
-           var filterData= data.Select(u => new { u.id, u.time, user = u.user1.id == _user.id ? u.user2:u.user1 });
+            var data = await _friendBll.GetFriends(_user.id).ToListAsync();
+
+            var filterData = data.Select(u => new { u.id, u.time, user = u.user1.id == _user.id ? u.user2 : u.user1 });
 
             return Result.Success().SetData(filterData);
         }
@@ -46,7 +45,7 @@ namespace CC.Yi.API.Controllers
         [HttpGet]//获取自己有哪些好友通知
         public async Task<Result> GetFriendsNotice()
         {
-            var data = await _friendBll.GetEntities(u => (u.is_delete == delFlagNormal && u.is_agree == (short)ViewModel.Enum.AgrFlagEnum.wait) &&  u.user2.id == _user.id).Include(u => u.user1).ThenInclude(u => u.user_extra).Include(u => u.user2).ThenInclude(u => u.user_extra).ToListAsync();
+            var data = await _friendBll.GetFriendsNotice(_user.id).ToListAsync();
 
             var filterData = data.Select(u => new { u.id, u.time, user = u.user1.id == _user.id ? u.user2 : u.user1 });
 
@@ -59,15 +58,63 @@ namespace CC.Yi.API.Controllers
         [HttpPost]//添加好友
         public async Task<Result> AddFriend(string user2Name)
         {
+            //需要先查询目前是否未好友，并且通知列表是否已经发送
+
+            string msg = "已发送好友请求，等待对方同意";
+            bool is_ok = true;
+
             friend myFriend = new friend
             {
                 time = DateTime.Now,
                 user1 = await _userBll.GetEntityById(_user.id),
                 user2 = await _userBll.GetEntities(u => u.username == user2Name).FirstOrDefaultAsync(),
-                is_agree= (short)ViewModel.Enum.AgrFlagEnum.wait
+                is_agree = (short)ViewModel.Enum.AgrFlagEnum.wait
             };
-            _friendBll.Add(myFriend);
-            return Result.Success();
+
+            //user1为请求人
+            //user2为被请求人
+
+            //先检测user1的好友是否存在user2
+            //再检测user1的好友请求列表是否存在user2，同时user2的还有请求列表中也不能有user1
+            var friendData = await _friendBll.GetFriends(_user.id).ToListAsync();//获取到了请求人的所有好友
+            foreach (var k in friendData)
+            {
+                if (k.user1.username == user2Name || k.user2.username == user2Name)
+                {
+                    msg = "他已成为你的好友，请勿继续添加";
+                    is_ok = false;
+                    break;
+                }
+            }
+
+            if (is_ok)
+            {
+                var friendNotiData1 = await _friendBll.GetFriendsNotice(_user.id).Where(u => u.user1.id == myFriend.user2.id).CountAsync();//获取被请求人为user1的好友请求
+                if (friendNotiData1 != 0)
+                {
+                    msg = "对面已经向你发送了请求，请勿重复发送";
+                    is_ok = false;
+                }
+            }
+
+
+            if (is_ok)
+            {
+                var friendNotiData2 = await _friendBll.GetFriendsNotice(myFriend.user2.id).Where(u => u.user1.id == myFriend.user1.id).CountAsync();//获取被请求人为user2的好友请求
+                if (friendNotiData2 != 0)
+                {
+                    msg = "你已经向对方发送了请求，请勿重复发送";
+                    is_ok = false;
+                }
+
+            }
+
+            if (is_ok)
+            {
+                _friendBll.Add(myFriend);
+                return Result.Success(msg);
+            }
+            return Result.Error(msg);
         }
 
 
@@ -76,7 +123,7 @@ namespace CC.Yi.API.Controllers
         public Result UpdateFriend(int friendId)
         {
             _friendBll.agreeFriend(friendId);
-            return Result.Success();
+            return Result.Success("已同意该好友申请");
         }
 
 
@@ -85,7 +132,7 @@ namespace CC.Yi.API.Controllers
         public Result delFriendList(List<int> Ids)
         {
             _friendBll.DelListByUpdateList(Ids);
-            return Result.Success();
+            return Result.Success("已拒绝删除");
         }
     }
 }

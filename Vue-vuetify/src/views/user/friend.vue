@@ -11,7 +11,11 @@
               <v-icon slot="append" color="cyan"> mdi-send </v-icon>
             </v-text-field>
           </v-col>
-
+          <v-col cols="12">
+            <p v-show="showFriend" class="text-center text--secondary">
+              空空如也，快快添加你的好友吧！
+            </p>
+          </v-col>
           <v-col
             cols="12"
             sm="6"
@@ -95,7 +99,14 @@
             <p class="title text--secondary">请求列表</p>
           </v-col>
           <v-col cols="12" class="text-center">
-            <v-btn width="100%" color="cyan" dark @click="openAdd()">添加好友</v-btn>
+            <v-btn width="100%" color="cyan" dark @click="openAdd()"
+              >添加好友</v-btn
+            >
+          </v-col>
+          <v-col cols="12">
+            <p v-show="showNoit" class="text-center text--secondary">
+              空空如也，暂无请求！
+            </p>
           </v-col>
           <v-col
             cols="12"
@@ -194,7 +205,7 @@
         <v-card-text>
           <v-container>
             <v-row>
-              <v-col cols="12" >
+              <v-col cols="12">
                 <v-text-field v-model="editName" label="用户名"></v-text-field>
               </v-col>
             </v-row>
@@ -221,6 +232,8 @@ export default {
     dialog: false,
     addDialog: false,
     editName: "",
+    showFriend: false,
+    showNoit: false,
   }),
   created() {
     this.initializa();
@@ -239,16 +252,16 @@ export default {
     },
     initializa() {
       friendApi.GetFriends().then((resp) => {
-        // if (resp.data.length == 0) {
-        //   this.is_null = true;
-        // }
+        if (resp.data.length == 0) {
+          this.showFriend = true;
+        }
         this.friendList = resp.data;
       });
 
       friendApi.GetFriendsNotice().then((resp) => {
-        // if (resp.data.length == 0) {
-        //   this.is_null = true;
-        // }
+        if (resp.data.length == 0) {
+          this.showNoit = true;
+        }
         this.friendNoticeList = resp.data;
       });
     },
@@ -256,31 +269,44 @@ export default {
       this.editId = id;
       this.dialog = true;
     },
-    openAdd()
-    {
-      this.addDialog=true;
+    openAdd() {
+      this.addDialog = true;
     },
     close() {
       this.editId = 0;
       this.dialog = false;
     },
-    closeAdd(){
-      this.editName="",
-      this.addDialog=false;
+    closeAdd() {
+      (this.editName = ""), (this.addDialog = false);
     },
     delFriend() {
-      friendApi.delFriendList([this.editId]).then(() => {
+      friendApi.delFriendList([this.editId]).then((resp) => {
+        this.$dialog.notify.error(resp.msg, {
+          position: "top-right",
+        });
         this.close();
         this.initializa();
       });
     },
     updateFriend(id) {
-      friendApi.UpdateFriend(id).then(() => {
+      friendApi.UpdateFriend(id).then((resp) => {
+        this.$dialog.notify.success(resp.msg, {
+          position: "top-right",
+        });
         this.initializa();
       });
     },
     addFriend() {
-      friendApi.AddFriend(this.editName).then(() => {
+      friendApi.AddFriend(this.editName).then((resp) => {
+        if (resp.status) {
+          this.$dialog.notify.success(resp.msg, {
+            position: "top-right",
+          });
+        } else {
+          this.$dialog.notify.error(resp.msg, {
+            position: "top-right",
+          });
+        }
         this.closeAdd();
         this.initializa();
       });
