@@ -14,6 +14,9 @@ import VueRouter from 'vue-router'
 // import collection from '@/views/user/collection'
 // import theme from '@/views/user/theme'
 // import version from '@/views/user/version'
+// import warehouse from '@/views/user/warehouse'
+// import shop from '@/views/user/shop'
+// import friend from '@/views/user/friend'
 
 // import AdmUser from '@/views/admin/AdmUser'
 // import AdmRole from '@/views/admin/AdmRole'
@@ -24,6 +27,8 @@ import VueRouter from 'vue-router'
 // import AdmSetting from '@/views/admin/AdmSetting'
 // import AdmBanner from '@/views/admin/AdmBanner'
 // import AdmVersion from '@/views/admin/AdmVersion'
+// import AdmProp from '@/views/admin/AdmProp'
+// import AdmShop from '@/views/admin/AdmShop'
 
 // import qq from '@/views/qq'
 // import login from '@/views/login'
@@ -91,6 +96,8 @@ const login = () =>
     import ( /* webpackChunkName: 'User' */ "@/views/login");
 const register = () =>
     import ( /* webpackChunkName: 'User' */ "@/views/register");
+
+
 
 Vue.use(VueRouter)
 
@@ -241,9 +248,7 @@ const routes = [{
                 path: '/friend',
                 name: 'friend',
                 component: friend
-            },
-
-
+            }
         ]
     }
 ]

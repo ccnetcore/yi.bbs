@@ -29,23 +29,81 @@
       </v-col>
     </v-row>
 
-    <div ref="editorDiv" style="text-align: left; z-index: -1"></div>
+    <!-- <div ref="editorDiv" style="text-align: left; z-index: -1"></div> -->
 
-    <div class="text-center mt-5">
-      <v-btn class="mr-6" color="blue lighten-2" dark large @click="claer()"
-        >清空</v-btn
-      >
-      <v-btn color="success" large @click="send()">发布</v-btn>
-    </div>
+    <v-card color="#FAFAFA" class="pb-15">
+      <v-row class="text-center">
+        <v-col cols="12">
+          <p class="text-h6 text--secondary text-left ml-2">
+            选择主题内容编辑方式：
+          </p>
+        </v-col>
+        <v-col cols="12" md="6">
+          <v-btn
+            fab
+            @click="is_html=true;dialog = true;selectIndex=1;"
+            width="200"
+            height="200"
+            color="cyan"
+            dark
+            :disabled="is_mark"
+            >markdown</v-btn
+          >
+        </v-col>
+        <v-col cols="12" md="6">
+          <v-btn
+            fab
+            @click="is_mark=true;dialog = true;selectIndex=2;"
+            width="200"
+            height="200"
+            color="blue"
+            dark
+             :disabled="is_html"
+            >html</v-btn
+          >
+        </v-col>
+      </v-row>
+    </v-card>
+    <v-btn class="my-12" width="100%" color="success" :disabled="is_send" large @click="send()"
+      >确认发布</v-btn
+    >
+
+    <v-dialog
+      v-model="dialog"
+      fullscreen
+      hide-overlay
+      transition="dialog-bottom-transition"
+    >
+      <v-card class="text-center align-center">
+        <v-toolbar dark color="cyan">
+          <v-btn icon dark @click="dialog = false;is_send=false;">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>主题内容</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-toolbar-items>
+            <v-btn dark text @click="dialog = false;is_send=false;"> 保存 </v-btn>
+          </v-toolbar-items>
+        </v-toolbar>
+
+        <htmlEdit v-show="selectIndex==2" @giveData="getHtml"></htmlEdit>
+        <markdownEdit v-show="selectIndex==1" @giveData="getHtml"></markdownEdit>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 <script>
-import E from "wangeditor";
 import labelApi from "@/api/labelApi";
 import discussApi from "@/api/discussApi";
+import htmlEdit from "@/views/html";
+import markdownEdit from "@/views/markdown";
 export default {
   data() {
     return {
+      is_mark:false,
+      is_html:false,
+      is_send:true,
+      dialog: false,
       selectLabel: [], //这里存放的是名称列表
       lableList: [], //这里存放的是id和名字
       itemLabel: [],
@@ -57,8 +115,8 @@ export default {
         content: "",
       },
       items: ["闲聊", "原创", "转载", "正文"],
-      myeditor: {},
-      mytext: "",
+      myhtml: "",
+      selectIndex:0
     };
   },
   mounted() {
@@ -69,31 +127,22 @@ export default {
   created() {
     this.initializa2();
   },
-
   methods: {
     send() {
       var Ids = [];
-
-      //  selectLabel: [],//这里存放的是名称列表 ["小学生","大学生","中学生"]
-      // lableList:[],//这里存放的是id和名字[{1，"小学生"}，{2，"中学生"}，{3，"大学生"}]
-
-for(var i=0;i<this.selectLabel.length;i++)
- {
-   for (var j=0;j<this.lableList.length;j++)
-   {
-     if (this.selectLabel[i] == this.lableList[j].name)
-     {
-       Ids.push(this.lableList[j].id)
-     }
-   }
- }
-if(this.form.type=="")
-{
-this.form.type="闲聊";
-}
-      this.form.content = this.myeditor.txt.html();
+      for (var i = 0; i < this.selectLabel.length; i++) {
+        for (var j = 0; j < this.lableList.length; j++) {
+          if (this.selectLabel[i] == this.lableList[j].name) {
+            Ids.push(this.lableList[j].id);
+          }
+        }
+      }
+      if (this.form.type == "") {
+        this.form.type = "闲聊";
+      }
+      this.form.content = this.myhtml;
       discussApi
-        .addDiscuss(this.form, this.$store.state.home.plateId,Ids)
+        .addDiscuss(this.form, this.$store.state.home.plateId, Ids)
         .then((resp) => {
           this.$store.dispatch("set_discussId", resp.data.id);
           //设置等级
@@ -109,36 +158,13 @@ this.form.type="闲聊";
         });
       });
     },
-    initializa1() {
-      //初始化创建
-      var my = this;
-      const editor = new E(this.$refs.editorDiv);
-      this.myeditor = editor;
-      editor.config.height = 465; //设置高度
-      editor.config.placeholder = "输入你的内容"; //修改提示文字
-      editor.config.zIndex = 1;
-      editor.config.uploadImgServer = this.baseurl + "/File/OnPostUploadImage"; //配置图片接口
-      editor.config.uploadVideoServer =
-        this.baseurl + "/File/OnPostUploadVideo"; //配置视频接口
-      editor.config.uploadImgHooks = {
-        customInsert: function (insertImgFn, result) {
-          // result 即服务端返回的接口
-          // insertImgFn 可把图片插入到编辑器，传入图片 src ，执行函数即可
-          result.data.forEach((item) => {
-            insertImgFn(item.url.replace("#", my.baseurl));
-          });
-        },
-      };
-      editor.config.uploadVideoHooks = {
-        customInsert: function (insertVideoFn, result) {
-          // result 即服务端返回的接口
-          insertVideoFn(result.data.url.replace("#", my.baseurl));
-
-          // insertVideoFn 可把视频插入到编辑器，传入视频 src ，执行函数即可
-        },
-      };
-      editor.create();
+    getHtml(html) {
+      this.myhtml = html;
     },
+  },
+  components: {
+    htmlEdit,
+    markdownEdit,
   },
 };
 </script>
