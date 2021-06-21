@@ -18,7 +18,7 @@ namespace CC.Yi.API.Controllers
         #region 上传图片 OnPostUpload
         [HttpPost]
         [Obsolete]
-        public async Task<IActionResult> OnPostUploadImage([FromServices] IHostingEnvironment environment)
+        public async Task<IActionResult> run ([FromServices] IHostingEnvironment environment)
         {
             List<imageEdit> fileUrl = new List<imageEdit>();
             var files = Request.Form.Files;

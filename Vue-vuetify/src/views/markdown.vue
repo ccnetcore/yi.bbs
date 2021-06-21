@@ -19,11 +19,16 @@ export default {
     return {
       content: "",
       html: "",
+      baseurl:"",
       configs: {}
     };
   },
   components: {
     mavonEditor
+  },
+    mounted() {
+    //使用初始化
+    this.baseurl = process.env.VUE_APP_BASE_API;
   },
   methods: {
     // 将图片上传到服务器，返回地址替换到md中
@@ -32,12 +37,15 @@ export default {
       formdata.append("file", $file);
       //将下面上传接口替换为你自己的服务器接口
       axios({
-        url: "/common/upload",
+        url: this.baseurl+"/File/OnPostUploadImage",
         method: "post",
         data: formdata,
         headers: { "Content-Type": "multipart/form-data" }
-      }).then(url => {
-        this.$refs.md.$img2Url(pos, url);
+      }).then(resp => {
+        var myurl=resp.data.data[0].url;
+
+
+        this.$refs.md.$img2Url(pos, myurl.replace("#", this.baseurl));
       });
     },
     change(value, render) {

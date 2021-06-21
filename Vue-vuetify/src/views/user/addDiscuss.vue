@@ -122,10 +122,9 @@ export default {
   mounted() {
     //使用初始化
     this.baseurl = process.env.VUE_APP_BASE_API;
-    this.initializa1();
   },
   created() {
-    this.initializa2();
+    this.initializa();
   },
   methods: {
     send() {
@@ -150,7 +149,7 @@ export default {
           this.$router.push({ path: "/comment" });
         });
     },
-    initializa2() {
+    initializa() {
       labelApi.getLabelByUserId().then((resp) => {
         this.lableList = resp.data;
         this.itemLabel = resp.data.map((obj) => {
