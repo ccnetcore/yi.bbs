@@ -10,10 +10,11 @@
           class="white d-none d-sm-flex text-center"
         >
           <div style="width: 100%">
-            <h1 class="light-blue--text mt-8">{{title}} <br />论坛BBS</h1>
-            <p class="my-4 title">Jift BBS</p>
-            <p class="my-4 title">欢迎！在这里，我们无所不谈！</p>
+            <h1 class="light-blue--text mt-8">{{title}} <br />论坛 BBS</h1>
+            <p class="my-4 title">Jift CC</p>
+            <!-- <p class="my-4 title">欢迎！在这里，我们无所不谈！</p> -->
 
+<a href="https://beian.miit.gov.cn">工信部备案号：赣ICP备20008025号-2</a>
             <v-img
               src="../assets/login.svg"
               contain
@@ -26,8 +27,10 @@
 
         <!-- ------------------------------表单-------------------------------- -->
         <v-col cols="12" sm="8" md="9">
-          <v-container class="text-center align-center">
+          <v-container class="text-center align-center" fluid>
+            <div class="mt-15">
             <router-view></router-view>
+            </div>
           </v-container>
         </v-col>
         <!-- --------------------------------------------------------------- -->

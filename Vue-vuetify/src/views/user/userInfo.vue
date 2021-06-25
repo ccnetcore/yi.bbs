@@ -340,6 +340,7 @@ export default {
     initializa() {
       if (
         this.$route.query.userId == undefined ||
+        this.$route.query.userId ==0||
         this.$route.query.userId == this.$store.state.user.user.id
       ) {
         //表示是自己的用户

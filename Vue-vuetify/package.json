@@ -7,6 +7,7 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "@microsoft/signalr": "^5.0.7",
     "axios": "^0.21.1",
     "mavon-editor": "^2.9.1",
     "vue": "^2.6.11",

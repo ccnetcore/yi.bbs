@@ -96,6 +96,9 @@ const login = () =>
     import ( /* webpackChunkName: 'User' */ "@/views/login");
 const register = () =>
     import ( /* webpackChunkName: 'User' */ "@/views/register");
+const chathub = () =>
+    import ( /* webpackChunkName: 'User' */ "@/views/chathub");
+
 
 
 
@@ -248,6 +251,11 @@ const routes = [{
                 path: '/friend',
                 name: 'friend',
                 component: friend
+            },
+            {
+                path: '/chathub',
+                name: 'chathub',
+                component: chathub
             }
         ]
     }

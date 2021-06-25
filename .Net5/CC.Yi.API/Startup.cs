@@ -2,6 +2,7 @@ using Autofac;
 using Autofac.Extras.DynamicProxy;
 using CC.Yi.API.Extension;
 using CC.Yi.BLL;
+using CC.Yi.Common;
 using CC.Yi.Common.Castle;
 using CC.Yi.Common.Json;
 using CC.Yi.Common.Jwt;
@@ -100,6 +101,8 @@ namespace CC.Yi.API
                 //r.Filters.Add(typeof(DbContextFilter));
             });
 
+            services.AddSignalR();
+
             services.AddControllers(filters).AddJsonOptions(options=> {
 
                 options.JsonSerializerOptions.Converters.Add(new DatetimeJsonConverter());
@@ -163,6 +166,7 @@ namespace CC.Yi.API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<ChatHub>("/chat");
             });
             InitData(app.ApplicationServices);
         }
