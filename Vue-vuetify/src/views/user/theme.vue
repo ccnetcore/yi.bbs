@@ -12,7 +12,7 @@
           </v-col>
 
           <v-col cols="3" md="2">
-            <v-switch inset v-model="switch1" @click="dark()"></v-switch>
+            <v-switch inset v-model="$vuetify.theme.dark" ></v-switch>
           </v-col>
         </v-row>
         <v-divider></v-divider>
@@ -37,6 +37,45 @@
 
           <v-col cols="3" md="2">
             <v-btn class="mt-4" dark @click="openDialog(2)" color="blue">修改</v-btn>
+          </v-col>
+        </v-row>
+        <v-divider></v-divider>
+
+
+
+        <v-row>
+          <v-col cols="9" md="10">
+            <p class="my-4 ml-4 text-h7 font-weight-bold">语言</p>
+            <v-subheader>可切语言，仅限已翻译过部分</v-subheader>
+          </v-col>
+
+          <v-col cols="3" md="2">
+
+<v-menu offset-y>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          color="cyan"
+          dark
+          v-bind="attrs"
+          v-on="on"
+          class="mt-4"
+        >
+          修改
+        </v-btn>
+      </template>
+      <v-list>
+        <v-list-item
+          v-for="(item, index) in items"
+          :key="index"
+          @click="updateLang(item.id)"
+        >
+          <v-list-item-title>{{ item.title }}</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+
+
+         
           </v-col>
         </v-row>
         <v-divider></v-divider>
@@ -81,35 +120,47 @@
 export default {
   data() {
     return {
+      items: [
+        {id:1, title: '简体中文' },
+        {id:2, title: 'English' },
+        {id:3, title: '日本語' },
+      ],
       dialog: false,
       notifications: false,
       sound: true,
       widgets: false,
-      switch1: false,
       color1: "",
       open:0
     };
   },
   methods: {
-    dark() {
-      this.$vuetify.theme.dark = this.switch1;
-    },
+updateLang(id)
+{
+  var lang="zhHans";
+  switch(id)
+  {
+    case 1: break;
+    case 2: lang='en'; break;
+    case 3: lang='ja'; break;
+  }
+  this.$vuetify.lang.current=lang;
+},
+
     openDialog(id) {
      this.open=id;
       this.dialog = true;
     },
     save() {
-      const cor = this.color1.substr(0, 7);
-      var themeData = this.$store.state.theme.light;
-
+      var cor = this.color1.substr(0, 7);
       switch(this.open)
       {
-        case 1: themeData.cyan = cor;break;
-        case 2:themeData.blue = cor;break;
+        case 1: this.$vuetify.theme.themes.light.cyan = cor;break;
+        case 2:this.$vuetify.theme.themes.light.blue = cor;break;
       }
-     
-      this.$store.dispatch("set_light", themeData);
+      this.$vuetify.theme.dark=true;
+      this.$vuetify.theme.dark=false;
       this.dialog=false;
+
     },
   },
 };

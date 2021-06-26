@@ -6,6 +6,7 @@ import VuetifyDialog from 'vuetify-dialog'
 import 'vuetify-dialog/dist/vuetify-dialog.css'
 import signalr from './utils/signalR'
 
+
 // import { mavonEditor } from "mavon-editor";
 // import "mavon-editor/dist/css/index.css";
 
@@ -14,6 +15,7 @@ import "./permission"
 
 // Vue.component("mavon-editor", mavonEditor);
 Vue.use(signalr);
+
 Vue.config.productionTip = false
 Vue.use(VuetifyDialog, {
     context: {
