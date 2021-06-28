@@ -49,6 +49,7 @@
       @click="login"
       large
       style="width: 100%"
+      @keyup.enter="enterSearch"
     >
       登入
     </v-btn>
@@ -82,7 +83,23 @@ export default {
     select: null,
     checkbox: true,
   }),
+  created() {
+    this.enterSearch();
+  },
   methods: {
+    enterSearch() {
+      document.onkeydown = (e) => {
+        //13表示回车键，baseURI是当前页面的地址，为了更严谨，也可以加别的，可以打印e看一下
+        if (
+          e.keyCode === 13 &&
+          e.target.baseURI.match("/") 
+        ) {
+          //回车后执行搜索方法
+          this.login();
+        }
+      };
+    },
+
     qqlogin() {
       QC.Login.showPopup(myqq.myqqLogin);
       // window.close();

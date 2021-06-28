@@ -90,6 +90,7 @@ namespace CC.Yi.API.Controllers
                 warehouseData.number += 1;
                 _warehouseBll.Update(warehouseData);
             }
+            _logger.LogInformation(_user.username + "购买道具。商城Id：" + shopId);
             return Result.Success("购买道具成功，已自动放入仓库");
         }
     }

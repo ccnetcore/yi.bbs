@@ -1,5 +1,6 @@
 ﻿using CC.Yi.Common;
 using CC.Yi.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace CC.Yi.API.Controllers
@@ -50,7 +52,7 @@ namespace CC.Yi.API.Controllers
                     }
                 }
             }
-            return new JsonResult(new { errno=0,data= fileUrl });
+            return new JsonResult(new { errno = 0, data = fileUrl });
         }
         #endregion
 
@@ -59,7 +61,7 @@ namespace CC.Yi.API.Controllers
         [Obsolete]
         public async Task<IActionResult> OnPostUploadVideo([FromServices] IHostingEnvironment environment)
         {
-           videoEdit fileUrl = new videoEdit();
+            videoEdit fileUrl = new videoEdit();
             var files = Request.Form.Files;
             if (string.IsNullOrWhiteSpace(environment.WebRootPath))
             {
@@ -90,7 +92,7 @@ namespace CC.Yi.API.Controllers
                 }
             }
 
-            return new JsonResult(new { errno=0,data=fileUrl});
+            return new JsonResult(new { errno = 0, data = fileUrl });
         }
         #endregion
 
@@ -108,6 +110,54 @@ namespace CC.Yi.API.Controllers
                     sw.Read(bytes, 0, bytes.Length);
                     sw.Close();
                     return new FileContentResult(bytes, contentTypeStr);
+                }
+            }
+            catch
+            {
+                return Content("200");
+            }
+        }
+        #endregion
+
+
+
+        [Authorize(Policy = "日志管理")]
+        [HttpGet]
+        public Result GetLogs()
+        {
+            List<log> logData = new List<log>();
+
+             string path = Path.Combine(Directory.GetCurrentDirectory(), "Logs/");
+             DirectoryInfo root = new DirectoryInfo(path);
+             FileInfo[] files = root.GetFiles();
+
+            foreach (var file in files)
+            {
+                logData.Add(new log { name =file.Name });
+            }
+            return Result.Success().SetData(logData);
+        }
+
+        [HttpGet]
+        #region 获取日志
+        public IActionResult ShowLog(string filePath)
+        {
+            try
+            {
+                var contentTypeStr = "text/plain";
+                string webRootPath = Path.Combine(Directory.GetCurrentDirectory(), $"Logs/{filePath}");
+                using (var sw = new FileStream(webRootPath, FileMode.Open))
+                {
+                    var bytes = new byte[sw.Length];
+                    
+                    sw.Read(  bytes, 0, bytes.Length);
+
+
+                    sw.Close();
+
+                    var myStr = System.Text.Encoding.UTF8.GetString(bytes);
+
+                    return Content(myStr, contentTypeStr,Encoding.UTF8);
                 }
             }
             catch

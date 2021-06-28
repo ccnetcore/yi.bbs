@@ -18,7 +18,7 @@ namespace CC.Yi.API.Controllers
 {
     [Route("[controller]/[action]")]
     [ApiController]
-    public class QQController : Controller
+    public class QQController : BaseController
     {
 
         private ILogger<PlateController> _logger;
@@ -36,13 +36,12 @@ namespace CC.Yi.API.Controllers
             var user = await _userBll.GetEntities(u => u.openid == openid && u.is_delete == (short)ViewModel.Enum.DelFlagEnum.Normal).Include(u => u.user_extra).FirstOrDefaultAsync();
             if ( user!=null)
             {
-
-                _logger.LogInformation("QQ登录成功");
+                _logger.LogInformation(user.username + "使用QQ登录成功！");
             return   await _userBll.login(user);
 
             }
-            _logger.LogInformation("QQ登录失败");
-            return Result.Error("请注册账号，进入个人信息中绑定");
+            _logger.LogInformation(user.username+"QQ登录失败");
+            return Result.Error("请先注册账号，进入个人信息中绑定");
         }
 
         [Authorize(Policy = "绑定QQ")]
@@ -55,10 +54,12 @@ namespace CC.Yi.API.Controllers
                var myUser= await _userBll.GetEntityById(userId);
                 myUser.openid = openid;
                 _userBll.Update(myUser);
+                _logger.LogInformation(_user.username + "绑定QQ成功！");
                 return Result.Success("QQ绑定成功");
             }
             else
             {
+                _logger.LogInformation(_user.username + "绑定QQ失败！");
                 return Result.Error("该qq账号已被绑定");
             }
         }

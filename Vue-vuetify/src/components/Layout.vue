@@ -2,7 +2,7 @@
   <div>
    <!-- <iframe id="music" frameborder="no" border="0" marginwidth="0" marginheight="0" width=250 height=86 src="//music.163.com/outchain/player?type=2&id=1454730043&auto=0&height=66"></iframe> -->
     <v-app id="inspire">
-      <v-navigation-drawer v-model="drawer"   app>
+      <v-navigation-drawer v-model="drawer"   app style=" z-index:1">
         <app-navbar></app-navbar>
         <template v-slot:append >
           <div class="pa-2">

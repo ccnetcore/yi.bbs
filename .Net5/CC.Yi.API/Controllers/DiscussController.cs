@@ -224,6 +224,7 @@ namespace CC.Yi.API.Controllers
             int Experience = settingHelper.discussExperience();
             int level = await _user_extraBll.UpdateExperience(data.user.id, Experience, false);
 
+            _logger.LogInformation(_user.username + "发布了一篇主题。主题Id：" + myModel.data.id+"；主题标题："+myModel.data.title);
             return Result.Success().SetData(new { data.id, level });
         }
 
@@ -255,10 +256,11 @@ namespace CC.Yi.API.Controllers
             if (await _warehouseBll.setWarehouse(_user.id, propId))
             {
                 await _discussBll.setProp(disucssId, propId, color);
+                _logger.LogInformation(_user.username + "为主题使用道具。主题Id：" + disucssId + "；道具Id：" + propId);
                 return Result.Success("道具使用成功！已从仓库中获取！");
             }
 
-           
+            
             return Result.Error("仓库道具不足，请前往商城中购买!");
         }
 

@@ -112,8 +112,8 @@ export default {
       { text: "个人资料", icon: "mdi-folder", router: "/userInfo" },
       { text: "我的主题", icon: "mdi-account-multiple", router: "/myDiscuss" },
       { text: "我的收藏", icon: "mdi-star", router: "/collection" },
-      { text: "我的仓库", icon: "mdi-check-circle", router: "/warehouse" },
-      { text: "我的好友", icon: "mdi-check-circle", router: "/friend" },
+      { text: "我的仓库", icon: "mdi-home-account", router: "/warehouse" },
+      { text: "我的好友", icon: "mdi-account-group", router: "/friend" },
     ],
   }),
   created() {

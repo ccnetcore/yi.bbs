@@ -47,7 +47,7 @@ namespace CC.Yi.API.Controllers
                 if (data.password == myUser.password)
                 {
                     //HttpContext.Session.SetString("loginId", JsonHelper.ToString(_info_user));
-                    _logger.LogInformation("登录成功!");
+                    _logger.LogInformation(data.username+"登录成功!");
 
                    return await _userBll.login(data);
                    // //通过查询权限，把所有权限加入进令牌中
@@ -150,11 +150,11 @@ namespace CC.Yi.API.Controllers
                     await _userBll.setRole(data.id, new List<int> { roleData.id });
 
                     _logger.LogInformation("注册成功!");
-                    return Result.Success("注册成功！");
+                    return Result.Success( myUser.username+ "注册成功！");
                 }
                 else
                 {
-                    _logger.LogInformation("注册成功!");
+                    _logger.LogInformation(myUser.username + "注册失败!");
                     return Result.Error("注册失败！邮箱验证码错误！请重试!");
                 }
 
@@ -172,7 +172,8 @@ namespace CC.Yi.API.Controllers
         {
             if (_user.id==0)
             {
-                return Result.Error("登录超时！请重新登录");
+                _logger.LogInformation(_user.username+"登录超时!");
+                return Result.Error(_user.username + "登录超时！请重新登录");
             }
             else
             {

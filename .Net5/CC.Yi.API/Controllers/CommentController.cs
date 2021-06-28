@@ -95,6 +95,7 @@ namespace CC.Yi.API.Controllers
             int Experience = settingHelper.commentExperience();
             //注意，这里经验可以从redis中获取，现在先设置一个1定值
             int level = await _user_extraBll.UpdateExperience(myComment.user.id, Experience, false);
+            _logger.LogInformation(_user.username + "为主题发表评论。主题Id：" + discussId + "；评论信息：" + myComment.content);
             return Result.Success().SetData(new { level });
         }
     }

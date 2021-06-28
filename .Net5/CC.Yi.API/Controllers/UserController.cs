@@ -148,6 +148,7 @@ namespace CC.Yi.API.Controllers
             user.icon = myUserTry.icon;
             user.user_extra.introduction = myUserTry.user_extra.introduction;
             _userBll.Update(user);
+            _logger.LogInformation(_user.username + "成功修改信息");
             return Result.Success("修改成功");
 
         }

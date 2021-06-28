@@ -90,6 +90,7 @@
           label="发表评论"
           required
           :rules="commentRules"
+          @keyup.enter="sentComment()"
         >
           <v-icon slot="append" color="blue" @click="sentComment()">
             mdi-send

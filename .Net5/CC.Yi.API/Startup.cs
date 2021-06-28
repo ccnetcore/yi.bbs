@@ -59,7 +59,7 @@ namespace CC.Yi.API
                 options.AddPolicy("用户管理", policy => policy.RequireClaim("action", "用户管理"));
                 options.AddPolicy("角色管理", policy => policy.RequireClaim("action", "角色管理"));
                 options.AddPolicy("权限管理", policy => policy.RequireClaim("action", "权限管理"));
-
+                options.AddPolicy("日志管理", policy => policy.RequireClaim("action", "日志管理"));
 
 
                 options.AddPolicy("绑定QQ", policy => policy.RequireClaim("action", "绑定QQ"));
