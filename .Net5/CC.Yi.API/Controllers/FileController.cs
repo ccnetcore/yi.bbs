@@ -135,7 +135,8 @@ namespace CC.Yi.API.Controllers
             {
                 logData.Add(new log { name =file.Name });
             }
-            return Result.Success().SetData(logData);
+            logData.Reverse();
+            return Result.Success().SetData(logData) ;
         }
 
         [HttpGet]
