@@ -2,7 +2,7 @@
 import * as signalR from '@microsoft/signalr'
 
 const signal = new signalR.HubConnectionBuilder()　　　 //服务器地址
-    .withUrl([process.env.VUE_APP_BASE_API] + 'chat', {})
+    .withUrl([process.env.VUE_APP_BASE_API] + '/chat', {})
     .build()
 
 /* const signalr = function () {
