@@ -235,6 +235,7 @@ namespace CC.Yi.API.Controllers
             var data = await _discussBll.GetEntities(u => u.id == myDiscuss.id).FirstOrDefaultAsync();
             data.title = myDiscuss.title;
             data.type = myDiscuss.type;
+            data.content = myDiscuss.content;
             _discussBll.Update(data);
             return Result.Success();
         }

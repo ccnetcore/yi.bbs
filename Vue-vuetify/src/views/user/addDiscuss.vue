@@ -41,7 +41,11 @@
         <v-col cols="12" md="6">
           <v-btn
             fab
-            @click="is_html=true;dialog = true;selectIndex=1;"
+            @click="
+              is_html = true;
+              dialog = true;
+              selectIndex = 1;
+            "
             width="200"
             height="200"
             color="cyan"
@@ -53,19 +57,29 @@
         <v-col cols="12" md="6">
           <v-btn
             fab
-            @click="is_mark=true;dialog = true;selectIndex=2;"
+            @click="
+              is_mark = true;
+              dialog = true;
+              selectIndex = 2;
+            "
             width="200"
             height="200"
             color="blue"
             dark
-             :disabled="is_html"
+            :disabled="is_html"
             >html</v-btn
           >
         </v-col>
       </v-row>
     </v-card>
-    <v-btn class="my-12" width="100%" color="success" :disabled="is_send" large @click="send()"
-      >确认发布</v-btn
+    <v-btn
+      class="my-12"
+      width="100%"
+      color="success"
+      :disabled="is_send"
+      large
+      @click="send()"
+      >确认</v-btn
     >
 
     <v-dialog
@@ -76,18 +90,41 @@
     >
       <v-card class="text-center align-center">
         <v-toolbar dark color="cyan">
-          <v-btn icon dark @click="dialog = false;is_send=false;">
+          <v-btn
+            icon
+            dark
+            @click="
+              dialog = false;
+              is_send = false;
+            "
+          >
             <v-icon>mdi-close</v-icon>
           </v-btn>
           <v-toolbar-title>主题内容</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-toolbar-items>
-            <v-btn dark text @click="dialog = false;is_send=false;"> 保存 </v-btn>
+            <v-btn
+              dark
+              text
+              @click="
+                dialog = false;
+                is_send = false;
+              "
+            >
+              保存
+            </v-btn>
           </v-toolbar-items>
         </v-toolbar>
 
-        <htmlEdit v-show="selectIndex==2" @giveData="getHtml"></htmlEdit>
-        <markdownEdit v-show="selectIndex==1" @giveData="getHtml"></markdownEdit>
+        <htmlEdit
+          v-show="selectIndex == 2"
+          @giveData="getHtml"
+          :myhtml2="myhtml"
+        ></htmlEdit>
+        <markdownEdit
+          v-show="selectIndex == 1"
+          @giveData="getHtml"
+        ></markdownEdit>
       </v-card>
     </v-dialog>
   </v-container>
@@ -100,15 +137,16 @@ import markdownEdit from "@/views/markdown";
 export default {
   data() {
     return {
-      is_mark:false,
-      is_html:false,
-      is_send:true,
+      is_mark: false,
+      is_html: false,
+      is_send: true,
       dialog: false,
       selectLabel: [], //这里存放的是名称列表
       lableList: [], //这里存放的是id和名字
       itemLabel: [],
       baseurl: "",
       form: {
+        id: "",
         title: "",
         type: "",
         introduction: "",
@@ -116,7 +154,7 @@ export default {
       },
       items: ["闲聊", "原创", "转载", "正文"],
       myhtml: "",
-      selectIndex:0
+      selectIndex: 0,
     };
   },
   mounted() {
@@ -128,6 +166,7 @@ export default {
   },
   methods: {
     send() {
+      this.form.content = this.myhtml;
       var Ids = [];
       for (var i = 0; i < this.selectLabel.length; i++) {
         for (var j = 0; j < this.lableList.length; j++) {
@@ -139,17 +178,36 @@ export default {
       if (this.form.type == "") {
         this.form.type = "闲聊";
       }
-      this.form.content = this.myhtml;
-      discussApi
-        .addDiscuss(this.form, this.$store.state.home.plateId, Ids)
-        .then((resp) => {
-          this.$store.dispatch("set_discussId", resp.data.id);
-          //设置等级
-          this.$store.dispatch("setLevel", resp.data.level);
-          this.$router.push({ path: "/comment" });
+      if (this.$route.query.discussId == undefined) {
+        discussApi
+          .addDiscuss(this.form, this.$store.state.home.plateId, Ids)
+          .then((resp) => {
+            this.$store.dispatch("set_discussId", resp.data.id);
+            //设置等级
+            this.$store.dispatch("setLevel", resp.data.level);
+            this.$router.push({ path: "/comment" });
+          });
+      } else {
+        discussApi.updateDiscuss(this.form).then(() => {
+           this.$router.push({ path: "/comment" });
         });
+      }
     },
     initializa() {
+      if (this.$route.query.discussId != undefined) {
+        discussApi
+          .getDiscussByDiscussId(this.$route.query.discussId)
+          .then((response) => {
+            const res = response.data;
+            this.form.id = res.id;
+
+            this.form.title = res.title;
+            this.form.type = res.type;
+            this.form.introduction = res.introduction;
+            this.myhtml = res.content;
+          });
+      }
+
       labelApi.getLabelByUserId().then((resp) => {
         this.lableList = resp.data;
         this.itemLabel = resp.data.map((obj) => {

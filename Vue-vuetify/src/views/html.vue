@@ -1,14 +1,17 @@
 <template>
   <v-container fluid>
-    <div ref="editorDiv" style="text-align: left; z-index: -1"></div>
+   
+    <div ref="editorDiv" style="text-align: left; z-index: -1">
+    </div>
   </v-container>
 </template>
 <script>
 import E from "wangeditor";
 export default {
+  props: ["myhtml2"],
   data() {
     return {
-      myhtml: "",
+      myhtml: this.myhtml2,
     };
   },
   mounted() {
@@ -49,10 +52,12 @@ export default {
       editor.config.onchange = function (html) {
         // 第二步，监控变化，同步更新到 textarea
         my.myhtml = html;
-        my.$emit('giveData',html)
+        my.$emit("giveData", html);
       };
 
+      
       editor.create();
+   editor.txt.html(this.myhtml);
     },
   },
 };

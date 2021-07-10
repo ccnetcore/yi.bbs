@@ -25,6 +25,9 @@
         <v-btn text color="teal accent-4" @click="reveal = true">
           更多信息
         </v-btn>
+
+
+
         <v-btn @click="agrees" class="mx-2" dark outlined color="cyan">
           <v-icon large dark> mdi-menu-up-outline </v-icon>
           {{ discussData.agree_num }}
@@ -59,6 +62,11 @@
 
         <v-btn class="mx-2" fab dark small color="cyan">
           <v-icon dark @click="Collection(discussData.id)"> mdi-star </v-icon>
+        </v-btn>
+
+
+     <v-btn class="mx-2" fab dark small color="cyan">
+          <v-icon dark @click="updataDiscuss(discussData.id)"> mdi-update </v-icon>
         </v-btn>
       </v-card-actions>
 
@@ -208,6 +216,15 @@ export default {
     this.baseurl = process.env.VUE_APP_BASE_API;
   },
   methods: {
+    updataDiscuss(discussId)
+    {
+       this.$router.push({
+        path: `/AddDiscuss`,
+        query: {
+          discussId: discussId,
+        },
+      });
+    },
     intoInfo(userId) {
       this.$router.push({
         path: `/userInfo`,
