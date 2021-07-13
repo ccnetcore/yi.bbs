@@ -27,7 +27,8 @@ namespace CC.Yi.API.Controllers
         private IlabelBll _labelBll;
         private Iuser_extraBll _user_extraBll;
         private IwarehouseBll _warehouseBll;
-        public DiscussController(ILogger<DiscussController> logger, IdiscussBll discussBll, IuserBll userBll, IplateBll plateBll, Iuser_extraBll user_extraBll, IlabelBll labelBll,IwarehouseBll warehouseBll)
+        private IrecordBll _recordBll;
+        public DiscussController(ILogger<DiscussController> logger, IdiscussBll discussBll, IuserBll userBll, IplateBll plateBll, Iuser_extraBll user_extraBll, IlabelBll labelBll,IwarehouseBll warehouseBll,IrecordBll recordBll)
         {
             _logger = logger;
             _discussBll = discussBll;
@@ -36,6 +37,7 @@ namespace CC.Yi.API.Controllers
             _labelBll = labelBll;
             _user_extraBll = user_extraBll;
             _warehouseBll = warehouseBll;
+            _recordBll = recordBll;
         }
 
         [Authorize(Policy = "主题管理")]
@@ -232,18 +234,8 @@ namespace CC.Yi.API.Controllers
         [HttpPost]
         public async Task<Result> UpdateDiscuss(discuss myDiscuss)
         {
-            //先判断是否有主题权限，d-x，x为主题id，如果权限存在，就运行编辑
-            List<string> myActions = new List<string>();
-            bool exit = false;
-            foreach (var k in _user.actions)
-            {
-                if (k.action_name == ("d-" + myDiscuss.id) || k.action_name == "d-admin")
-                {
-                    exit = true;
-                    break;
-                }
-            }
-            if (exit)
+
+            if (discussAction.is_allow(_user, myDiscuss.id))
             {
                 var data = await _discussBll.GetEntities(u => u.id == myDiscuss.id).FirstOrDefaultAsync();
                 data.title = myDiscuss.title;

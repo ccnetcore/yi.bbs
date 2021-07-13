@@ -28,10 +28,11 @@
                 @click="showArticle(myitem.id)"
               >
                 <v-list-item-content>
-                  <v-list-item-title
-                    >{{ myitem.name }}
-                    <v-icon color="cyan" @click="intoArticle(myitem.id)"
-                      >mdi-update</v-icon
+                  <v-list-item-title>
+                    <span>{{ myitem.name }}</span>
+                   
+                    <v-icon class="ml-2" color="cyan" @click="intoArticle(myitem.id)"
+                      >mdi-book-edit-outline</v-icon
                     >
                     <v-icon color="cyan" @click="delArticle(myitem.id)"
                       >mdi-close-circle</v-icon
@@ -119,8 +120,12 @@
 
             <v-btn class="mx-2" fab dark small color="cyan">
               <v-icon dark @click="updataDiscuss(discussData.id)">
-                mdi-update
+                mdi-book-edit
               </v-icon>
+            </v-btn>
+
+            <v-btn class="mx-2" fab dark small color="cyan">
+              <v-icon dark @click="intoRecords">mdi-update</v-icon>
             </v-btn>
           </v-card-actions>
 
@@ -220,6 +225,61 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
+
+        <v-dialog v-model="dialog2" width="800">
+          <v-card>
+            <v-card-title class="text-h5 grey lighten-2">
+              协同编辑记录
+            </v-card-title>
+
+            <v-card-text style="overflow-y: scroll; max-height: 600px">
+              <v-timeline>
+                <v-timeline-item
+                  v-for="(item, index) in recordList"
+                  :key="index"
+                  color="cyan lighten-1"
+                  fill-dot
+                  small
+                >
+                  <v-card>
+                    <v-card-title class="cyan lighten-1 justify-end">
+                      <v-subheader class="white--text">{{
+                        item.time
+                      }}</v-subheader>
+
+                      <v-avatar size="42" @click="intoInfo(item.user.id)">
+                        <img
+                          alt="Avatar"
+                          :src="
+                            baseurl +
+                            '/File/ShowNoticeImg?filePath=' +
+                            item.user.icon
+                          "
+                        />
+                      </v-avatar>
+
+                    <span class="white--text ml-2">  {{item.user.username}}</span>
+                    </v-card-title>
+                    <v-container>
+                      <v-row>
+                        <v-col cols="12">
+                          {{ item.describe }}
+                        </v-col>
+                      </v-row>
+                    </v-container>
+                  </v-card>
+                </v-timeline-item>
+              </v-timeline>
+            </v-card-text>
+
+            <v-divider></v-divider>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="cyan" text @click="dialog2 = false"> 关闭 </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </v-col>
     </v-row>
   </v-container>
@@ -230,8 +290,11 @@ import commentApi from "@/api/commentApi";
 import collectionApi from "@/api/collectionApi";
 import agreesApi from "@/api/agreesApi";
 import articleApi from "@/api/articleApi";
+import recordApi from "@/api/recordApi";
 export default {
   data: () => ({
+    recordList: [],
+    dialog2: false,
     articleList: [],
     drawer: true,
     dialog: false,
@@ -277,6 +340,14 @@ export default {
     this.baseurl = process.env.VUE_APP_BASE_API;
   },
   methods: {
+    intoRecords() {
+      recordApi
+        .getRecordsByDiscussId(this.$store.state.home.discussId)
+        .then((resp) => {
+          this.recordList = resp.data;
+        });
+      this.dialog2 = true;
+    },
     delArticle(acticleId) {
       this.$dialog
         .confirm({
@@ -285,13 +356,15 @@ export default {
         })
         .then((resp) => {
           if (resp) {
-            articleApi.delArticleList([acticleId]).then((resp) => {
-              if (resp.status) {
-                this.initializa();
-              } else {
-                alert("权限不足！");
-              }
-            });
+            articleApi
+              .delArticleList([acticleId], this.$store.state.home.discussId)
+              .then((resp) => {
+                if (resp.status) {
+                  this.initializa();
+                } else {
+                  alert("权限不足！");
+                }
+              });
           }
         });
     },
@@ -335,7 +408,7 @@ export default {
     intoAdd() {
       this.$router.push({ path: "/addDisucss" });
     },
-        intoAdd2() {
+    intoAdd2() {
       this.$router.push({ path: "/addArticle" });
     },
     showArticle(id) {
@@ -345,9 +418,11 @@ export default {
     },
 
     initializa() {
-      articleApi.getArticlesByDiscussId(49).then((resp) => {
-        this.articleList = resp.data;
-      });
+      articleApi
+        .getArticlesByDiscussId(this.$store.state.home.discussId)
+        .then((resp) => {
+          this.articleList = resp.data;
+        });
 
       discussApi
         .getDiscussByDiscussId(this.$store.state.home.discussId)

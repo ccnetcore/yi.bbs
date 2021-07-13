@@ -137,11 +137,19 @@ export default {
       this.form.content = this.myhtml;
 
       if (this.$route.query.articleId == undefined) {
-        articleApi.addArticle(this.form,this.$store.state.home.discussId).then(() => {
-          this.$router.push({ path: "/comment" });
+        articleApi.addArticle(this.form,this.$store.state.home.discussId).then((response) => {
+          if(response.status)
+          {
+this.$router.push({ path: "/comment" });
+          }
+          else
+          {
+            alert("权限不足！")
+          }
+          
         });
       } else {
-        articleApi.updateArticle(this.form).then((response) => {
+        articleApi.updateArticle(this.form,this.$store.state.home.discussId).then((response) => {
           if (response.status) {
             this.$router.push({ path: "/comment" });
           } else {

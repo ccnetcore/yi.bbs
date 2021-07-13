@@ -1,9 +1,12 @@
-﻿
-
-
-/*
 import myaxios from '@/utils/myaxios'
 export default {
+    getRecordsByDiscussId(discussId) {
+        return myaxios({
+            url: `/Record/getRecordsByDiscussId?discussId=${discussId}`,
+            method: 'get'
+        })
+    },
+
     getRecords() {
         return myaxios({
             url: '/Record/getRecords',
@@ -32,4 +35,3 @@ export default {
         })
     },
 }
-*/

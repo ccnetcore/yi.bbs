@@ -59,4 +59,7 @@ namespace CC.Yi.IDAL
     public partial interface IarticleDal:IBaseDal<article>
     {
     }
+    public partial interface IrecordDal:IBaseDal<record>
+    {
+    }
 }

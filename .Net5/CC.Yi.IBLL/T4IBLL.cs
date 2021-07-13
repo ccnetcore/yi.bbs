@@ -78,4 +78,8 @@ namespace CC.Yi.IBLL
     {
         Task<bool> DelListByUpdateList(List<int> Ids);
     }
+   public partial interface IrecordBll : IBaseBll<record>
+    {
+        Task<bool> DelListByUpdateList(List<int> Ids);
+    }
 }

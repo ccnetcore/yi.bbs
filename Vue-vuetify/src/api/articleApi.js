@@ -27,16 +27,16 @@ export default {
             data: article
         })
     },
-    updateArticle(Article) {
+    updateArticle(Article, discussId) {
         return myaxios({
-            url: '/Article/UpdateArticle',
+            url: `/Article/UpdateArticle?discussId=${discussId}`,
             method: 'post',
             data: Article
         })
     },
-    delArticleList(Ids) {
+    delArticleList(Ids, discussId) {
         return myaxios({
-            url: '/Article/DelArticleList',
+            url: `/Article/DelArticleList?discussId=${discussId}`,
             method: 'post',
             data: Ids
         })

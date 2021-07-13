@@ -1,8 +1,4 @@
-﻿
-
-
-/*
-using CC.Yi.Common;
+﻿using CC.Yi.Common;
 using CC.Yi.IBLL;
 using CC.Yi.Model;
 using Microsoft.AspNetCore.Authorization;
@@ -29,6 +25,15 @@ namespace CC.Yi.API.Controllers
             _logger = logger;
         }
 
+
+        [HttpGet]
+        public async Task<Result> GetRecordsByDiscussId(int discussId)
+        {
+           var data=  await _recordBll.GetEntities(u => u.discuss.id == discussId && u.is_delete == delFlagNormal).Include(r=>r.user). ToListAsync();
+            return Result.Success().SetData(data);
+        }
+
+
         [HttpGet]
         public async Task<Result> GetRecords()
         {
@@ -36,7 +41,7 @@ namespace CC.Yi.API.Controllers
             return Result.Success().SetData(data);
         }
 
-//      [Authorize(Policy = "板块管理")]
+        //      [Authorize(Policy = "板块管理")]
         [HttpPost]
         public Result AddRecord(record myRecord)
         {
@@ -44,7 +49,7 @@ namespace CC.Yi.API.Controllers
             return Result.Success();
         }
 
-//      [Authorize(Policy = "板块管理")]
+        //      [Authorize(Policy = "板块管理")]
         [HttpPost]
         public Result UpdateRecord(record myRecord)
         {
@@ -52,7 +57,7 @@ namespace CC.Yi.API.Controllers
             return Result.Success();
         }
 
-//      [Authorize(Policy = "板块管理")]
+        //      [Authorize(Policy = "板块管理")]
         [HttpPost]
         public Result delRecordList(List<int> Ids)
         {
@@ -61,5 +66,3 @@ namespace CC.Yi.API.Controllers
         }
     }
 }
-
-*/

@@ -3,14 +3,16 @@ using System;
 using CC.Yi.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CC.Yi.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210713060839_jiftcc37")]
+    partial class jiftcc37
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -377,9 +379,6 @@ namespace CC.Yi.API.Migrations
                     b.Property<string>("describe")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("discussid")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("is_delete")
                         .HasColumnType("INTEGER");
 
@@ -390,8 +389,6 @@ namespace CC.Yi.API.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("id");
-
-                    b.HasIndex("discussid");
 
                     b.HasIndex("userid");
 
@@ -734,15 +731,9 @@ namespace CC.Yi.API.Migrations
 
             modelBuilder.Entity("CC.Yi.Model.record", b =>
                 {
-                    b.HasOne("CC.Yi.Model.discuss", "discuss")
-                        .WithMany()
-                        .HasForeignKey("discussid");
-
                     b.HasOne("CC.Yi.Model.user", "user")
                         .WithMany()
                         .HasForeignKey("userid");
-
-                    b.Navigation("discuss");
 
                     b.Navigation("user");
                 });

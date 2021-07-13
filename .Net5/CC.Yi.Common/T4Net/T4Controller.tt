@@ -7,7 +7,7 @@
 <#@ output extension=".cs" #>
 <#
   
-    string name="article";
+    string name="record";
     string uname=name.Substring(0,1).ToUpper()+name.Substring(1); 
  #>
 
