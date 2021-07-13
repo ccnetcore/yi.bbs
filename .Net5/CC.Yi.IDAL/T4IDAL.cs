@@ -56,4 +56,7 @@ namespace CC.Yi.IDAL
     public partial interface IfriendDal:IBaseDal<friend>
     {
     }
+    public partial interface IarticleDal:IBaseDal<article>
+    {
+    }
 }

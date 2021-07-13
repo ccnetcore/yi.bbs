@@ -74,4 +74,8 @@ namespace CC.Yi.IBLL
     {
         Task<bool> DelListByUpdateList(List<int> Ids);
     }
+   public partial interface IarticleBll : IBaseBll<article>
+    {
+        Task<bool> DelListByUpdateList(List<int> Ids);
+    }
 }

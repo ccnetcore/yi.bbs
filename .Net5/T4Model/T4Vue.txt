@@ -1,4 +1,4 @@
-shop
+article
 price,number,discount
 定价,数量,折扣
 "","1","1.00"

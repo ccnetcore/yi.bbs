@@ -3,14 +3,16 @@ using System;
 using CC.Yi.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CC.Yi.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210712083357_jiftcc34")]
+    partial class jiftcc34
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -69,9 +71,6 @@ namespace CC.Yi.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("articleid")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("content")
                         .HasColumnType("TEXT");
 
@@ -81,14 +80,14 @@ namespace CC.Yi.API.Migrations
                     b.Property<int>("is_delete")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("name")
-                        .HasColumnType("TEXT");
+                    b.Property<int?>("parent_articleid")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("id");
 
-                    b.HasIndex("articleid");
-
                     b.HasIndex("discussid");
+
+                    b.HasIndex("parent_articleid");
 
                     b.ToTable("article");
                 });
@@ -615,15 +614,17 @@ namespace CC.Yi.API.Migrations
 
             modelBuilder.Entity("CC.Yi.Model.article", b =>
                 {
-                    b.HasOne("CC.Yi.Model.article", null)
-                        .WithMany("children")
-                        .HasForeignKey("articleid");
-
                     b.HasOne("CC.Yi.Model.discuss", "discuss")
                         .WithMany("articles")
                         .HasForeignKey("discussid");
 
+                    b.HasOne("CC.Yi.Model.article", "parent_article")
+                        .WithMany()
+                        .HasForeignKey("parent_articleid");
+
                     b.Navigation("discuss");
+
+                    b.Navigation("parent_article");
                 });
 
             modelBuilder.Entity("CC.Yi.Model.collection", b =>
@@ -793,11 +794,6 @@ namespace CC.Yi.API.Migrations
                         .HasForeignKey("usersid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("CC.Yi.Model.article", b =>
-                {
-                    b.Navigation("children");
                 });
 
             modelBuilder.Entity("CC.Yi.Model.discuss", b =>

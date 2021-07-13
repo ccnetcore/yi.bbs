@@ -1,35 +1,10 @@
 <template>
   <v-container fluid>
     <v-row>
-      <v-col cols="12" sm="1">
-        <v-select
-          :items="items"
-          filled
-          label="类别"
-          required
-          v-model="form.type"
-          dense
-        ></v-select>
-      </v-col>
-      <v-col cols="12" sm="11">
-        <v-text-field label="标题" v-model="form.title"></v-text-field>
-      </v-col>
-      <v-col cols="12" sm="6" md="4">
-        <v-combobox
-          v-model="selectLabel"
-          :items="itemLabel"
-          label="点击选择标签"
-          multiple
-          dense
-          chips
-        ></v-combobox>
-      </v-col>
-      <v-col cols="12" sm="6" md="8">
-        <v-text-field label="简介" v-model="form.introduction"></v-text-field>
+      <v-col cols="12">
+        <v-text-field label="目录名" v-model="form.name"></v-text-field>
       </v-col>
     </v-row>
-
-    <!-- <div ref="editorDiv" style="text-align: left; z-index: -1"></div> -->
 
     <v-card color="#FAFAFA" class="pb-15">
       <v-row class="text-center">
@@ -130,8 +105,7 @@
   </v-container>
 </template>
 <script>
-import labelApi from "@/api/labelApi";
-import discussApi from "@/api/discussApi";
+import articleApi from "@/api/articleApi";
 import htmlEdit from "@/views/html";
 import markdownEdit from "@/views/markdown";
 export default {
@@ -141,18 +115,12 @@ export default {
       is_html: false,
       is_send: true,
       dialog: false,
-      selectLabel: [], //这里存放的是名称列表
-      lableList: [], //这里存放的是id和名字
-      itemLabel: [],
       baseurl: "",
       form: {
         id: 0,
-        title: "",
-        type: "",
-        introduction: "",
+        name: "",
         content: "",
       },
-      items: ["闲聊", "原创", "转载", "正文"],
       myhtml: "",
       selectIndex: 0,
     };
@@ -167,62 +135,34 @@ export default {
   methods: {
     send() {
       this.form.content = this.myhtml;
-      var Ids = [];
-      for (var i = 0; i < this.selectLabel.length; i++) {
-        for (var j = 0; j < this.lableList.length; j++) {
-          if (this.selectLabel[i] == this.lableList[j].name) {
-            Ids.push(this.lableList[j].id);
-          }
-        }
-      }
-      if (this.form.type == "") {
-        this.form.type = "闲聊";
-      }
-      if (this.$route.query.discussId == undefined) {
-        discussApi
-          .addDiscuss(this.form, this.$store.state.home.plateId, Ids)
-          .then((resp) => {
-            this.$store.dispatch("set_discussId", resp.data.id);
-            //设置等级
-            this.$store.dispatch("setLevel", resp.data.level);
-            this.$router.push({ path: "/comment" });
-          });
+
+      if (this.$route.query.articleId == undefined) {
+        articleApi.addArticle(this.form,this.$store.state.home.discussId).then(() => {
+          this.$router.push({ path: "/comment" });
+        });
       } else {
-        discussApi.updateDiscuss(this.form).then((response) => {
-          if(response.status)
-          {
-           this.$router.push({ path: "/comment" });
-          }
-          else
-          {
-            alert("权限不足！")
+        articleApi.updateArticle(this.form).then((response) => {
+          if (response.status) {
+            this.$router.push({ path: "/comment" });
+          } else {
+            alert("权限不足！");
           }
         });
       }
     },
     initializa() {
-      if (this.$route.query.discussId != undefined) {
-        discussApi
-          .getDiscussByDiscussId(this.$route.query.discussId)
+      if (this.$route.query.articleId != undefined) {
+        articleApi
+          .getArticleById(this.$route.query.articleId)
           .then((response) => {
-            const res = response.data;
-            this.form.id = res.id;
-
-            this.form.title = res.title;
-            this.form.type = res.type;
-            this.form.introduction = res.introduction;
-            this.myhtml = res.content;
+            const resp = response.data;
+            this.form.id = resp.id;
+            this.form.name = resp.name;
+            this.myhtml = resp.content;
           });
 
-          this.is_mark=true;
+        this.is_mark = true;
       }
-
-      labelApi.getLabelByUserId().then((resp) => {
-        this.lableList = resp.data;
-        this.itemLabel = resp.data.map((obj) => {
-          return obj.name;
-        });
-      });
     },
     getHtml(html) {
       this.myhtml = html;

@@ -3,14 +3,16 @@ using System;
 using CC.Yi.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CC.Yi.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210712082026_jiftcc33")]
+    partial class jiftcc33
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -69,9 +71,6 @@ namespace CC.Yi.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("articleid")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("content")
                         .HasColumnType("TEXT");
 
@@ -81,12 +80,10 @@ namespace CC.Yi.API.Migrations
                     b.Property<int>("is_delete")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("name")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("parentid")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("id");
-
-                    b.HasIndex("articleid");
 
                     b.HasIndex("discussid");
 
@@ -615,10 +612,6 @@ namespace CC.Yi.API.Migrations
 
             modelBuilder.Entity("CC.Yi.Model.article", b =>
                 {
-                    b.HasOne("CC.Yi.Model.article", null)
-                        .WithMany("children")
-                        .HasForeignKey("articleid");
-
                     b.HasOne("CC.Yi.Model.discuss", "discuss")
                         .WithMany("articles")
                         .HasForeignKey("discussid");
@@ -793,11 +786,6 @@ namespace CC.Yi.API.Migrations
                         .HasForeignKey("usersid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("CC.Yi.Model.article", b =>
-                {
-                    b.Navigation("children");
                 });
 
             modelBuilder.Entity("CC.Yi.Model.discuss", b =>

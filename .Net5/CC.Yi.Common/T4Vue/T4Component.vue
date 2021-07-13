@@ -124,7 +124,7 @@
 </template>
 <script>
 //【2】这里设置对应的API
-import shopApi from "@/api/shopApi";
+import articleApi from "@/api/articleApi";
 export default {
   data: () => ({
     page: 1,
@@ -183,7 +183,7 @@ export default {
   methods: {
     initialize() {
 //【5】这里获取全部字段的API
-      shopApi.getShops().then((resp) => {
+      articleApi.getArticles().then((resp) => {
         const response = resp.data;
         this.desserts = response;
       });
@@ -211,7 +211,7 @@ export default {
         });
       }
 //【6】这里多条删除的API
-      shopApi.delShopList(Ids).then(() => this.initialize());
+      articleApi.delArticleList(Ids).then(() => this.initialize());
       this.closeDelete();
     },
     
@@ -234,9 +234,9 @@ export default {
     save() {
 //【7】这里编辑和添加的API
       if (this.editedIndex > -1) {
-        shopApi.updateShop(this.editedItem).then(() => this.initialize());
+        articleApi.updateArticle(this.editedItem).then(() => this.initialize());
       } else {
-        shopApi.addShop(this.editedItem).then(() => this.initialize());
+        articleApi.addArticle(this.editedItem).then(() => this.initialize());
       }
       this.close();
     },

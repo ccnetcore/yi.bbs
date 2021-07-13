@@ -5,7 +5,7 @@
         ref="md"
         @imgAdd="$imgAdd"
         @change="change"
-        style="min-height: 800px"
+        style="height: 800px"
       />
   </v-container>
 </template>

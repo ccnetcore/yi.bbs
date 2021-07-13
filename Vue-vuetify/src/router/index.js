@@ -18,6 +18,8 @@ import warehouse from '@/views/user/warehouse'
 import shop from '@/views/user/shop'
 import friend from '@/views/user/friend'
 
+import addArticle from '@/views/user/addArticle'
+
 
 import AdmUser from '@/views/admin/AdmUser'
 import AdmRole from '@/views/admin/AdmRole'
@@ -36,6 +38,8 @@ import qq from '@/views/qq'
 import login from '@/views/login'
 import register from '@/views/register'
 import chathub from '@/views/chathub'
+
+import test from '@/views/test'
 
 //采用懒加载,优化一下，我们将用户和管理界面分离
 
@@ -267,6 +271,16 @@ const routes = [{
                 path: '/chathub',
                 name: 'chathub',
                 component: chathub
+            },
+            {
+                path: '/addArticle',
+                name: 'addArticle',
+                component: addArticle
+            },
+            {
+                path: '/test',
+                name: 'test',
+                component: test
             }
         ]
     }

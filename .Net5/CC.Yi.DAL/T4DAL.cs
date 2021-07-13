@@ -126,4 +126,11 @@ namespace CC.Yi.DAL
             Db = _Db;
         }
     }
+    public partial class articleDal : BaseDal<article>, IarticleDal
+    {
+        public articleDal(DataContext _Db):base(_Db)
+        {
+            Db = _Db;
+        }
+    }
 }

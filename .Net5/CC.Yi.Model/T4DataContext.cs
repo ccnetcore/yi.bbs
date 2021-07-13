@@ -23,5 +23,6 @@ namespace CC.Yi.Model
         public DbSet<warehouse> warehouse { get; set; }
         public DbSet<prop> prop { get; set; }
         public DbSet<friend> friend { get; set; }
+        public DbSet<article> article { get; set; }
     }
 }

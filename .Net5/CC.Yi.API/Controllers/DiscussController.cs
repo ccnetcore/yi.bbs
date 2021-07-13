@@ -232,12 +232,30 @@ namespace CC.Yi.API.Controllers
         [HttpPost]
         public async Task<Result> UpdateDiscuss(discuss myDiscuss)
         {
-            var data = await _discussBll.GetEntities(u => u.id == myDiscuss.id).FirstOrDefaultAsync();
-            data.title = myDiscuss.title;
-            data.type = myDiscuss.type;
-            data.content = myDiscuss.content;
-            _discussBll.Update(data);
-            return Result.Success();
+            //先判断是否有主题权限，d-x，x为主题id，如果权限存在，就运行编辑
+            List<string> myActions = new List<string>();
+            bool exit = false;
+            foreach (var k in _user.actions)
+            {
+                if (k.action_name == ("d-" + myDiscuss.id) || k.action_name == "d-admin")
+                {
+                    exit = true;
+                    break;
+                }
+            }
+            if (exit)
+            {
+                var data = await _discussBll.GetEntities(u => u.id == myDiscuss.id).FirstOrDefaultAsync();
+                data.title = myDiscuss.title;
+                data.type = myDiscuss.type;
+                data.content = myDiscuss.content;
+                _discussBll.Update(data);
+                return Result.Success();
+            }
+            else
+            {
+                return Result.Error("权限不足");
+            }
         }
 
         [Authorize(Policy = "主题管理")]

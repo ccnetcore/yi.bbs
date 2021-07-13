@@ -85,7 +85,17 @@
                         {{ item.see_num }}阅览 | {{ item.agree_num }}点赞
                       </v-subheader>
                     </v-col>
+
+
+                    
+                    <!-- <v-col cols="12"  >
+                      <v-subheader class="mr-2">
+                        {{ item.time }} 发布 | {{ item.see_num }}阅览 | {{ item.agree_num }}点赞
+                      </v-subheader>
+                    </v-col> -->
                   </v-row>
+
+
                 </v-expansion-panel-header>
 
                 <v-expansion-panel-content>

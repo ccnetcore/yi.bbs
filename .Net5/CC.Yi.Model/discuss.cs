@@ -27,5 +27,6 @@ namespace CC.Yi.Model
         public ICollection<comment> comments { get; set; }
         public user user { get; set; }
         public plate plate { get; set; }
+        public ICollection<article> articles { get; set; }
     }
 }
