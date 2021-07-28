@@ -58,6 +58,14 @@ export default {
             data: { "Id": Id, "Ids": Ids }
         })
     },
+
+    setRoleList(userIds, roleIds) {
+        return myaxios({
+            url: '/User/setRoleList',
+            method: 'post',
+            data: { "userIds": userIds, "roleIds": roleIds }
+        })
+    },
     getRoleByuserId(userId) {
         if (userId == undefined) {
             userId = 0;

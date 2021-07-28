@@ -1,4 +1,5 @@
-﻿using ServiceStack.Redis;
+﻿using Microsoft.Extensions.Configuration;
+using ServiceStack.Redis;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,10 +8,19 @@ namespace CC.Yi.Common.Cache
 {
     public class RedisCache : ICacheWriter
     {
+        
+        public static void RedisRegist(IConfiguration configuration)
+        {
+            ip = configuration["redis:ip"];
+            port=int.Parse(configuration["redis:port"]);
+            pwd = configuration["redis:pwd"];
+        }
+
         private RedisClient client;
-        private string ip = "49.235.212.122";
-        private int port = 6379;
-        private string pwd = "Qz52013142020.";
+        private static string ip ;
+
+        private static int port;
+        private static string pwd;
         public RedisCache()
         {
         }

@@ -33,6 +33,7 @@ import AdmVersion from '@/views/admin/AdmVersion'
 import AdmProp from '@/views/admin/AdmProp'
 import AdmShop from '@/views/admin/AdmShop'
 import AdmLog from '@/views/admin/AdmLog'
+import AdmMytype from '@/views/admin/AdmMytype'
 
 import qq from '@/views/qq'
 import login from '@/views/login'
@@ -226,7 +227,11 @@ const routes = [{
                 name: 'AdmLog',
                 component: AdmLog
             },
-
+            {
+                path: '/AdmMytype',
+                name: 'AdmMytype',
+                component: AdmMytype
+            },
             {
                 path: '/userInfo',
                 name: 'userInfo',

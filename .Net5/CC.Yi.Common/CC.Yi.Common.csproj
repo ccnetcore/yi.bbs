@@ -28,6 +28,7 @@
   <ItemGroup>
     <PackageReference Include="Autofac.Extras.DynamicProxy" Version="6.0.0" />
     <PackageReference Include="Castle.Core" Version="4.4.1" />
+    <PackageReference Include="Consul" Version="1.6.10.2" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.11.0" />
     <PackageReference Include="ServiceStack.Redis" Version="5.10.4" />

@@ -23,11 +23,54 @@ namespace CC.Yi.API.Init
                                role_name="管理员",
                                actions=new List<action>{
                                new action{ action_name="首页",router="/index",icon="mdi-view-dashboard"},
-                               new action{action_name="用户管理",router="/user",icon="mdi-account-box"},
-                               new action{ action_name="角色管理",router="/role",icon="mdi-gavel"},
-                               new action{ action_name="权限管理",router="/action",icon="mdi-lock"}
+                               new action{action_name="用户管理",router="/admuser",icon="mdi-account-box"},
+                               new action{ action_name="角色管理",router="/admrole",icon="mdi-gavel"},
+                               new action{ action_name="权限管理",router="/admaction",icon="mdi-lock"},
+
+                               new action{ action_name="板块管理",router="/admplate",icon="mdi-lock"},
+                               new action{ action_name="权限管理",router="/action",icon="mdi-lock"},
+                               new action{ action_name="等级管理",router="/admlevel",icon="mdi-lock"},
+                               new action{ action_name="主题管理",router="/admdiscuss",icon="mdi-lock"},
+
+                               new action{ action_name="我的信息",router="/userinfo",icon="mdi-lock"},
+                               new action{ action_name="a-admin",router="",icon="mdi-lock"},
+
+                               new action{ action_name="我的主题",router="/myDiscuss",icon="mdi-lock"},
+
+                               new action{ action_name="标签管理",router="",icon="mdi-lock"},
+                               new action{ action_name="收藏管理",router="",icon="mdi-lock"},
+                               new action{ action_name="发布主题",router="",icon="mdi-lock"},
+
+                               new action{ action_name="发布评论",router="",icon="mdi-lock"},
+                               new action{ action_name="修改信息",router="",icon="mdi-lock"},
+
+                               new action{ action_name="样式管理",router="/theme",icon="mdi-camera"},
+                               new action{ action_name="设置管理",router="/admsetting",icon="mdi-lock"},
+                               new action{ action_name="横幅管理",router="/Admbanner",icon="mdi-lock"},
+                               new action{ action_name="点赞管理",router="",icon="mdi-lock"},
+                               new action{ action_name="开源地址",router="/my/https://github.com/jiftcc/yi.bbs",icon="mdi-lock"},
+                               new action{ action_name="版本管理",router="/admversion",icon="mdi-lock"},
+                               new action{ action_name="版本内容",router="/version",icon="mdi-book-search"},
+
+
+                               new action{ action_name="我的仓库",router="/warehouse",icon="mdi-home-account"},
+                               new action{ action_name="商城",router="/shop",icon="mdi-shopping"},
+                               new action{ action_name="道具管理",router="/admprop",icon="mdi-lock"},
+
+                               new action{ action_name="商城管理",router="/admshop",icon="mdi-lock"},
+                               new action{ action_name="绑定QQ",router="",icon="mdi-lock"},
+                               new action{ action_name="购买道具",router="",icon="mdi-lock"},
+                               new action{ action_name="使用道具",router="",icon="mdi-lock"},
+                               new action{ action_name="好友管理",router="/friend",icon="mdi-account-group"},
+
+                               new action{ action_name="聊天大厅",router="/chathub",icon="mdi-chat-processing"},
+                               new action{ action_name="日志管理",router="/admlog",icon="mdi-lock"},
+                               new action{ action_name="d-49",router="",icon="mdi-lock"},
+                               new action{ action_name="d-admin",router="",icon="mdi-lock"},
+                               new action{ action_name="类型管理",router="/admmytype",icon="mdi-lock"},
                                                         }
                                     },
+                           new role{ role_name="l-0"},
                            new role{ role_name="l-1"},
                            new role{ role_name="l-2"},
                            new role{ role_name="l-3"},
@@ -43,7 +86,13 @@ namespace CC.Yi.API.Init
                            new role{ role_name="普通用户"}
                                            }
                 };
-                Db.Set<user>().Add(initUser);
+                Db.Set<user>().AddRange(new List<user>() {
+                initUser,
+                new user(){ username="匿名",password="6d4a6s4fg87qe8gf"},
+                new user(){username="游客",password="" }
+                }  );
+
+
                 //-------------------------------------------------------------------------------------添加管理员账户
                 List<level> levels = new List<level>
                 {
@@ -62,6 +111,17 @@ namespace CC.Yi.API.Init
                 };
                 Db.Set<level>().AddRange(levels);
                 //---------------------------------------------------------------------------------------添加等级表
+                List<mytype> mytypes = new List<mytype> {
+                new mytype{ name="闲聊"},
+                new mytype{name="原创"},
+                new mytype{ name="转载"}
+
+                };
+
+                Db.Set<mytype>().AddRange(mytypes);
+
+
+
 
                return Db.SaveChanges()>0;
             }

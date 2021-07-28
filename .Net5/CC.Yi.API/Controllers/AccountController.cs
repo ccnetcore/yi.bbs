@@ -66,7 +66,6 @@ namespace CC.Yi.API.Controllers
 
 
 
-
                    // var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtConst.SecurityKey));
                    // var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
@@ -172,7 +171,6 @@ namespace CC.Yi.API.Controllers
         {
             if (_user.id==0)
             {
-                _logger.LogInformation(_user.username+"登录超时!");
                 return Result.Error(_user.username + "登录超时！请重新登录");
             }
             else

@@ -62,4 +62,7 @@ namespace CC.Yi.IDAL
     public partial interface IrecordDal:IBaseDal<record>
     {
     }
+    public partial interface ImytypeDal:IBaseDal<mytype>
+    {
+    }
 }

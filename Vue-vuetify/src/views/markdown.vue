@@ -1,11 +1,11 @@
 <template>
   <v-container fluid>
       <mavon-editor
-        v-model="content"
+        v-model="myhtml2"
         ref="md"
         @imgAdd="$imgAdd"
         @change="change"
-        style="height: 800px"
+        style="height: 800px;z-index:1"
       />
   </v-container>
 </template>
@@ -15,9 +15,10 @@ import { mavonEditor } from "mavon-editor";
 import "mavon-editor/dist/css/index.css";
 import axios from "axios";
 export default {
+  props: ["myhtml2"],
   data: function() {
     return {
-      content: "",
+      content: this.myhtml2,
       html: "",
       baseurl:"",
       configs: {}
@@ -50,8 +51,8 @@ export default {
     },
     change(value, render) {
       // render 为 markdown 解析后的结果
-      this.html = render;
-      this.$emit('giveData',render)
+      this.myhtml2 =value;
+      this.$emit('giveData',value)
     }
   }
 };

@@ -1,5 +1,5 @@
 <template >
-  <v-container fluid>
+  <v-container>
     <v-row>
       <v-col cols="12" sm="6" md="8">
         <v-carousel
@@ -77,7 +77,7 @@
                 large
                 right
                 top
-                @click="intoDiscuss(item.id)"
+                @click="intoDiscuss(item.id,item.name)"
               >
                 <v-icon>mdi-chevron-right</v-icon>
               </v-btn>
@@ -124,7 +124,8 @@ export default {
         this.plateList = resp.data;
       });
     },
-    intoDiscuss(plateId) {
+    intoDiscuss(plateId,plateString) {
+      this.$store.dispatch("set_plateString", plateString);
       this.$store.dispatch("set_plateId", plateId);
       this.$router.push({ path: "/discuss" });
     },

@@ -167,5 +167,13 @@ namespace CC.Yi.API.Controllers
                          select new { u.id, u.role_name }).ToList();
             return Result.Success().SetData(roles);
         }
+
+        [Authorize(Policy = "用户管理")]
+        [HttpPost]//批量设置权限
+        public async Task<Result> setRoleList(setRoleList mydata)
+        {
+            await _userBll.setRoleList(mydata);
+            return Result.Success();
+        }
     }
 }

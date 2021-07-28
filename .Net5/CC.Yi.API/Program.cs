@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using NLog.Web;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,6 +18,12 @@ namespace CC.Yi.API
     {
         public static void Main(string[] args)
         {
+            //配置支持命令行
+            new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddCommandLine(args)
+                .Build();
+
             //添加一个数据库，并修改连接数据库的配置文件
             //添加模型类，使用Add-Migration xxx迁移，再使用Update-Database更新数据库
             //向T4Model添加模型名，一键转换生成T4

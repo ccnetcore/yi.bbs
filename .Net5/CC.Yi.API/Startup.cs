@@ -3,6 +3,7 @@ using Autofac.Extras.DynamicProxy;
 using CC.Yi.API.Extension;
 using CC.Yi.BLL;
 using CC.Yi.Common;
+using CC.Yi.Common.Cache;
 using CC.Yi.Common.Castle;
 using CC.Yi.Common.Json;
 using CC.Yi.Common.Jwt;
@@ -20,12 +21,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -44,37 +47,8 @@ namespace CC.Yi.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAuthorization(options =>
-            {
-                //配置基于策略的验证
-                options.AddPolicy("板块管理", policy => policy.RequireClaim("action", "板块管理"));
-                options.AddPolicy("主题管理", policy => policy.RequireClaim("action", "主题管理"));
-                options.AddPolicy("等级管理", policy => policy.RequireClaim("action", "等级管理"));
-                options.AddPolicy("设置管理", policy => policy.RequireClaim("action", "设置管理"));
-                options.AddPolicy("横幅管理", policy => policy.RequireClaim("action", "横幅管理"));
-                options.AddPolicy("版本管理", policy => policy.RequireClaim("action", "版本管理"));
-                options.AddPolicy("道具管理", policy => policy.RequireClaim("action", "道具管理"));
-                options.AddPolicy("商城管理", policy => policy.RequireClaim("action", "商城管理"));
-
-                options.AddPolicy("用户管理", policy => policy.RequireClaim("action", "用户管理"));
-                options.AddPolicy("角色管理", policy => policy.RequireClaim("action", "角色管理"));
-                options.AddPolicy("权限管理", policy => policy.RequireClaim("action", "权限管理"));
-                options.AddPolicy("日志管理", policy => policy.RequireClaim("action", "日志管理"));
-
-
-                options.AddPolicy("绑定QQ", policy => policy.RequireClaim("action", "绑定QQ"));
-                options.AddPolicy("标签管理", policy => policy.RequireClaim("action", "标签管理"));
-                options.AddPolicy("收藏管理", policy => policy.RequireClaim("action", "收藏管理"));
-                options.AddPolicy("发布主题", policy => policy.RequireClaim("action", "发布主题"));
-                options.AddPolicy("发布评论", policy => policy.RequireClaim("action", "发布评论"));
-                options.AddPolicy("修改信息", policy => policy.RequireClaim("action", "修改信息"));
-                options.AddPolicy("样式管理", policy => policy.RequireClaim("action", "样式管理"));
-                options.AddPolicy("点赞管理", policy => policy.RequireClaim("action", "点赞管理"));
-                options.AddPolicy("购买道具", policy => policy.RequireClaim("action", "购买道具"));
-                options.AddPolicy("使用道具", policy => policy.RequireClaim("action", "使用道具"));
-                options.AddPolicy("好友管理", policy => policy.RequireClaim("action", "好友管理"));
-
-            });
+          Init.InitAuthorization.Init(services);
+           
 
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -110,19 +84,30 @@ namespace CC.Yi.API
 
             });
             services.AddSwaggerService();
-     
+
 
             //配置过滤器
 
+
+
+
+
+           
+
+            //
             string connection1 = Configuration["ConnectionStringBySQL"];
             string connection2 = Configuration["ConnectionStringByMySQL"];
             string connection3 = Configuration["ConnectionStringBySQLite"];
             services.AddDbContext<DataContext>(options =>
             {
-                options.UseSqlite(connection3, b => b.MigrationsAssembly("CC.Yi.API"));//设置数据库
+                //options.UseSqlite(connection3, b => b.MigrationsAssembly("CC.Yi.API"));//设置数据库
+                var serverVersion = new MySqlServerVersion(new Version(8, 0, 21));
+                options.UseMySql(connection2, serverVersion);
             });
 
 
+
+            services.AddDirectoryBrowser();
 
             services.AddCors(options => options.AddPolicy("CorsPolicy",//解决跨域问题
             builder =>
@@ -132,6 +117,10 @@ namespace CC.Yi.API
                     .AllowAnyHeader()
                     .AllowCredentials();
             }));
+
+
+
+            RedisCache.RedisRegist(Configuration);//开启redis注册
         }
 
         //初始化使用函数
@@ -158,7 +147,26 @@ namespace CC.Yi.API
             app.UseErrorHandling();
             app.UseCors("CorsPolicy");
             app.UseHttpsRedirection();
-        
+
+
+            // using Microsoft.Extensions.FileProviders;
+            // using System.IO;
+            //下面两个部分是配置文件浏览目录的
+            //app.UseStaticFiles(new StaticFileOptions
+            //{
+            //    FileProvider = new PhysicalFileProvider(
+            //        Path.Combine(env.WebRootPath, "upload")),
+            //    RequestPath = "/MyFile"
+            //});
+
+            
+            //app.UseDirectoryBrowser(new DirectoryBrowserOptions
+            //{
+            //    FileProvider = new PhysicalFileProvider(
+            //        Path.Combine(env.WebRootPath, "upload")),
+            //    RequestPath = "/MyFile"
+            //});
+
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
@@ -169,6 +177,11 @@ namespace CC.Yi.API
                 endpoints.MapHub<ChatHub>("/chat");
             });
             InitData(app.ApplicationServices);
+
+            ////这里是关于微服务的配置，如需取消，请注释
+            //this.Configuration.ConsulRegist();
+
+            
         }
     }
 }

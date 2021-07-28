@@ -18,45 +18,45 @@ namespace CC.Yi.API.Controllers
 {
     [Route("[controller]/[action]")]
     [ApiController]
-    public class RecordController : Controller
+    public class MytypeController : Controller
     {
-        private IrecordBll _recordBll;
-        private ILogger<RecordController> _logger;
+        private ImytypeBll _mytypeBll;
+        private ILogger<MytypeController> _logger;
         short delFlagNormal = (short)ViewModel.Enum.DelFlagEnum.Normal;
-        public RecordController(IrecordBll recordBll, ILogger<RecordController> logger)
+        public MytypeController(ImytypeBll mytypeBll, ILogger<MytypeController> logger)
         {
-            _recordBll = recordBll;
+            _mytypeBll = mytypeBll;
             _logger = logger;
         }
 
         [HttpGet]
-        public async Task<Result> GetRecords()
+        public async Task<Result> GetMytypes()
         {
-            var data = await _recordBll.GetEntities(u => u.is_delete == delFlagNormal).AsNoTracking().ToListAsync();
+            var data = await _mytypeBll.GetEntities(u => u.is_delete == delFlagNormal).AsNoTracking().ToListAsync();
             return Result.Success().SetData(data);
         }
 
 //      [Authorize(Policy = "板块管理")]
         [HttpPost]
-        public Result AddRecord(record myRecord)
+        public Result AddMytype(mytype myMytype)
         {
-            _recordBll.Add(myRecord);
+            _mytypeBll.Add(myMytype);
             return Result.Success();
         }
 
 //      [Authorize(Policy = "板块管理")]
         [HttpPost]
-        public Result UpdateRecord(record myRecord)
+        public Result UpdateMytype(mytype myMytype)
         {
-            _recordBll.Update(myRecord);
+            _mytypeBll.Update(myMytype);
             return Result.Success();
         }
 
 //      [Authorize(Policy = "板块管理")]
         [HttpPost]
-        public Result delRecordList(List<int> Ids)
+        public Result delMytypeList(List<int> Ids)
         {
-            _recordBll.DelListByUpdateList(Ids);
+            _mytypeBll.DelListByUpdateList(Ids);
             return Result.Success();
         }
     }

@@ -39,7 +39,7 @@
           <v-col cols="4" md="6">
             <div class="text-h5 title pt-6">
               <v-icon class="mx-2" @click="drawer = !drawer">mdi-menu</v-icon>
-              主题
+               {{this.$store.state.home.plateString}}
             </div>
           </v-col>
           <v-col cols="8" md="6">
@@ -61,7 +61,7 @@
               >
                 <v-expansion-panel-header>
                   <v-row align="center" class="spacer" no-gutters>
-                    <v-col cols="2" sm="1" md="1">
+                    <v-col cols="1" sm="1" md="1">
                       <v-avatar size="36px " @click="intoInfo(item.user.id)">
                         <img
                           alt="Avatar"
@@ -79,12 +79,26 @@
                       [{{ item.type }}] {{ item.title }}
                     </v-col>
 
-                    <v-col cols="4" sm="5" md="3">
+                    <v-col cols="4" sm="5" md="2">
                       <v-subheader>
-                        {{ item.time }} 发布 <br />
+                        {{ item.time }}<br />
                         {{ item.see_num }}阅览 | {{ item.agree_num }}点赞
                       </v-subheader>
                     </v-col>
+                    <v-col cols="1" sm="1" md="1">
+                  <v-btn
+                      fab
+                      small
+                      dark
+                      color="blue"
+                      @click="intoComment(item.id)"
+                    >
+                      <v-icon dark> mdi-login </v-icon>
+                    </v-btn>
+
+
+                    </v-col>
+
 
 
                     
@@ -156,9 +170,9 @@ export default {
       orderbyId: 0,
       drawer: "true",
       items: [
-        { title: "最新主题", icon: "mdi-toy-brick-plus", id: "0" },
-        { title: "最热主题", icon: "mdi-image", id: "1" },
-        { title: "推荐主题", icon: "mdi-help-box", id: "2" },
+        { title: "最新主题", icon: "mdi-eye", id: "0" },
+        { title: "最热主题", icon: "mdi-brightness-7", id: "1" },
+        { title: "推荐主题", icon: "mdi-bullhorn-outline", id: "2" },
       ],
       baseurl: "",
       pageIndex: 1,

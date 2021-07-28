@@ -32,14 +32,53 @@ namespace CC.Yi.API.Controllers
         [HttpGet]
         public async Task<Result> GetArticlesByDiscussId(int discussId)
         {
-            var data = await _articleBll.GetEntities(u => u.discuss.id == discussId && u.is_delete == delFlagNormal).AsNoTracking().ToListAsync();
+            var data = await _articleBll.GetEntities(u => u.discuss.id == discussId && u.is_delete == delFlagNormal).Include(r=>r.children).ThenInclude(u=>u.children).ThenInclude(u => u.children).ThenInclude(u => u.children).ThenInclude(u => u.children).ToListAsync();
+
+           data=datahHandle.artData(data);
             return Result.Success().SetData(data);
         }
+
+        [HttpPost]
+        public async Task<Result> AddChildrenArticle(article myArticle, int parentId,int discussId)
+        {
+            myArticle.id = 0;
+            if (discussAction.is_allow(_user, discussId))
+            {
+                
+                //得到父级目录
+                var parentArticleData = await _articleBll.GetEntities(u => u.id == parentId).Include(u=>u.children).FirstOrDefaultAsync();
+
+                //父级目录下添加子目录
+                parentArticleData.children.Add(myArticle);
+
+                //更新父级目录
+                _articleBll.Update(parentArticleData);
+
+                //添加编辑记录
+                _recordBll.Add(discussId, $"添加了【{myArticle.name}】目录", _user.id);
+                return Result.Success();
+            }
+            else
+            {
+                return Result.Error("权限不足！");
+            }
+        }
+
 
         [HttpGet]
         public async Task<Result> GetArticleById(int articleId)
         {
             var data = await _articleBll.GetEntityById(articleId);
+            return Result.Success().SetData(data);
+        }
+
+
+        [HttpGet]
+        public async Task<Result> GetTitlArticles(int discussId)
+        {
+            var data = await _articleBll.GetEntities(u => u.discuss.id == discussId && u.is_delete == delFlagNormal).Include(r => r.children).ThenInclude(u => u.children).ThenInclude(u => u.children).ThenInclude(u => u.children).ThenInclude(u => u.children).ToListAsync();
+            data = datahHandle.tileArt(data);
+           
             return Result.Success().SetData(data);
         }
 
@@ -59,6 +98,8 @@ namespace CC.Yi.API.Controllers
                 var myDiscuss = await _discussBll.GetEntities(u => u.id == discussId).FirstOrDefaultAsync();
 
                 myArticle.discuss = myDiscuss;
+
+                myArticle.id = 0;
                 _articleBll.Add(myArticle);
 
                  _recordBll.Add(discussId, $"添加了【{myArticle.name}】目录", _user.id);

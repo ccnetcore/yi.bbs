@@ -13,11 +13,23 @@ export default {
         })
 
     },
-
+    getTitlArticles(discussId) {
+        return myaxios({
+            url: `/Article/getTitlArticles?discussId=${discussId}`,
+            method: 'get'
+        })
+    },
     getArticles() {
         return myaxios({
             url: '/Article/getArticles',
             method: 'get'
+        })
+    },
+    addChildrenArticle(article, parentId, discussId) {
+        return myaxios({
+            url: `/Article/AddChildrenArticle?discussId=${discussId}&parentId=${parentId}`,
+            method: 'post',
+            data: article
         })
     },
     addArticle(article, discussId) {

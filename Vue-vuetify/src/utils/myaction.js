@@ -10,6 +10,7 @@ const actionList = [
     "版本管理",
     "道具管理",
     "商城管理",
-    "日志管理"
+    "日志管理",
+    "类型管理"
 ];
 export default { actionList };

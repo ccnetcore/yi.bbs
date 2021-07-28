@@ -52,20 +52,8 @@
 
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
-                        v-model="editedItem.price"
-                        label="定价"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.number"
-                        label="数量"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.discount"
-                        label="折扣"
+                        v-model="editedItem.name"
+                        label="类型名称"
                       ></v-text-field>
                     </v-col>
 
@@ -124,7 +112,7 @@
 </template>
 <script>
 //【2】这里设置对应的API
-import recordApi from "@/api/recordApi";
+import mytypeApi from "@/api/mytypeApi";
 export default {
   data: () => ({
     page: 1,
@@ -140,9 +128,7 @@ export default {
         value: "id",
       },
 
-      { text: "定价", value: "price", sortable: false },
-      { text: "数量", value: "number", sortable: false },
-      { text: "折扣", value: "discount", sortable: false },
+      { text: "类型名称", value: "name", sortable: false },
 
       { text: "操作", value: "actions", sortable: false },
     ],
@@ -150,14 +136,10 @@ export default {
     editedIndex: -1,
 //【4】这里设置对应的模型默认字段
     editedItem: {
-          price: "",
-          number: "1",
-          discount: "1.00",
+          name: "",
         },
         defaultItem: {
-          price: "",
-          number: "1",
-          discount: "1.00",
+          name: "",
         },  
   }),
 
@@ -183,7 +165,7 @@ export default {
   methods: {
     initialize() {
 //【5】这里获取全部字段的API
-      recordApi.getRecords().then((resp) => {
+      mytypeApi.getMytypes().then((resp) => {
         const response = resp.data;
         this.desserts = response;
       });
@@ -211,7 +193,7 @@ export default {
         });
       }
 //【6】这里多条删除的API
-      recordApi.delRecordList(Ids).then(() => this.initialize());
+      mytypeApi.delMytypeList(Ids).then(() => this.initialize());
       this.closeDelete();
     },
     
@@ -234,9 +216,9 @@ export default {
     save() {
 //【7】这里编辑和添加的API
       if (this.editedIndex > -1) {
-        recordApi.updateRecord(this.editedItem).then(() => this.initialize());
+        mytypeApi.updateMytype(this.editedItem).then(() => this.initialize());
       } else {
-        recordApi.addRecord(this.editedItem).then(() => this.initialize());
+        mytypeApi.addMytype(this.editedItem).then(() => this.initialize());
       }
       this.close();
     },

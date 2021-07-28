@@ -35,7 +35,7 @@ import AppMain from "./AppMain.vue";
 export default {
   data() {
     return {
-      drawer: null,
+      drawer: false,
     };
   },
   methods: {

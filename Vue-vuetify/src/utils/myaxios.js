@@ -25,8 +25,9 @@ myaxios.interceptors.response.use(function(response) {
     return resp;
 }, function(error) {
     const resp = error.response.data
-
-    if (resp.code != 200) {
+    if (resp.code == undefined && resp.msg == undefined) {
+        alert(`错误代码：无，原因：与服务器失去连接`)
+    } else if (resp.code != 200) {
         alert(`错误代码：${resp.code}，原因：${resp.msg}`)
     }
     store.dispatch("closeLoad");

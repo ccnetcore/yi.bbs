@@ -168,44 +168,48 @@ namespace CC.Yi.API.Controllers
         }
         #endregion
 
-        //#region 文件上传
-        //[HttpPost]
-        //[Obsolete]
-        //public async Task<IActionResult> upLoadFile([FromServices] IHostingEnvironment environment)
-        //{
-        //    videoEdit fileUrl = new videoEdit();
-        //    var files = Request.Form.Files;
-        //    if (string.IsNullOrWhiteSpace(environment.WebRootPath))
-        //    {
-        //        environment.WebRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
-        //    }
+        #region 文件上传
+        [HttpPost]
+        [Obsolete]
+        public async Task<IActionResult> upLoadFile([FromServices] IHostingEnvironment environment)
+        {
+            videoEdit fileUrl = new videoEdit();
+            var files = Request.Form.Files;
+            if (string.IsNullOrWhiteSpace(environment.WebRootPath))
+            {
+                environment.WebRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+            }
 
-        //    string webRootPath = environment.WebRootPath;
-        //    string filePath = Path.Combine(webRootPath + "/upload/videos");
-        //    if (!Directory.Exists(filePath))
-        //    {
-        //        Directory.CreateDirectory(filePath);
-        //    }
+            string webRootPath = environment.WebRootPath;
+            string filePath = Path.Combine(webRootPath + "/upload/files");
+            if (!Directory.Exists(filePath))
+            {
+                Directory.CreateDirectory(filePath);
+            }
 
-        //    foreach (var formFile in files)
-        //    {
-        //        if (formFile.Length > 0)
-        //        {
-        //            var ext = Path.GetExtension(formFile.FileName);
-        //            var fileName = Guid.NewGuid().ToString() + ext;
-        //            var path = Path.Combine(webRootPath + "/upload/videos", fileName);
-        //            using (var stream = new FileStream(path, FileMode.CreateNew))
-        //            {
-        //                await formFile.CopyToAsync(stream);
-        //                fileUrl.url = $"/dev-apis/upload/videos/{fileName}";
-        //                stream.Flush();
-        //                stream.Close();
-        //            }
-        //        }
-        //    }
+            List<string> fileUrls = new List<string>();
+            foreach (var formFile in files)
+            {
+                if (formFile.Length > 0)
+                {
+                    var ext = Path.GetExtension(formFile.FileName);
+                    var fileName = Guid.NewGuid().ToString() + ext;
+                    var path = Path.Combine(webRootPath + "/upload/files", fileName);
+              
+                    using (var stream = new FileStream(path, FileMode.CreateNew))
+                    {
+                        await formFile.CopyToAsync(stream);
 
-        //    return new JsonResult(new { errno = 0, data = fileUrl });
-        //}
-        //#endregion
+
+                        fileUrls.Add($"#/upload/files/{fileName}");
+                        stream.Flush();
+                        stream.Close();
+                    }
+                }
+            }
+
+            return new JsonResult(new { errno = 0, data = fileUrls });
+        }
+        #endregion
     }
 }

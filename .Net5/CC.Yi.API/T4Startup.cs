@@ -36,6 +36,7 @@ namespace CC.Yi.API
             builder.RegisterType<friendBll>().As<IfriendBll>().EnableInterfaceInterceptors();//表示注入前后要执行Castle，AOP
             builder.RegisterType<articleBll>().As<IarticleBll>().EnableInterfaceInterceptors();//表示注入前后要执行Castle，AOP
             builder.RegisterType<recordBll>().As<IrecordBll>().EnableInterfaceInterceptors();//表示注入前后要执行Castle，AOP
+            builder.RegisterType<mytypeBll>().As<ImytypeBll>().EnableInterfaceInterceptors();//表示注入前后要执行Castle，AOP
         }
     }
 }

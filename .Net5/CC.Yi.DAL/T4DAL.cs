@@ -140,4 +140,11 @@ namespace CC.Yi.DAL
             Db = _Db;
         }
     }
+    public partial class mytypeDal : BaseDal<mytype>, ImytypeDal
+    {
+        public mytypeDal(DataContext _Db):base(_Db)
+        {
+            Db = _Db;
+        }
+    }
 }

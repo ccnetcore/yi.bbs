@@ -371,4 +371,23 @@ namespace CC.Yi.BLL
             }
 
         }
+    public partial class mytypeBll : BaseBll<mytype>, ImytypeBll
+        {
+            public mytypeBll(IBaseDal<mytype> cd,DataContext _Db):base(cd,_Db)
+            {
+                CurrentDal = cd;
+                Db = _Db;
+            }
+
+            public async Task<bool> DelListByUpdateList(List<int> Ids)
+            {
+                var entitys = await CurrentDal.GetEntities(u => Ids.Contains(u.id)).ToListAsync();
+                foreach (var entity in entitys)
+                {
+                    entity.is_delete = (short)ViewModel.Enum.DelFlagEnum.Deleted;
+                }
+                return Db.SaveChanges() > 0;
+            }
+
+        }
 }

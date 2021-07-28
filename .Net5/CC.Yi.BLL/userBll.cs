@@ -62,6 +62,22 @@ namespace CC.Yi.BLL
         }
 
 
+        //批量设置用户拥有哪些角色
+        public async Task<bool> setRoleList(setRoleList mydata)
+        {
+            //先得到所有用户
+
+            var userList = await CurrentDal.GetEntities(u => mydata.userIds.Contains(u.id)).Include(u=>u.roles).ToListAsync();
+
+            var allRoles =await Db.Set<role>().Where(u => mydata.roleIds.Contains(u.id)).ToListAsync();
+
+            foreach (var k in userList)
+            {
+                k.roles = allRoles;
+            }
+            return Db.SaveChanges() > 0;
+        }
+
         //设置用户特殊权限
         public async Task<bool> setSpecialAction(int userId, List<int> actionIds)
         {

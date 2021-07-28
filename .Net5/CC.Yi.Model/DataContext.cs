@@ -9,5 +9,5 @@ namespace CC.Yi.Model
         {
 
         }
-    }
+	}
 }

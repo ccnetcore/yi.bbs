@@ -4,7 +4,7 @@
     style=" height: 600px; width: 500px"
   >
     <div>
-      <h1 class="title my-2">Jift-CC</h1>
+      <h1 class="title my-2">Angstrong</h1>
       <v-subheader>注册加入我们</v-subheader>
     </div>
 
@@ -83,11 +83,12 @@
     </v-form>
 
     <v-btn
-      dark
-      class="my-2 light-blue"
+      class="my-2 light-blue white--text"
       @click="register"
       large
       style="width: 100%"
+        :loading="loader"
+         :disabled="btn_dis"
     >
       注册
     </v-btn>
@@ -107,6 +108,8 @@
 import accountApi from "../api/accountApi.js";
 export default {
   data: () => ({
+     btn_dis:false,
+    loader: null,
     dis_mail:false,
     value:100,
     code: "",
@@ -167,6 +170,8 @@ export default {
     },
     register() {
       if (this.$refs.form.validate()) {
+             this.loader = "true";
+      this.btn_dis=true;
         this.$store
           .dispatch("Register", {
             username: this.user_name,
@@ -182,6 +187,8 @@ export default {
               });
               this.$router.push("/login");
             } else {
+              this.loader=null;
+              this.btn_dis=false;
               this.$dialog.notify.error(resp.msg, {
                 position: "top-right",
                 timeout: 5000,

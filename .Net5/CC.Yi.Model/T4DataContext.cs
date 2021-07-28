@@ -25,5 +25,6 @@ namespace CC.Yi.Model
         public DbSet<friend> friend { get; set; }
         public DbSet<article> article { get; set; }
         public DbSet<record> record { get; set; }
+        public DbSet<mytype> mytype { get; set; }
     }
 }

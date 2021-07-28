@@ -22,7 +22,7 @@
             hide-details
             class="mx-4"
           ></v-text-field>
-  <!-- 设置特殊权限提示框 -->
+          <!-- 设置特殊权限提示框 -->
           <v-dialog v-model="dialogAction" max-width="500px">
             <v-card>
               <v-card-title>
@@ -54,7 +54,7 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
-  <!-- 设置角色提示框 -->
+          <!-- 设置角色提示框 -->
           <v-dialog v-model="dialogRole" max-width="500px">
             <v-card>
               <v-card-title>
@@ -87,6 +87,9 @@
             </v-card>
           </v-dialog>
 
+          <v-btn color="cyan" dark class="mb-2" @click="addListRole=true;dialogRole = true">
+            设角
+          </v-btn>
 
           <!-- 添加提示框 -->
           <v-dialog v-model="dialog" max-width="500px">
@@ -98,7 +101,7 @@
                 v-bind="attrs"
                 v-on="on"
               >
-                添加新项
+                添加
               </v-btn>
             </template>
             <v-card>
@@ -123,31 +126,28 @@
                       ></v-text-field>
                     </v-col>
 
-                                        <v-col cols="12" sm="6" md="4">
+                    <v-col cols="12" sm="6" md="4">
                       <v-text-field
                         v-model="editedItem.icon"
                         label="头像"
                       ></v-text-field>
                     </v-col>
 
-
-                                        <v-col cols="12" sm="6" md="4">
+                    <v-col cols="12" sm="6" md="4">
                       <v-text-field
                         v-model="editedItem.email"
                         label="邮箱"
                       ></v-text-field>
                     </v-col>
 
-
-
-                                        <v-col cols="12" sm="6" md="4">
+                    <v-col cols="12" sm="6" md="4">
                       <v-text-field
                         v-model="editedItem.nick"
                         label="昵称"
                       ></v-text-field>
                     </v-col>
 
-                                                            <v-col cols="12" sm="6" md="4">
+                    <v-col cols="12" sm="6" md="4">
                       <v-text-field
                         v-model="editedItem.openId"
                         label="QQid"
@@ -166,7 +166,7 @@
           </v-dialog>
 
           <v-btn color="red" dark class="mb-2" @click="deleteItem(null)">
-            删除所选
+            删除
           </v-btn>
 
           <!-- 删除提示框 -->
@@ -194,7 +194,9 @@
       <template v-slot:item.actions="{ item }">
         <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
         <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
-                <v-icon small class="mr-2" @click="setRoleItem(item)"> mdi-gavel </v-icon>
+        <v-icon small class="mr-2" @click="setRoleItem(item)">
+          mdi-gavel
+        </v-icon>
 
         <v-icon small @click="setActionItem(item)"> mdi-lock </v-icon>
       </template>
@@ -213,16 +215,17 @@ import roleApi from "@/api/roleApi";
 import actionApi from "@/api/actionApi";
 export default {
   data: () => ({
-      allAction: [],
+    addListRole:false,
+    allAction: [],
     selectAction: [],
     itemsAction: [],
     dialogAction: false,
-// -------------------------------
+    // -------------------------------
     allRole: [],
     selectRole: [],
     itemsRole: [],
     dialogRole: false,
-// -----------------------------
+    // -----------------------------
     page: 1,
     selected: [],
     search: "",
@@ -250,20 +253,20 @@ export default {
     editedItem: {
       user_name: "",
       password: "",
-      icon:"",
-      nick:"",
-      email:"",
-      openid:"",
-      ip:""
+      icon: "",
+      nick: "",
+      email: "",
+      openid: "",
+      ip: "",
     },
     defaultItem: {
       user_name: "",
       password: "",
-      icon:"",
-      nick:"",
-      email:"",
-      openid:"",
-      ip:""
+      icon: "",
+      nick: "",
+      email: "",
+      openid: "",
+      ip: "",
     },
   }),
 
@@ -292,6 +295,26 @@ export default {
       userApi.getAllUser().then((resp) => {
         const response = resp.data;
         this.desserts = response;
+      });
+
+      roleApi.getRoles().then((resp) => {
+        const response = resp.data;
+        this.allRole = response;
+        this.itemsRole = [];
+
+        for (let i = 0; i < response.length; i++) {
+          this.itemsRole.push(response[i].role_name);
+        }
+      });
+
+      actionApi.getActions().then((resp) => {
+        const response = resp.data;
+        this.allAction = response;
+        this.itemsAction = [];
+
+        for (let i = 0; i < response.length; i++) {
+          this.itemsAction.push(response[i].action_name);
+        }
       });
     },
 
@@ -347,32 +370,24 @@ export default {
       this.close();
     },
 
-// ----------------------------------------------------------------------
-     setRoleItem(item) {
+    // ----------------------------------------------------------------------
+    setRoleItem(item) {
       //forEach中this指向已经发生变化
       //获取所有角色
-      roleApi.getRoles().then((resp) => {
-        const response=resp.data;
-        this.allRole = response;
-        this.itemsRole = [];
-
-        for (let i = 0; i < response.length; i++) {
-          this.itemsRole.push(response[i].role_name);
-        }
-      });
 
       this.editedIndex = this.desserts.indexOf(item);
       this.editedItem = Object.assign({}, item);
       //获取已经存在的角色
       userApi.getRoleByuserId(this.editedItem.id).then((resp) => {
-        const response=resp.data;
+        const response = resp.data;
         for (let i = 0; i < response.length; i++) {
           this.selectRole.push(response[i].role_name);
         }
       });
       this.dialogRole = true;
     },
-     closeRole() {
+    closeRole() {
+      this.addListRole=false;
       this.dialogRole = false;
       this.selectRole = [];
       this.$nextTick(() => {
@@ -381,6 +396,7 @@ export default {
       });
     },
     saveRole() {
+      //保存角色(如果点击的是 批量设角色并且选择了目标 那就进行批量保存，否则，只设置一个)
       var Ids = [];
       const myAllRoles = this.allRole;
       for (let i = 0; i < myAllRoles.length; i++) {
@@ -391,29 +407,41 @@ export default {
           Ids.push(myAllRoles[i].id);
         }
       }
-      userApi.setRole(this.editedItem.id, Ids).then(() => {
-        this.closeRole();
-      });
+
+      //Ids为选中的角色列表
+
+      if (this.addListRole) {
+        if (this.selected.length > 0) {
+        
+ let userIds = this.selected.map(obj => {
+   return obj.id; })
+ 
+          userApi.setRoleList(userIds, Ids).then(() => {
+            this.closeRole();
+          });
+        } else {
+          this.$dialog.notify.error("请选择至少一个用户进行批量设置", {
+            position: "top-right",
+            timeout: 5000,
+          });
+           this.closeRole();
+        }
+      } else {
+        userApi.setRole(this.editedItem.id, Ids).then(() => {
+          this.closeRole();
+        });
+      }
     },
-// -----------------------------------------
-  setActionItem(item) {
+    // -----------------------------------------
+    setActionItem(item) {
       //forEach中this指向已经发生变化
       //获取所有权限
-      actionApi.getActions().then((resp) => {
-        const response=resp.data;
-        this.allAction = response;
-        this.itemsAction = [];
-
-        for (let i = 0; i < response.length; i++) {
-          this.itemsAction.push(response[i].action_name);
-        }
-      });
 
       this.editedIndex = this.desserts.indexOf(item);
       this.editedItem = Object.assign({}, item);
       //获取已经存在的特殊权限
       userApi.getSpecialAction(this.editedItem.id).then((resp) => {
-        const response=resp.data;
+        const response = resp.data;
         for (let i = 0; i < response.length; i++) {
           this.selectAction.push(response[i].action_name);
         }
@@ -443,7 +471,6 @@ export default {
         this.closeAction();
       });
     },
-
   },
 };
 </script>

@@ -195,7 +195,7 @@ namespace CC.Yi.API.Controllers
             data.see_num += 1;
             _discussBll.Update(data);
             //查阅数+1
-            return Result.Success().SetData(new { data.id, data.introduction, data.content, data.time, data.title, data.agree_num, user = new { data.user?.id, data.user?.username, data.user?.icon } });
+            return Result.Success().SetData(new { data.id, data.type, data.introduction, data.content, data.time, data.title, data.agree_num, user = new { data.user?.id, data.user?.username, data.user?.icon } });
         }
 
         [Authorize(Policy = "发布主题")]
@@ -230,7 +230,7 @@ namespace CC.Yi.API.Controllers
             return Result.Success().SetData(new { data.id, level });
         }
 
-        [Authorize(Policy = "主题管理")]
+        //[Authorize(Policy = "主题管理")]
         [HttpPost]
         public async Task<Result> UpdateDiscuss(discuss myDiscuss)
         {
@@ -242,6 +242,7 @@ namespace CC.Yi.API.Controllers
                 data.type = myDiscuss.type;
                 data.content = myDiscuss.content;
                 _discussBll.Update(data);
+                _recordBll.Add(myDiscuss.id, $"更新了【根】目录", _user.id);
                 return Result.Success();
             }
             else

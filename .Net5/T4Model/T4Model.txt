@@ -1,1 +1,1 @@
-plate,discuss,comment,user,role,action,level,user_extra,label,collection,banner,agree,version,shop,warehouse,prop,friend,article,record
+plate,discuss,comment,user,role,action,level,user_extra,label,collection,banner,agree,version,shop,warehouse,prop,friend,article,record,mytype

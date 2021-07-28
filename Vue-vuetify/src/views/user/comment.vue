@@ -1,9 +1,22 @@
 <template>
-  <v-container fluid>
+  <v-container :fluid="is_fluid">
     <v-row>
       <v-col class="pb-0">
         <v-card height="100%" class="mx-auto">
-          <v-navigation-drawer right app v-model="drawer">
+          <v-navigation-drawer right app v-model="drawer" style="width: 500px">
+            <v-list-item>
+              <v-list-item-content>
+                <v-btn
+                  color="blue"
+                  elevation="2"
+                  @click="drawer = !drawer"
+                  large
+                  dark
+                >
+                  关闭目录
+                </v-btn>
+              </v-list-item-content>
+            </v-list-item>
             <v-list-item>
               <v-list-item-content>
                 <v-btn color="cyan" elevation="2" @click="intoAdd2" large dark>
@@ -16,29 +29,93 @@
             <v-list nav>
               <v-list-item link @click="initializa()">
                 <v-list-item-content>
-                  <v-list-item-title>根目录</v-list-item-title>
+                  <v-list-item-title
+                    >根目录
+
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-icon
+                          v-bind="attrs"
+                          color="cyan"
+                          v-on="on"
+                          @click="updataDiscuss(discussData.id)"
+                        >
+                          mdi-book-edit
+                        </v-icon>
+                      </template>
+                      <span>编辑根目录</span>
+                    </v-tooltip>
+                  </v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
             </v-list>
             <v-list dense nav>
-              <v-list-item
-                v-for="myitem in articleList"
-                :key="myitem.id"
-                link
-                @click="showArticle(myitem.id)"
-              >
-                <v-list-item-content>
-                  <v-list-item-title>
-                    <span>{{ myitem.name }}</span>
-                   
-                    <v-icon class="ml-2" color="cyan" @click="intoArticle(myitem.id)"
-                      >mdi-book-edit-outline</v-icon
-                    >
-                    <v-icon color="cyan" @click="delArticle(myitem.id)"
-                      >mdi-close-circle</v-icon
-                    >
-                  </v-list-item-title>
-                </v-list-item-content>
+              <v-list-item>
+                <v-treeview
+                  :items="articleList"
+                  style="width: 100%"
+                  open-on-click
+                  activatable
+                  return-object
+                  :active.sync="selectArt"
+                >
+                  <template v-slot:prepend="{ item }">
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-icon
+                          v-bind="attrs"
+                          v-on="on"
+                          dark
+                          color="cyan"
+                          @click="showArticle(item.id)"
+                          >mdi-arrow-right-drop-circle-outline</v-icon
+                        >
+                      </template>
+                      <span>查阅</span>
+                    </v-tooltip>
+                  </template>
+
+                  <template v-slot:append="{ item }">
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-icon
+                          v-bind="attrs"
+                          v-on="on"
+                          color="cyan"
+                          @click="intoAddArticle(item.id)"
+                          >mdi-plus-box-multiple</v-icon
+                        >
+                      </template>
+                      <span>添加下一级子目录</span>
+                    </v-tooltip>
+
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-icon
+                          v-bind="attrs"
+                          v-on="on"
+                          color="cyan"
+                          @click="intoArticle(item.id)"
+                          >mdi-book-edit-outline</v-icon
+                        >
+                      </template>
+                      <span>编辑</span>
+                    </v-tooltip>
+
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-icon
+                          v-bind="attrs"
+                          v-on="on"
+                          color="cyan"
+                          @click="delArticle(item.id)"
+                          >mdi-close-circle</v-icon
+                        >
+                      </template>
+                      <span>删除</span>
+                    </v-tooltip>
+                  </template>
+                </v-treeview>
               </v-list-item>
             </v-list>
           </v-navigation-drawer>
@@ -49,10 +126,28 @@
         <v-card class="mx-auto my-2" max-width="100%">
           <v-card-text>
             <p class="display-1 text--primary">
-              <v-icon class="mx-2" @click="drawer = !drawer">mdi-menu</v-icon>
               {{ discussData.title }}
             </p>
+            <p>
+              <v-icon class="ml-2" @click="drawer = !drawer"
+                >mdi-clipboard-text-outline</v-icon
+              >
+              <span class="mr-2" @click="drawer = !drawer">目录开关</span>
+              <v-icon class="ml-2" @click="loog()">mdi-file-eye-outline</v-icon>
+              <span class="mr-2" @click="loog()">长文本阅读</span>
 
+              <v-icon class="ml-2" @click="initializa()"
+                >mdi-file-refresh-outline</v-icon
+              >
+              <span class="mr-2" @click="initializa()">重置</span>
+
+
+
+                            <v-icon class="ml-2" @click="is_fluid=!is_fluid"
+                >mdi-file-refresh-outline</v-icon
+              >
+              <span class="mr-2" @click="is_fluid=!is_fluid" >布局开关</span>
+            </p>
             <v-divider class="my-2"></v-divider>
             <v-avatar size="60px" @click="intoInfo(discussData.user.id)">
               <img
@@ -73,7 +168,19 @@
             <p>时间：{{ discussData.time }}</p>
             <p>文章ID：{{ discussData.id }}</p>
             <v-divider class="my-4"></v-divider>
-            <div class="text--primary" v-html="discussData.content"></div>
+
+            <mavon-editor
+              class="md"
+              :value="discussData.content"
+              :subfield="false"
+              :defaultOpen="'preview'"
+              :toolbarsFlag="false"
+              :editable="false"
+              :scrollStyle="true"
+              :ishljs="true"
+              style="z-index: 1"
+            />
+
           </v-card-text>
           <v-card-actions>
             <v-btn text color="teal accent-4" @click="reveal = true">
@@ -112,21 +219,41 @@
               </v-list>
             </v-menu>
 
-            <v-btn class="mx-2" fab dark small color="cyan">
-              <v-icon dark @click="Collection(discussData.id)">
-                mdi-star
-              </v-icon>
-            </v-btn>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  v-bind="attrs"
+                  v-on="on"
+                  class="mx-2"
+                  fab
+                  dark
+                  small
+                  color="cyan"
+                  @click="Collection(discussData.id)"
+                >
+                  <v-icon dark> mdi-star </v-icon>
+                </v-btn>
+              </template>
+              <span>收藏</span>
+            </v-tooltip>
 
-            <v-btn class="mx-2" fab dark small color="cyan">
-              <v-icon dark @click="updataDiscuss(discussData.id)">
-                mdi-book-edit
-              </v-icon>
-            </v-btn>
-
-            <v-btn class="mx-2" fab dark small color="cyan">
-              <v-icon dark @click="intoRecords">mdi-update</v-icon>
-            </v-btn>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  v-bind="attrs"
+                  v-on="on"
+                  class="mx-2"
+                  fab
+                  dark
+                  small
+                  color="cyan"
+                  @click="intoRecords"
+                >
+                  <v-icon dark>mdi-update</v-icon>
+                </v-btn>
+              </template>
+              <span>编辑记录</span>
+            </v-tooltip>
           </v-card-actions>
 
           <v-expand-transition>
@@ -258,7 +385,9 @@
                         />
                       </v-avatar>
 
-                    <span class="white--text ml-2">  {{item.user.username}}</span>
+                      <span class="white--text ml-2">
+                        {{ item.user.username }}</span
+                      >
                     </v-card-title>
                     <v-container>
                       <v-row>
@@ -285,6 +414,7 @@
   </v-container>
 </template>
 <script>
+import { mavonEditor } from "mavon-editor";
 import discussApi from "@/api/discussApi";
 import commentApi from "@/api/commentApi";
 import collectionApi from "@/api/collectionApi";
@@ -292,7 +422,15 @@ import agreesApi from "@/api/agreesApi";
 import articleApi from "@/api/articleApi";
 import recordApi from "@/api/recordApi";
 export default {
+  components: {
+    mavonEditor,
+  },
   data: () => ({
+    is_fluid: false,
+    webDataString: "",
+    titlArticle: [],
+    titl: false,
+    selectArt: [],
     recordList: [],
     dialog2: false,
     articleList: [],
@@ -325,6 +463,12 @@ export default {
     this.initializa();
   },
   watch: {
+    selectArt: {
+      handler(new1, old2) {
+        this.showArticle(new1[0].id);
+      },
+    },
+
     pageIndex: {
       handler() {
         this.initializa();
@@ -340,6 +484,27 @@ export default {
     this.baseurl = process.env.VUE_APP_BASE_API;
   },
   methods: {
+    loog() {
+      discussApi
+        .getDiscussByDiscussId(this.$store.state.home.discussId)
+        .then((resp) => {
+    
+          this.discussData.content="";
+          this.discussData.content +=("# "+resp.data.title);
+          this.discussData.content +=("\n "+resp.data.content); 
+
+          articleApi
+            .getTitlArticles(this.$store.state.home.discussId)
+            .then((resp) => {
+              var that = this;
+              resp.data.forEach((element) => {
+               
+                that.discussData.content +=("\n\n# "+element.name);
+                that.discussData.content +=("\n "+element.content);
+              });
+            });
+        });
+    },
     intoRecords() {
       recordApi
         .getRecordsByDiscussId(this.$store.state.home.discussId)
@@ -376,6 +541,15 @@ export default {
         },
       });
     },
+    intoAddArticle(parentId) {
+      this.$router.push({
+        path: `/addArticle`,
+        query: {
+          parentId: parentId,
+        },
+      });
+    },
+
     intoArticle(articleId) {
       this.$router.push({
         path: `/addArticle`,
@@ -428,10 +602,7 @@ export default {
         .getDiscussByDiscussId(this.$store.state.home.discussId)
         .then((resp) => {
           this.discussData = resp.data;
-
-          this.discussData.content = this.discussData.content
-            .replace(/&lt;/g, "<")
-            .replace(/&gt;/g, ">");
+          this.discussData.content = this.discussData.content;
         });
       commentApi
         .getCommentsByDiscussId(

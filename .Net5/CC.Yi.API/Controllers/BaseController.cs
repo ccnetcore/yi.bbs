@@ -1,4 +1,5 @@
 ﻿using CC.Yi.Model;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
@@ -19,10 +20,13 @@ namespace CC.Yi.API.Controllers
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
+      //var myclaim=  HttpContext.AuthenticateAsync().Result.Principal.Claims;
             base.OnActionExecuting(filterContext);
             user myUser = new user() ;
             List<action> actions = new List<action>();
+
             var identity = (System.Security.Claims.ClaimsIdentity)this.Request.HttpContext.User.Identity;
+           
             foreach (var k in identity.Claims)
             {
                 switch (k.Type)

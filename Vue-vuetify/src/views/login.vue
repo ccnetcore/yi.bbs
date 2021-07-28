@@ -4,7 +4,7 @@
     style="height: 600px; width: 500px"
   >
     <div>
-      <h1 class="title my-2">Jift-CC</h1>
+      <h1 class="title my-2">Angstrong</h1>
       <v-subheader>登入你的用户</v-subheader>
     </div>
 
@@ -44,22 +44,23 @@
     </v-form>
 
     <v-btn
-      dark
-      class="my-2 light-blue"
+      class="my-2 light-blue white--text"
       @click="login"
       large
       style="width: 100%"
       @keyup.enter="enterSearch"
+      :loading="loader"
+      :disabled="btn_dis"
     >
       登入
     </v-btn>
     <p class="my-2">或使用登录</p>
-    <v-btn dark class="my-2 cyan" @click="qqlogin" large style="width: 100%">
-      <v-icon class="mx-2"> mdi-qqchat </v-icon>
+    <v-btn  class="my-2 cyan white--text" @click="qqlogin" large style="width: 100%" :loading="loader" :disabled="btn_dis">
+      <v-icon class="mx-2"  > mdi-qqchat </v-icon>
       QQ
     </v-btn>
 
-    <v-btn dark class="cyan" @click="yklogin" large style="width: 100%">
+    <v-btn class="cyan white--text" @click="yklogin" large style="width: 100%"  :loading="loader" :disabled="btn_dis">
       <v-icon class="mx-2"> mdi-message-text </v-icon>
       临时游客
     </v-btn>
@@ -69,6 +70,8 @@
 import myqq from "../utils/myqq";
 export default {
   data: () => ({
+    btn_dis:false,
+    loader: null,
     valid: true,
     user_name: "",
     user_nameRules: [
@@ -90,10 +93,7 @@ export default {
     enterSearch() {
       document.onkeydown = (e) => {
         //13表示回车键，baseURI是当前页面的地址，为了更严谨，也可以加别的，可以打印e看一下
-        if (
-          e.keyCode === 13 &&
-          e.target.baseURI.match("/") 
-        ) {
+        if (e.keyCode === 13 && e.target.baseURI.match("/")) {
           //回车后执行搜索方法
           this.login();
         }
@@ -105,6 +105,8 @@ export default {
       // window.close();
     },
     yklogin() {
+      this.loader = "true";
+      this.btn_dis=true;
       this.$store
         .dispatch("Login", {
           username: "游客",
@@ -114,6 +116,8 @@ export default {
           if (resp.status) {
             this.$router.push("/");
           } else {
+            this.loader=null;
+             this.btn_dis=false;
             this.$dialog.notify.error(resp.msg, {
               position: "top-right",
               timeout: 5000,
@@ -123,6 +127,8 @@ export default {
     },
     login() {
       if (this.$refs.form.validate()) {
+        this.loader = "true";
+        this.btn_dis=true;
         this.$store
           .dispatch("Login", {
             username: this.user_name,
@@ -132,6 +138,8 @@ export default {
             if (resp.status) {
               this.$router.push("/");
             } else {
+              this.loader = null;
+              this.btn_dis=false;
               this.$dialog.notify.error(resp.msg, {
                 position: "top-right",
                 timeout: 5000,

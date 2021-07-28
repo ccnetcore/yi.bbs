@@ -34,5 +34,10 @@ namespace CC.Yi.IBLL
         //检测邮箱是否存在
         #endregion
         Task<bool> mail_exist(string mail);
+
+        #region
+        //批量设置角色
+        #endregion
+        Task<bool> setRoleList(setRoleList mydata);
     }
 }

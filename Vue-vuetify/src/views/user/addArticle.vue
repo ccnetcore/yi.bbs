@@ -1,120 +1,148 @@
 <template>
   <v-container fluid>
     <v-row>
+      <v-card>
+        <v-navigation-drawer
+          right
+          app
+          v-model="drawer"
+          :style="{ width: articleWidth + 'px' }"
+        >
+          <!-- <v-list-item>
+            <v-list-item-content>
+              <v-btn
+                color="blue"
+                elevation="2"
+                @click="drawer = !drawer"
+                large
+                dark
+              >
+                关闭目录
+              </v-btn>
+            </v-list-item-content>
+          </v-list-item> -->
+
+          <v-list-item>
+            <v-list-item-content>
+              <v-btn color="blue" elevation="2" @click="updateWidth" large dark>
+                扩展目录
+              </v-btn>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-item>
+            <v-list-item-content>
+              <v-btn color="cyan" elevation="2" @click="intoAdd2" large dark>
+                添加目录
+              </v-btn>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-divider></v-divider>
+          <v-list nav>
+            <v-list-item link>
+              <v-list-item-content>
+                <v-list-item-title
+                  >根目录
+
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-icon
+                        v-bind="attrs"
+                        color="cyan"
+                        v-on="on"
+                        @click="updataDiscuss()"
+                      >
+                        mdi-book-edit
+                      </v-icon>
+                    </template>
+                    <span>编辑根目录</span>
+                  </v-tooltip>
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+          <v-list dense nav>
+            <v-list-item>
+              <v-treeview
+                :items="articleList"
+                style="width: 100%"
+                open-on-click
+                activatable
+                return-object
+                :active.sync="selectArt"
+              >
+                <template v-slot:append="{ item }">
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-icon
+                        v-bind="attrs"
+                        v-on="on"
+                        color="cyan"
+                        @click="intoAddArticle(item.id)"
+                        >mdi-plus-box-multiple</v-icon
+                      >
+                    </template>
+                    <span>添加下一级子目录</span>
+                  </v-tooltip>
+
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-icon
+                        v-bind="attrs"
+                        v-on="on"
+                        color="cyan"
+                        @click="intoArticle(item.id)"
+                        >mdi-book-edit-outline</v-icon
+                      >
+                    </template>
+                    <span>编辑</span>
+                  </v-tooltip>
+
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-icon
+                        v-bind="attrs"
+                        v-on="on"
+                        color="cyan"
+                        @click="delArticle(item.id)"
+                        >mdi-close-circle</v-icon
+                      >
+                    </template>
+                    <span>删除</span>
+                  </v-tooltip>
+                </template>
+              </v-treeview>
+            </v-list-item>
+          </v-list>
+        </v-navigation-drawer>
+      </v-card>
+
       <v-col cols="12">
         <v-text-field label="目录名" v-model="form.name"></v-text-field>
       </v-col>
+
+      <v-col cols="12">
+        <markdownEdit @giveData="getHtml" :myhtml2="myhtml"></markdownEdit>
+      </v-col>
+      <v-col cols="12">
+        <v-btn class="my-12" width="100%" large color="success" @click="send()"
+          >确认</v-btn
+        >
+      </v-col>
     </v-row>
-
-    <v-card color="#FAFAFA" class="pb-15">
-      <v-row class="text-center">
-        <v-col cols="12">
-          <p class="text-h6 text--secondary text-left ml-2">
-            选择主题内容编辑方式：
-          </p>
-        </v-col>
-        <v-col cols="12" md="6">
-          <v-btn
-            fab
-            @click="
-              is_html = true;
-              dialog = true;
-              selectIndex = 1;
-            "
-            width="200"
-            height="200"
-            color="cyan"
-            dark
-            :disabled="is_mark"
-            >markdown</v-btn
-          >
-        </v-col>
-        <v-col cols="12" md="6">
-          <v-btn
-            fab
-            @click="
-              is_mark = true;
-              dialog = true;
-              selectIndex = 2;
-            "
-            width="200"
-            height="200"
-            color="blue"
-            dark
-            :disabled="is_html"
-            >html</v-btn
-          >
-        </v-col>
-      </v-row>
-    </v-card>
-    <v-btn
-      class="my-12"
-      width="100%"
-      color="success"
-      :disabled="is_send"
-      large
-      @click="send()"
-      >确认</v-btn
-    >
-
-    <v-dialog
-      v-model="dialog"
-      fullscreen
-      hide-overlay
-      transition="dialog-bottom-transition"
-    >
-      <v-card class="text-center align-center">
-        <v-toolbar dark color="cyan">
-          <v-btn
-            icon
-            dark
-            @click="
-              dialog = false;
-              is_send = false;
-            "
-          >
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-          <v-toolbar-title>主题内容</v-toolbar-title>
-          <v-spacer></v-spacer>
-          <v-toolbar-items>
-            <v-btn
-              dark
-              text
-              @click="
-                dialog = false;
-                is_send = false;
-              "
-            >
-              保存
-            </v-btn>
-          </v-toolbar-items>
-        </v-toolbar>
-
-        <htmlEdit
-          v-show="selectIndex == 2"
-          @giveData="getHtml"
-          :myhtml2="myhtml"
-        ></htmlEdit>
-        <markdownEdit
-          v-show="selectIndex == 1"
-          @giveData="getHtml"
-        ></markdownEdit>
-      </v-card>
-    </v-dialog>
   </v-container>
 </template>
 <script>
 import articleApi from "@/api/articleApi";
-import htmlEdit from "@/views/html";
 import markdownEdit from "@/views/markdown";
 export default {
   data() {
     return {
-      is_mark: false,
-      is_html: false,
-      is_send: true,
-      dialog: false,
+      selectArt: [],
+      articleWidth: "260",
+      drawer: true,
+      articleList: [],
       baseurl: "",
       form: {
         id: 0,
@@ -125,6 +153,14 @@ export default {
       selectIndex: 0,
     };
   },
+  watch: {
+    selectArt: {
+      handler(new1, old2) {
+        // console.log(new1)
+        // this.intoArticle(new1[0].id);
+      },
+    },
+  },
   mounted() {
     //使用初始化
     this.baseurl = process.env.VUE_APP_BASE_API;
@@ -133,33 +169,135 @@ export default {
     this.initializa();
   },
   methods: {
+    intoAdd2() {
+      this.$router.push({ path: "/addArticle" });
+      this.form.name = "";
+      this.form.content = "";
+      this.myhtml = "";
+    },
+    delArticle(acticleId) {
+      this.$dialog
+        .confirm({
+          text: "你确定要删除该项吗？",
+          title: "Warning",
+        })
+        .then((resp) => {
+          if (resp) {
+            articleApi
+              .delArticleList([acticleId], this.$store.state.home.discussId)
+              .then((resp) => {
+                if (resp.status) {
+                  this.initializa();
+                } else {
+                  alert("权限不足！");
+                }
+              });
+          }
+        });
+    },
+    updataDiscuss() {
+      this.$router.push({
+        path: `/AddDiscuss`,
+        query: {
+          discussId: this.$store.state.home.discussId,
+        },
+      });
+    },
+    updateWidth() {
+      if (this.articleWidth == "260") {
+        this.articleWidth = "500";
+      } else {
+        this.articleWidth = "260";
+      }
+    },
+    intoAddArticle(parentId) {
+      this.$router.push({
+        path: `/addArticle`,
+        query: {
+          parentId: parentId,
+        },
+      });
+      this.form.name = "";
+      this.form.content = "";
+      this.myhtml = "";
+    },
     send() {
       this.form.content = this.myhtml;
 
-      if (this.$route.query.articleId == undefined) {
-        articleApi.addArticle(this.form,this.$store.state.home.discussId).then((response) => {
-          if(response.status)
-          {
-this.$router.push({ path: "/comment" });
-          }
-          else
-          {
-            alert("权限不足！")
-          }
-          
-        });
-      } else {
-        articleApi.updateArticle(this.form,this.$store.state.home.discussId).then((response) => {
-          if (response.status) {
-            this.$router.push({ path: "/comment" });
-          } else {
-            alert("权限不足！");
-          }
-        });
+      if (
+        this.$route.query.articleId == undefined &&
+        this.$route.query.parentId == undefined
+      ) {
+        //没有传任何值，代表是添加
+        articleApi
+          .addArticle(this.form, this.$store.state.home.discussId)
+          .then((response) => {
+            if (response.status) {
+              this.$dialog.notify.success("目录添加成功", {
+                position: "top-right",
+                timeout: 5000,
+              });
+              this.initializa();
+            } else {
+              alert("权限不足！");
+            }
+          });
+      } else if (
+        this.$route.query.articleId != undefined &&
+        this.$route.query.parentId == undefined
+      ) {
+        //只传了文章id，代表更新
+        articleApi
+          .updateArticle(this.form, this.$store.state.home.discussId)
+          .then((response) => {
+            if (response.status) {
+              this.$dialog.notify.success("文章更新成功", {
+                position: "top-right",
+                timeout: 5000,
+              });
+              this.initializa();
+            } else {
+              alert("权限不足！");
+            }
+          });
+      } else if (
+        this.$route.query.articleId == undefined &&
+        this.$route.query.parentId != undefined
+      ) {
+        //只传了父级id，代表添加子目录
+
+        articleApi
+          .addChildrenArticle(
+            this.form,
+            this.$route.query.parentId,
+            this.$store.state.home.discussId
+          )
+          .then((response) => {
+            if (response.status) {
+              this.$dialog.notify.success("添加子目录成功", {
+                position: "top-right",
+                timeout: 5000,
+              });
+              this.initializa();
+            } else {
+              alert("权限不足！");
+            }
+          });
       }
     },
     initializa() {
+      setTimeout(function () {
+        window.scrollTo(0, 0);
+      }, 500);
+
+      articleApi
+        .getArticlesByDiscussId(this.$store.state.home.discussId)
+        .then((resp) => {
+          this.articleList = resp.data;
+        });
+
       if (this.$route.query.articleId != undefined) {
+        //下面是进行更新(没有传文章id或者父级id)
         articleApi
           .getArticleById(this.$route.query.articleId)
           .then((response) => {
@@ -168,16 +306,34 @@ this.$router.push({ path: "/comment" });
             this.form.name = resp.name;
             this.myhtml = resp.content;
           });
-
-        this.is_mark = true;
       }
+    },
+    intoArticle(articleId) {
+      this.$router.push({
+        path: `/addArticle`,
+        query: {
+          articleId: articleId,
+        },
+      });
+     articleApi
+          .getArticleById(articleId)
+          .then((response) => {
+            const resp = response.data;
+            this.form.id = resp.id;
+            this.form.name = resp.name;
+            this.myhtml = resp.content;
+          });
+
+
+
+
+
     },
     getHtml(html) {
       this.myhtml = html;
     },
   },
   components: {
-    htmlEdit,
     markdownEdit,
   },
 };

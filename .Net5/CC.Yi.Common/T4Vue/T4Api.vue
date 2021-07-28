@@ -4,29 +4,29 @@
 /*
 import myaxios from '@/utils/myaxios'
 export default {
-    getRecords() {
+    getMytypes() {
         return myaxios({
-            url: '/Record/getRecords',
+            url: '/Mytype/getMytypes',
             method: 'get'
         })
     },
-    addRecord(record) {
+    addMytype(mytype) {
         return myaxios({
-            url: '/Record/addRecord',
+            url: '/Mytype/addMytype',
             method: 'post',
-            data: record
+            data: mytype
         })
     },
-    updateRecord(Record) {
+    updateMytype(Mytype) {
         return myaxios({
-            url: '/Record/UpdateRecord',
+            url: '/Mytype/UpdateMytype',
             method: 'post',
-            data: Record
+            data: Mytype
         })
     },
-    delRecordList(Ids) {
+    delMytypeList(Ids) {
         return myaxios({
-            url: '/Record/DelRecordList',
+            url: '/Mytype/DelMytypeList',
             method: 'post',
             data: Ids
         })

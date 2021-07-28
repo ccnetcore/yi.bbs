@@ -30,6 +30,7 @@ namespace CC.Yi.API.Controllers
         public async Task<Result> GetRecordsByDiscussId(int discussId)
         {
            var data=  await _recordBll.GetEntities(u => u.discuss.id == discussId && u.is_delete == delFlagNormal).Include(r=>r.user). ToListAsync();
+            data.Reverse();
             return Result.Success().SetData(data);
         }
 
