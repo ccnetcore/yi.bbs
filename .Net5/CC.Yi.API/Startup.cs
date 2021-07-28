@@ -59,6 +59,7 @@ namespace CC.Yi.API
                            ValidateIssuer = true,//是否验证Issuer
                            ValidateAudience = true,//是否验证Audience
                            ValidateLifetime = true,//是否验证失效时间
+
                            ClockSkew = TimeSpan.FromDays(1),
 
 
@@ -107,7 +108,7 @@ namespace CC.Yi.API
 
 
 
-            services.AddDirectoryBrowser();
+            //services.AddDirectoryBrowser();
 
             services.AddCors(options => options.AddPolicy("CorsPolicy",//解决跨域问题
             builder =>
