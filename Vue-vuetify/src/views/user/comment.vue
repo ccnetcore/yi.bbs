@@ -511,6 +511,7 @@ export default {
         .then((resp) => {
           this.recordList = resp.data;
         });
+        
       this.dialog2 = true;
     },
     delArticle(acticleId) {
