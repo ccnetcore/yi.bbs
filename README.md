@@ -134,7 +134,7 @@ bbs/wiki：论坛/百科
 
 blog：个人博客
 
-已上传演示站点：https://blog.jiftcc.com
+已上传演示站点：http://blog.jiftcc.com
 
 请使用游客登录
 
