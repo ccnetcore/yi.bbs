@@ -47,6 +47,7 @@ namespace CC.Yi.API.Controllers
                 userId = _user.id;
             }
             var data = await _userBll.getActionByUserId(userId);
+            
             return Result.Success().SetData(data);
         }
         [HttpGet]//得到用户所具有的特殊权限
@@ -75,7 +76,8 @@ namespace CC.Yi.API.Controllers
             {
                 userId = _user.id;
             }
-            var data = await _userBll.GetEntities(u => u.id == userId).Include(u=>u.user_extra). FirstOrDefaultAsync();
+            var data = await _userBll.GetEntities(u => u.id == userId).Include(u=>u.user_extra) . FirstOrDefaultAsync();
+         
           
             return Result.Success().SetData(new { data.id,data.email,data.icon,data.nick,data.username,user_extra = new {data.user_extra.introduction ,data.user_extra.experience,data.user_extra.level,data.user_extra.num_release,data.user_extra.num_reply} });
         }

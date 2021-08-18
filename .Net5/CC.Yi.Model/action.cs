@@ -9,7 +9,7 @@ namespace CC.Yi.Model
     public class action:baseModel
     {
 
-
+        public int sort { get; set; }
 
         public string action_name { get; set; }
 

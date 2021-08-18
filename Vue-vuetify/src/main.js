@@ -5,6 +5,8 @@ import vuetify from './plugins/vuetify';
 import VuetifyDialog from 'vuetify-dialog'
 import 'vuetify-dialog/dist/vuetify-dialog.css'
 import signalr from './utils/signalR'
+// import hljs from 'highlight.js' //导入代码高亮文件
+// import 'highlight.js/styles/googlecode.css'
 
 
 // import { mavonEditor } from "mavon-editor";
@@ -22,6 +24,15 @@ Vue.use(VuetifyDialog, {
         vuetify
     }
 });
+
+// Vue.directive('highlight', function(el) {
+//     let highlight = el.querySelectorAll('code,pre');
+//     highlight.forEach((block) => {
+//         if (block) {
+//             hljs.highlightBlock(block);
+//         }
+//     })
+// })
 
 new Vue({
     router,

@@ -28,7 +28,6 @@ namespace CC.Yi.API.Init
                                new action{ action_name="权限管理",router="/admaction",icon="mdi-lock"},
 
                                new action{ action_name="板块管理",router="/admplate",icon="mdi-lock"},
-                               new action{ action_name="权限管理",router="/action",icon="mdi-lock"},
                                new action{ action_name="等级管理",router="/admlevel",icon="mdi-lock"},
                                new action{ action_name="主题管理",router="/admdiscuss",icon="mdi-lock"},
 

@@ -140,7 +140,7 @@ namespace CC.Yi.API.Controllers
 
                     myUser.ip=_httpContext.HttpContext.Request.Headers["X-Real-IP"].FirstOrDefault();//通过上下文获取ip
 
-                    myUser.icon = "ea017c40-9205-4541-8cd4-f23e036f7795.jpg";//默认头像
+                    myUser.icon = "jiftcc.jpg";//默认头像
                     var data = _userBll.Add(myUser);
 
 

@@ -12,6 +12,11 @@ namespace CC.Yi.Common
         {          
             foreach (var k1 in data)
             {
+                if (k1.is_delete == (short)ViewModel.Enum.DelFlagEnum.Deleted)
+                {
+                    data.Remove(k1);
+                    return data;
+                }
                 k1.content = "";
                 if (k1.children == null || k1.children.Count == 0)
                 {
@@ -40,13 +45,36 @@ namespace CC.Yi.Common
         {
             foreach (var k1 in data)
             {
+              
+                if (k1.is_delete == (short)ViewModel.Enum.DelFlagEnum.Deleted)
+                {
+                 
+                    continue;
+                }
+                mydata.Add(new article { id = k1.id, content = k1.content, name = k1.name });
+
                 if (k1.children != null && k1.children.Count != 0)
                 {
                     tileArt2(k1.children, mydata);
                 }
-               
-                mydata.Add(new article { id=k1.id,content=k1.content,name=k1.name});
+
+                
             }
+
+            //for(int i=0;i<data.Count;i++)
+            //{
+            //    if (data[i].is_delete == (short)ViewModel.Enum.DelFlagEnum.Deleted)
+            //    {
+            //        data.Remove(data[i]);
+            //        return;
+            //    }
+            //    if (data[i].children != null && data[i].children.Count != 0)
+            //    {
+            //        tileArt2(data[i].children, mydata);
+            //    }
+
+            //    mydata.Add(new article { id = data[i].id, content = data[i].content, name = data[i].name });
+            //}
         }
     }
 }

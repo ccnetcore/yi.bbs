@@ -32,7 +32,7 @@ namespace CC.Yi.Common
             return CacheWriter.GetCache<int>("discussExperience");
         }
         public static string title()
-        {
+        { 
             return CacheWriter.GetCache<string>("title");
         }
 

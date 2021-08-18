@@ -35,6 +35,9 @@ namespace CC.Yi.Model.Migrations
                     b.Property<string>("router")
                         .HasColumnType("longtext");
 
+                    b.Property<int>("sort")
+                        .HasColumnType("int");
+
                     b.HasKey("id");
 
                     b.ToTable("action");

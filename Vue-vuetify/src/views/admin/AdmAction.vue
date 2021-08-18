@@ -62,6 +62,12 @@
                         label="图标"
                       ></v-text-field>
                     </v-col>
+                                        <v-col cols="12" sm="6" md="4">
+                      <v-text-field
+                        v-model="editedItem.sort"
+                        label="排序"
+                      ></v-text-field>
+                    </v-col>
                     <!-- <v-col cols="12" sm="6" md="4">
                       <v-text-field
                         v-model="editedItem.fat"
@@ -156,6 +162,8 @@ export default {
       { text: "权限名", value: "action_name", sortable: false },
       { text: "路由", value: "router", sortable: false },
       { text: "图标", value: "icon", sortable: false },
+       { text: "排序", value: "sort", sortable: true },
+     
       { text: "操作", value: "actions", sortable: false },
     ],
     desserts: [],
@@ -164,11 +172,13 @@ export default {
       action_name: "",
       router: "/my/",
       icon: "mdi-lock",
+      sort:"1"
     },
     defaultItem: {
       action_name: "",
       router: "/my/",
       icon: "mdi-lock",
+      sort:"1"
     },
   }),
 

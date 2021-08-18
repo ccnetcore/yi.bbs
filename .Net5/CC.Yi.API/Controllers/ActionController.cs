@@ -61,6 +61,7 @@ namespace CC.Yi.API.Controllers
             action.action_name = _action.action_name;
             action.router = _action.router;
             action.icon = _action.icon;
+            action.sort = _action.sort;
             var flag = _actionBll.Update(action);
             return Result.Success();
         }

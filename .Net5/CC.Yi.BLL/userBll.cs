@@ -42,6 +42,9 @@ namespace CC.Yi.BLL
             //合并两个权限
             allAction.AddRange(specialAction.AsEnumerable());
 
+            //排序
+            allAction= allAction.OrderBy(u=>u.sort).ToList();
+
             //去重
             var myAllAction = allAction.Distinct().ToList().Select(u => new actionJwt { id = u.id, action_name = u.action_name, router = u.router, icon = u.icon }).ToList();
 

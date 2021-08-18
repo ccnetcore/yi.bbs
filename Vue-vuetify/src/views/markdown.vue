@@ -1,13 +1,17 @@
 <template>
-  <v-container fluid>
+
       <mavon-editor
+ previewBackground="#ffffff"
         v-model="myhtml2"
         ref="md"
         @imgAdd="$imgAdd"
         @change="change"
+         :ishljs="true"
+    
+      codeStyle="atom-one-dark"
         style="height: 800px;z-index:1"
       />
-  </v-container>
+
 </template>
 <script>
 // 该组件中注释掉的代码为局部注册的方式。

@@ -241,6 +241,7 @@ namespace CC.Yi.API.Controllers
                 data.title = myDiscuss.title;
                 data.type = myDiscuss.type;
                 data.content = myDiscuss.content;
+                data.introduction = myDiscuss.introduction;
                 _discussBll.Update(data);
                 _recordBll.Add(myDiscuss.id, $"更新了【根】目录", _user.id);
                 return Result.Success();

@@ -171,6 +171,9 @@
 
             <mavon-editor
               class="md"
+              codeStyle="atom-one-dark"
+              :boxShadow="false"
+               previewBackground="#ffffff"
               :value="discussData.content"
               :subfield="false"
               :defaultOpen="'preview'"

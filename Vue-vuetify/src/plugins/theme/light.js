@@ -11,5 +11,9 @@ import store from "../../store/index"
 //     // 这里我们添加一个自定义的 `tertiary` 颜色
 //     tertiary: colors.tertiary
 // }
-const color = {};
+const color = {
+    // cyan: '#FF9900',
+    // blue: '#663300'
+
+};
 export default color
