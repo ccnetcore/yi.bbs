@@ -104,12 +104,12 @@ namespace CC.Yi.API.Controllers
             {
                 string code = RandomHelper.GenerateRandomLetter(6);
                 code = code.ToUpper();//全部转为大写
-                EmailHelper.sendMail("江西服装学院论坛账号注册验证码", code, emailAddress);
+                EmailHelper.sendMail(code, emailAddress);
 
                 //我要把邮箱和对应的code加进到数据库，还有申请时间
                 //设置10分钟过期
                 //set不存在便添加，如果存在便替换
-                CacheHelper.SetCache<string>(emailAddress, code, DateTime.Now.AddMinutes(10));
+                CacheHelper.SetCache<string>(emailAddress, code, TimeSpan.FromSeconds(10));
 
                 return Result.Success("发送邮件成功，请查看邮箱（可能在垃圾箱）");
             }

@@ -14,9 +14,14 @@ namespace CC.Yi.Common
         {
             settingHelper.CacheWriter = new RedisCache();
         }
+        public static ICacheWriter getCache()
+        {
+            return settingHelper.CacheWriter;
+        }
 
         public static int commentPage()
         {
+           
             return CacheWriter.GetCache<int>("commentPage");
         }
         public static int discussPage()
@@ -43,6 +48,14 @@ namespace CC.Yi.Common
             CacheWriter.SetCache<int>("commentExperience", data.commentExperience);
             CacheWriter.SetCache<int>("discussExperience", data.discussExperience);
             CacheWriter.SetCache<string>("title", data.title);
+        }
+
+        public static void Init()
+        {
+            if (title() == null)
+            {
+                update(new setting() { title = "暂未设置", discussPage = 10, discussExperience = 3, commentExperience = 1, commentPage = 10 });
+            }
         }
     }
 }

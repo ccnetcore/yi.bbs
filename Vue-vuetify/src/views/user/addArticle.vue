@@ -29,6 +29,13 @@
               </v-btn>
             </v-list-item-content>
           </v-list-item>
+          <v-list-item>
+            <v-list-item-content>
+              <v-btn color="cyan" elevation="2" @click="getCache" large dark>
+                拉取备份
+              </v-btn>
+            </v-list-item-content>
+          </v-list-item>
 
           <v-list-item>
             <v-list-item-content>
@@ -139,6 +146,7 @@ import markdownEdit from "@/views/markdown";
 export default {
   data() {
     return {
+      mytimer: null,
       selectArt: [],
       articleWidth: "260",
       drawer: true,
@@ -153,14 +161,14 @@ export default {
       selectIndex: 0,
     };
   },
-  watch: {
-    selectArt: {
-      handler(new1, old2) {
-        // console.log(new1)
-        // this.intoArticle(new1[0].id);
-      },
-    },
-  },
+  // watch: {
+  //   selectArt: {
+  //     handler(new1, old2) {
+  //       // console.log(new1)
+  //       // this.intoArticle(new1[0].id);
+  //     },
+  //   },
+  // },
   mounted() {
     //使用初始化
     this.baseurl = process.env.VUE_APP_BASE_API;
@@ -169,6 +177,34 @@ export default {
     this.initializa();
   },
   methods: {
+    getCache() {
+      articleApi.getArticleByCache(this.$route.query.articleId).then((resp) => {
+        if (resp.status) {
+          this.myhtml = resp.data;
+          this.$dialog.notify.success("已在云端发现备份", {
+            position: "top-right",
+            timeout: 5000,
+          });
+        } else {
+          this.$dialog.notify.error("未在云端发现备份", {
+            position: "top-right",
+            timeout: 5000,
+          });
+        }
+      });
+    },
+
+    setCache() {
+      articleApi
+        .setArticleByCache(this.$route.query.articleId, this.myhtml)
+        .then((resp) => {
+          this.$dialog.notify.success("已成功自动备份云端", {
+            position: "top-right",
+            timeout: 2000,
+          });
+        });
+    },
+
     intoAdd2() {
       this.$router.push({ path: "/addArticle" });
       this.form.name = "";
@@ -202,6 +238,7 @@ export default {
           discussId: this.$store.state.home.discussId,
         },
       });
+      this.initializa();
     },
     updateWidth() {
       if (this.articleWidth == "260") {
@@ -285,7 +322,9 @@ export default {
           });
       }
     },
+
     initializa() {
+      window.clearInterval(this.mytimer);
       setTimeout(function () {
         window.scrollTo(0, 0);
       }, 500);
@@ -298,6 +337,10 @@ export default {
 
       if (this.$route.query.articleId != undefined) {
         //下面是进行更新(没有传文章id或者父级id)
+        //每30秒轮询保存
+        this.mytimer = window.setInterval(() => {
+          setTimeout(this.setCache, 0);
+        }, 1000 * 60 * 1);
         articleApi
           .getArticleById(this.$route.query.articleId)
           .then((response) => {
@@ -315,23 +358,19 @@ export default {
           articleId: articleId,
         },
       });
-     articleApi
-          .getArticleById(articleId)
-          .then((response) => {
-            const resp = response.data;
-            this.form.id = resp.id;
-            this.form.name = resp.name;
-            this.myhtml = resp.content;
-          });
-
-
-
-
-
+      articleApi.getArticleById(articleId).then((response) => {
+        const resp = response.data;
+        this.form.id = resp.id;
+        this.form.name = resp.name;
+        this.myhtml = resp.content;
+      });
     },
     getHtml(html) {
       this.myhtml = html;
     },
+  },
+  destroyed() {
+    window.clearInterval(this.mytimer);
   },
   components: {
     markdownEdit,

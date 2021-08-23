@@ -118,7 +118,7 @@ namespace CC.Yi.API
                     .AllowCredentials();
             }));
 
-
+        
 
             RedisCache.RedisRegist(Configuration);//¿ªÆôredis×¢²á
         }
@@ -131,7 +131,12 @@ namespace CC.Yi.API
                 var Db = serviceScope.ServiceProvider.GetService<DataContext>();
 
                 Init.InitDb.Init(Db);
-
+                settingHelper.Init();
+                string fromMail = Configuration["email:fromMail"];
+                string pwdMail = Configuration["email:pwdMail"];
+                string senderMail = Configuration["email:senderMail"];
+                string subjectMail = Configuration["email:subjectMail"];
+                EmailHelper.Init(fromMail, pwdMail, senderMail, subjectMail);
             }
         }
 

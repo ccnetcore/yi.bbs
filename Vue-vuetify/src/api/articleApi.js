@@ -1,5 +1,21 @@
 import myaxios from '@/utils/myaxios'
 export default {
+    setArticleByCache(articleId, content) {
+        return myaxios({
+            url: `/Article/setArticleByCache`,
+            method: 'post',
+            data: { id: articleId, content: content }
+        })
+    },
+
+    getArticleByCache(articleId) {
+        return myaxios({
+            url: `/Article/getArticleByCache?articleId=${articleId}`,
+            method: 'get'
+        })
+    },
+
+
     getArticlesByDiscussId(discussId) {
         return myaxios({
             url: `/Article/GetArticlesByDiscussId?discussId=${discussId}`,

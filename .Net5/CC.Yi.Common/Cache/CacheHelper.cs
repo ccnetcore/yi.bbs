@@ -17,7 +17,7 @@ namespace CC.Yi.Common.Cache
 
 
 
-        public static bool AddCache<T>(string key, T value, DateTime expDate)
+        public static bool AddCache<T>(string key, T value, TimeSpan expDate)
         {
             return CacheWriter.AddCache<T>(key,value,expDate);
         }
@@ -29,6 +29,7 @@ namespace CC.Yi.Common.Cache
 
         public static bool RemoveCache(string key)
         {
+          
             return CacheWriter.RemoveCache(key);
         }
 
@@ -37,7 +38,7 @@ namespace CC.Yi.Common.Cache
             return CacheWriter.GetCache<T>(key);
         }
 
-        public static bool SetCache<T>(string key, T value, DateTime expDate)
+        public static bool SetCache<T>(string key, T value, TimeSpan expDate)
         {
             return CacheWriter.SetCache<T>(key,value,expDate);
         }

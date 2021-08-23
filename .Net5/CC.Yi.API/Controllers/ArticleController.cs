@@ -29,6 +29,24 @@ namespace CC.Yi.API.Controllers
             _logger = logger;
         }
 
+
+        [HttpPost]
+        public Result setArticleByCache(article articleData)
+        {
+            var clien=settingHelper.getCache();
+            clien.SetCache("Article:"+_user.id+":"+ articleData.id, articleData.content, TimeSpan.FromDays(7));
+            return Result.Success("自动保存成功");
+        }
+
+        [HttpGet]
+        public Result getArticleByCache(int articleId)
+        {
+            var clien = settingHelper.getCache();
+         var data=   clien.GetCache<string>( "Article:" + _user.id + ":" + articleId);
+            return Result.Success("读取存档成功").SetData(data);
+        }
+
+
         [HttpGet]
         public async Task<Result> GetArticlesByDiscussId(int discussId)
         {
@@ -37,6 +55,8 @@ namespace CC.Yi.API.Controllers
            data=datahHandle.artData(data);
             return Result.Success().SetData(data);
         }
+
+
 
         [HttpPost]
         public async Task<Result> AddChildrenArticle(article myArticle, int parentId,int discussId)

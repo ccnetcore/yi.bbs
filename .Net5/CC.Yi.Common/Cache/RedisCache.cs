@@ -9,7 +9,7 @@ namespace CC.Yi.Common.Cache
     public class RedisCache : ICacheWriter
     {
         
-        public static void RedisRegist(IConfiguration configuration)
+        public static void RedisRegist( IConfiguration configuration)
         {
             ip = configuration["redis:ip"];
             port=int.Parse(configuration["redis:port"]);
@@ -30,7 +30,7 @@ namespace CC.Yi.Common.Cache
             client.Dispose();
         }
 
-        public bool AddCache<T>(string key, T value, DateTime expDate)
+        public bool AddCache<T>(string key, T value, TimeSpan expDate)
         {
             try
             {
@@ -74,7 +74,7 @@ namespace CC.Yi.Common.Cache
 
 
 
-        public bool SetCache<T>(string key, T value, DateTime expDate)
+        public bool SetCache<T>(string key, T value, TimeSpan expDate)
         {
             try
             {

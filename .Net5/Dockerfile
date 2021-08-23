@@ -6,6 +6,9 @@ EXPOSE 80
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
+ADD http://ftp.us.debian.org/debian/pool/main/c/ca-certificates/ca-certificates_20210119_all.deb .
+RUN dpkg -i ca-certificates_20210119_all.deb
+RUN apt-get update && apt-get install -y ca-certificates && update-ca-certificates && rm -rf /var/lib/apt/lists/*
 WORKDIR /src
 COPY ["CC.Yi.API/CC.Yi.API.csproj", "CC.Yi.API/"]
 COPY ["CC.Yi.Model/CC.Yi.Model.csproj", "CC.Yi.Model/"]

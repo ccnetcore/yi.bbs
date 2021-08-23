@@ -9,16 +9,28 @@ namespace CC.Yi.Common
 {
     public class EmailHelper
     {
-        public static bool sendMail(string subject, string body, string toMail)
+        public static string fromMail { get; set; }
+        public static string pwdMail { get; set; }
+        public static string senderMail { get; set; }
+        public static string subjectMail { get; set; }
+        public static void Init(string fromMail,string pwdMail,string senderMail, string subjectMail)
+        {
+            EmailHelper.fromMail = fromMail;
+            EmailHelper.pwdMail = pwdMail;
+            EmailHelper.senderMail = senderMail;
+            EmailHelper.subjectMail = subjectMail;
+        }
+
+        public static bool sendMail(string body, string toMail)
         {
             try
             {
 
-                string fromMail = "454313500@qq.com";
-                string pwdMail = "yvjioburildgbhdf";
+                //string fromMail = "454313500@qq.com";
+                //string pwdMail = "yvjioburildgbhdf";
                 MailMessage message = new MailMessage();
                 //设置发件人,发件人需要与设置的邮件发送服务器的邮箱一致
-                System.Net.Mail.MailAddress fromAddr = new System.Net.Mail.MailAddress(fromMail, "江西服装学院论坛");
+                System.Net.Mail.MailAddress fromAddr = new System.Net.Mail.MailAddress(fromMail, EmailHelper.senderMail);
                 message.From = fromAddr;
 
                 //设置收件人,可添加多个,添加方法与下面的一样
@@ -26,7 +38,7 @@ namespace CC.Yi.Common
 
 
                 //设置邮件标题
-                message.Subject = subject;
+                message.Subject = EmailHelper.subjectMail;
 
                 //设置邮件内容
                 message.Body = body;
